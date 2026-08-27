@@ -178,6 +178,8 @@
             box-sizing: border-box;
         }
 
+        /* Anker-Sprünge unter der fixen Navigation landen lassen */
+        section[id] { scroll-margin-top: 52px; }
         html {
             scroll-behavior: smooth;
             -webkit-font-smoothing: antialiased;
@@ -303,6 +305,25 @@
         .nav:not(.scrolled) .nav-links a { color: #FFFFFF; }
         .nav:not(.scrolled) .nav-links a:hover { color: #FFFFFF; }
         .nav:not(.scrolled) .nav-hamburger span { background: #FFFFFF; }
+        /* Dropdown-Menü */
+        .nav-dropdown { position: relative; }
+        .nav-dropdown-toggle { display: inline-flex; align-items: center; gap: 5px; }
+        .nav-caret { width: 13px; height: 13px; transition: transform 0.3s; }
+        .nav-dropdown:hover .nav-caret { transform: rotate(180deg); }
+        .nav-dropdown-menu {
+            list-style: none; position: absolute; top: 100%; left: 0; margin-top: 12px;
+            min-width: 248px; padding: 8px; background: #FFFFFF;
+            border: 1px solid var(--color-border); border-radius: 14px;
+            box-shadow: var(--shadow-card);
+            opacity: 0; visibility: hidden; transform: translateY(6px);
+            transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s; z-index: 1002;
+        }
+        /* unsichtbare Hover-Brücke, damit das Menü beim Rübergehen nicht zuklappt */
+        .nav-dropdown-menu::before { content: ''; position: absolute; left: 0; bottom: 100%; width: 100%; height: 16px; }
+        .nav-dropdown:hover .nav-dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .nav-dropdown-menu a { display: block; padding: 11px 14px; border-radius: 9px; font-size: 0.9rem; font-weight: 500; color: var(--color-text) !important; }
+        .nav-dropdown-menu a::after { display: none !important; }
+        .nav-dropdown-menu a:hover { background: var(--color-surface); color: var(--color-text) !important; }
         .nav-cta {
             background: var(--color-accent);
             color: #FFFFFF !important;
@@ -406,17 +427,21 @@
         }
         .hero h1 {
             font-family: var(--font-display);
-            font-size: clamp(2.2rem, 5.5vw, 4.2rem);
+            font-size: clamp(2.3rem, 5.8vw, 4.7rem);
             font-weight: 800;
-            line-height: 1.08;
-            letter-spacing: -0.03em;
+            line-height: 1.03;
+            letter-spacing: -0.035em;
             margin-bottom: 28px;
             animation: fadeInUp 0.8s ease 0.1s forwards;
             opacity: 0;
         }
         .hero h1 .highlight {
-            color: var(--color-accent);
             position: relative;
+            background: linear-gradient(100deg, #FF3E74 0%, #FF8A3D 50%, #FFC24D 100%);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
+            text-shadow: none;
+            filter: drop-shadow(0 2px 13px rgba(0,0,0,0.55));
         }
         .hero-sub {
             font-size: clamp(1.05rem, 2vw, 1.25rem);
@@ -495,10 +520,12 @@
             object-fit: cover;
         }
         .hero.has-video .hero-video-overlay {
-            background: linear-gradient(180deg,
-                rgba(18,16,14,0.55) 0%,
-                rgba(18,16,14,0.42) 42%,
-                rgba(18,16,14,0.78) 100%);
+            background:
+                radial-gradient(125% 95% at 50% 42%, transparent 52%, rgba(8,6,4,0.50) 100%),
+                linear-gradient(180deg,
+                    rgba(18,16,14,0.55) 0%,
+                    rgba(18,16,14,0.42) 42%,
+                    rgba(18,16,14,0.78) 100%);
         }
         /* helle Deko des Light-Themes ausblenden, damit sie nicht gegen das Video kämpft */
         .hero.has-video::before { display: none; }
@@ -510,8 +537,24 @@
             -webkit-backdrop-filter: blur(6px);
             backdrop-filter: blur(6px);
         }
-        .hero.has-video h1 { color: #FFFFFF; }
-        .hero.has-video .hero-sub { color: rgba(255,255,255,0.88); }
+        .hero.has-video h1 { color: #FFFFFF; text-shadow: 0 2px 24px rgba(0,0,0,0.35); }
+        .hero.has-video .hero-sub { color: rgba(255,255,255,0.96); text-shadow: 0 1px 14px rgba(0,0,0,0.40); }
+        /* Scroll-Indikator */
+        .hero-scroll {
+            position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%);
+            z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px;
+            color: rgba(255,255,255,0.75); font-size: 0.68rem; font-weight: 600;
+            letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none;
+            transition: color 0.3s;
+        }
+        .hero-scroll:hover { color: #FFFFFF; }
+        .hero-scroll svg { width: 22px; height: 22px; animation: scrollBounce 1.8s ease-in-out infinite; }
+        @keyframes scrollBounce {
+            0%, 100% { transform: translateY(0); opacity: 0.75; }
+            50% { transform: translateY(7px); opacity: 1; }
+        }
+        @media (prefers-reduced-motion: reduce) { .hero-scroll svg { animation: none; } }
+        @media (max-width: 768px) { .hero-scroll { display: none; } }
         .hero.has-video .btn-secondary {
             color: #FFFFFF;
             border-color: rgba(255,255,255,0.45);
@@ -540,17 +583,7 @@
             background-size: 200% 100%;
             animation: trustLineFlow 3s linear infinite;
         }
-        .trust-bar::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--color-gradient-1), var(--color-accent), var(--color-gradient-1), transparent);
-            background-size: 200% 100%;
-            animation: trustLineFlow 3s linear infinite reverse;
-        }
+        .trust-bar::after { display: none; }
         @keyframes trustLineFlow {
             0% { background-position: -200% 0; }
             100% { background-position: 200% 0; }
@@ -588,6 +621,26 @@
             height: 24px;
             fill: currentColor;
         }
+        /* Kennzahlen-Leiste (im Trust-Bar-Stil) */
+        .trust-stats {
+            display: flex; align-items: center; justify-content: center;
+            gap: clamp(28px, 6vw, 76px); flex-wrap: wrap;
+        }
+        .trust-stat { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .trust-stat-num {
+            font-family: var(--font-display); font-weight: 800; line-height: 1;
+            font-size: clamp(1.7rem, 3vw, 2.5rem); letter-spacing: -0.02em;
+            font-variant-numeric: tabular-nums; font-feature-settings: "tnum";
+            background-image: linear-gradient(100deg, #C03050 0%, #F5A623 70%);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
+        }
+        .trust-stat-label {
+            margin-top: 9px; font-size: 0.8rem; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 0.13em; color: var(--color-text-muted);
+        }
+        .trust-stat-sep { width: 1px; height: 46px; background: var(--color-border); }
+        @media (max-width: 600px) { .trust-stat-sep { display: none; } }
 
         /* ============================================
            SECTION HEADINGS
@@ -630,7 +683,7 @@
         .about {
             padding: var(--section-padding) 0;
             position: relative;
-            background: var(--color-bg-elevated);
+            background: linear-gradient(180deg, #FCF8F3 0%, #F6EFE7 100%);
         }
         .about::before,
         .about::after {
@@ -651,7 +704,7 @@
             align-items: start;
         }
         .about-text { grid-column: 2; grid-row: 1; }
-        .about-video-wrap { grid-column: 1; grid-row: 1 / 3; }
+        .about-video-wrap { grid-column: 1; grid-row: 1 / 3; align-self: center; }
         .about-paragraphs { grid-column: 2; grid-row: 2; }
         .about-paragraphs p {
             color: var(--color-text-secondary);
@@ -659,6 +712,21 @@
             line-height: 1.7;
             font-size: 0.92rem;
         }
+        .about-paragraphs strong { color: var(--color-accent-dark); font-weight: 700; }
+        .about-founder {
+            display: flex; align-items: center; gap: 14px;
+            margin-top: 28px; padding-top: 22px;
+            border-top: 1px solid var(--color-border-light);
+        }
+        .about-founder-avatar {
+            width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+            background: var(--color-bg-card); border: 1px solid var(--color-border);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: var(--shadow-card);
+        }
+        .about-founder-avatar img { width: 30px; height: auto; }
+        .about-founder-name { font-family: var(--font-display); font-weight: 700; font-size: 1.02rem; color: var(--color-text); line-height: 1.2; }
+        .about-founder-role { font-size: 0.82rem; color: var(--color-text-muted); margin-top: 2px; }
         .about-video-wrap {
             position: relative;
             max-width: 320px;
@@ -670,7 +738,7 @@
             left: -20px;
             width: 100%;
             height: 100%;
-            background: var(--color-accent);
+            background: linear-gradient(150deg, #C03050 0%, #F5A623 100%);
             border-radius: var(--radius-lg);
             z-index: 0;
         }
@@ -695,6 +763,76 @@
             line-height: 1.7;
             font-size: 0.92rem;
         }
+        /* ============================================
+           COLLAGE (Bilder-Laufband)
+           ============================================ */
+        .collage-section { padding: 8px 0 24px; overflow: hidden; }
+        .collage {
+            margin-top: 0; width: 100%; overflow: hidden;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+        }
+        .collage-track {
+            display: flex; gap: 14px; width: max-content;
+            animation: collageScroll 70s linear infinite;
+        }
+        .collage-item {
+            flex: 0 0 auto; width: clamp(150px, 15vw, 220px); aspect-ratio: 4 / 5;
+            border-radius: 14px; overflow: hidden; background: var(--color-surface);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        .collage-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        @keyframes collageScroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(calc(-50% - 7px)); }   /* halbe Strecke + halber gap = nahtlos */
+        }
+        /* Zweite Collage versetzt starten (anderer Bildausschnitt) */
+        #einblicke-2 .collage-track { animation-delay: -35s; }
+        @media (prefers-reduced-motion: reduce) {
+            .collage-track { animation: none; }
+            .collage { overflow-x: auto; }
+        }
+        @media (max-width: 768px) {
+            .collage-item { width: 140px; border-radius: 12px; }
+            .collage-track { gap: 10px; animation-duration: 50s; }
+        }
+        /* CTA nach der Case Study / Collage */
+        .case-cta { padding: clamp(28px, 4vw, 56px) 0; text-align: center; background: #FFFFFF; }
+        .case-cta .container {
+            max-width: 880px;
+            background: linear-gradient(135deg, #FFF6E9 0%, #FBE6C9 100%);
+            border: 1px solid rgba(245,166,35,0.30);
+            border-radius: 28px;
+            padding: clamp(40px, 6vw, 64px) clamp(28px, 5vw, 56px);
+        }
+        .case-cta-title { font-family: var(--font-display); font-size: clamp(1.5rem, 3.4vw, 2.3rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 26px; }
+        .case-cta .btn-primary { font-size: 1rem; padding: 17px 40px; }
+        .case-cta-note { margin-top: 16px; font-size: 0.85rem; color: var(--color-text-muted); }
+        /* Dunkle CTA-Variante */
+        .case-cta--dark .container {
+            background: linear-gradient(150deg, #1C1F26 0%, #121317 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .case-cta--dark .case-cta-title { color: #FFFFFF; }
+        .case-cta--dark .case-cta-title .grad-accent {
+            background: linear-gradient(100deg, #F5A623 0%, #EB5E28 90%);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
+        }
+        .case-cta--dark .case-cta-note { color: rgba(255,255,255,0.6); }
+        .case-cta--dark .btn-primary { background: var(--color-accent); color: #FFFFFF; }
+        .case-cta--dark .btn-primary:hover { background: var(--color-accent-hover); transform: translateY(-2px); box-shadow: 0 12px 34px rgba(245,166,35,0.35); }
+        /* Kräftig-orange CTA-Variante */
+        .case-cta--orange .container {
+            background: linear-gradient(150deg, #EB5E28 0%, #F5A623 100%);
+            border: none;
+        }
+        .case-cta--orange .case-cta-title { color: #FFFFFF; }
+        .case-cta--orange .case-cta-note { color: rgba(255,255,255,0.92); }
+        .case-cta--orange .btn-primary { background: #FFFFFF; color: #14161B; }
+        .case-cta--orange .btn-primary:hover { background: #14161B; color: #FFFFFF; box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
+        .case-cta--orange .case-cta-alt { display: inline-block; margin-top: 18px; color: #FFFFFF; font-weight: 600; font-size: 0.92rem; border-bottom: 1px solid rgba(255,255,255,0.5); padding-bottom: 2px; transition: border-color 0.3s; }
+        .case-cta--orange .case-cta-alt:hover { border-color: #FFFFFF; }
         /* ============================================
            STATS STRIP
            ============================================ */
@@ -891,33 +1029,78 @@
            PORTFOLIO / REFERENZEN
            ============================================ */
         .portfolio {
-            padding: var(--section-padding) 0;
-            background: var(--color-bg-elevated);
+            padding: clamp(56px, 6vw, 85px) 0 clamp(80px, 10vw, 130px);
+            background: linear-gradient(150deg, #EB5E28 0%, #F5A623 100%);
             position: relative;
+            overflow: hidden;
         }
-        .portfolio::before,
-        .portfolio::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--color-border), transparent);
-        }
-        .portfolio::before { top: 0; }
-        .portfolio::after { bottom: 0; }
+        .portfolio > .container { position: relative; z-index: 1; }
+        /* Saubere, harte Kante wie im Kontakt-Abschnitt – keine Verlauf-Überblendung */
+        /* Weißer Text auf Orange */
+        .portfolio .section-label { color: #FFFFFF; }
+        .portfolio .section-label::before { background: rgba(255,255,255,0.85); }
+        .portfolio .section-title { color: #FFFFFF; }
+        .portfolio .section-subtitle { color: rgba(255,255,255,0.92); }
+        .portfolio .slider-counter { color: rgba(255,255,255,0.9); }
+        /* Weiße Karten poppen auf Orange */
+        .portfolio-card { background: #FFFFFF; border-color: rgba(255,255,255,0.55); }
+        .portfolio-card:hover { border-color: #FFFFFF; box-shadow: 0 26px 55px rgba(120,40,0,0.28); }
+        .portfolio-card-image { background: var(--color-surface); }
+        .portfolio-card h3 { color: var(--color-text); }
+        .portfolio-card p { color: var(--color-text-secondary); }
+        .portfolio-card-tag { background: var(--color-accent-glow); color: var(--color-accent-dark); }
+        .portfolio-card-stat strong { color: var(--color-text); }
+        .portfolio-card-stat { color: var(--color-text-secondary); }
+        .portfolio-arrow { background: #FFFFFF; border-color: #FFFFFF; color: var(--color-text); box-shadow: 0 10px 28px rgba(120,40,0,0.22); }
+        .portfolio-arrow:hover { background: var(--color-text); border-color: var(--color-text); color: #FFFFFF; }
         .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            display: flex;
             gap: 24px;
-            margin-top: 60px;
+            margin-top: 50px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            scrollbar-width: none;            /* Firefox */
+            -ms-overflow-style: none;         /* IE/Edge */
+            padding: 10px 2px 16px;           /* Platz fuer Hover-Lift/Schatten */
         }
+        .portfolio-grid::-webkit-scrollbar { display: none; }
+        /* Untere Nav (nur Handy) */
+        .portfolio-nav { display: none; justify-content: center; align-items: center; gap: 16px; margin-top: 28px; }
+        /* Seiten-Pfeile (Desktop) links/rechts – außerhalb der Karten */
+        .portfolio-slider { position: relative; }
+        .portfolio-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%); z-index: 6;
+            width: 52px; height: 52px; border-radius: 50%;
+            border: 1px solid var(--color-border); background: var(--color-bg-card);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.14);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 1.35rem; color: var(--color-text);
+            transition: background 0.3s, color 0.3s, border-color 0.3s, transform 0.3s;
+        }
+        .portfolio-arrow:hover { background: var(--color-accent); color: #FFFFFF; border-color: var(--color-accent); }
+        .portfolio-arrow--prev { left: -72px; }
+        .portfolio-arrow--next { right: -72px; }
+        @media (max-width: 1340px) {
+            .portfolio-arrow--prev { left: -20px; }
+            .portfolio-arrow--next { right: -20px; }
+        }
+        .portfolio-nav .slider-btn {
+            width: 48px; height: 48px; border-radius: 50%;
+            border: 2px solid var(--color-border); background: var(--color-bg-card);
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            font-size: 1.2rem; color: var(--color-text); transition: all 0.3s;
+        }
+        .portfolio-nav .slider-btn:hover { border-color: var(--color-accent); background: var(--color-accent); color: #fff; transform: translateY(-2px); }
+        .portfolio-nav .slider-counter { display: none; }   /* Desktop: kein Zaehler (Scroll-Slider) */
         .portfolio-card {
+            flex: 0 0 calc((100% - 48px) / 3);   /* 3 pro Reihe (2 Luecken a 24px) */
+            scroll-snap-align: start;
             background: var(--color-bg-card);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-lg);
             overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
         }
         .portfolio-card:hover {
             transform: translateY(-6px);
@@ -993,8 +1176,36 @@
            CASE STUDY – EMPLOYA
            ============================================ */
         .case-study {
-            padding: var(--section-padding) 0;
+            padding: var(--section-padding) 0 40px;
             position: relative;
+            background: #FFFFFF;
+            transition: padding-bottom 0.5s ease;
+        }
+        .case-study.expanded { padding-bottom: 40px; }
+        /* Großes grünes EMPLOYA als Hintergrund-Wasserzeichen */
+        .case-watermark { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+        .case-watermark span {
+            position: absolute; top: clamp(40px, 6vw, 90px); left: 50%; transform: translateX(-50%);
+            font-family: var(--font-display); font-weight: 900; line-height: 1;
+            font-size: clamp(4.5rem, 19vw, 17rem); letter-spacing: -0.04em; white-space: nowrap;
+            color: #2E9E4F; opacity: 0.09; user-select: none;
+        }
+        .case-study::before { display: none; }
+        .case-study > .container { position: relative; z-index: 1; }
+        .case-study-tag {
+            display: inline-flex; align-items: center; gap: 14px;
+            font-family: var(--font-display);
+            font-size: clamp(1rem, 1.8vw, 1.35rem);
+            font-weight: 800; letter-spacing: 0.24em; text-transform: uppercase;
+            color: var(--color-accent-dark); margin-bottom: 14px;
+        }
+        .case-study-tag::before, .case-study-tag::after {
+            content: ''; width: 40px; height: 3px; border-radius: 3px;
+            background: linear-gradient(90deg, #C03050, #F5A623);
+        }
+        .case-study-client-line {
+            font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--color-text-muted); margin-bottom: 18px;
         }
         .case-study::before {
             content: '';
@@ -1011,25 +1222,76 @@
             text-align: center;
             margin-bottom: 40px;
         }
-        .case-study-client {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 6px 16px;
-            background: var(--color-bg-card);
-            border: 1px solid var(--color-border);
-            border-radius: 100px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--color-accent);
-            margin-bottom: 16px;
+        .case-study-eyebrow {
+            display: inline-flex; align-items: center; gap: 14px;
+            font-size: 0.78rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+            color: var(--color-text-secondary); margin-bottom: 22px;
+        }
+        .case-study-eyebrow::before,
+        .case-study-eyebrow::after {
+            content: ""; width: 30px; height: 2px; border-radius: 2px;
+            background: linear-gradient(90deg, #C03050, #F5A623);
+        }
+        .case-study-eyebrow b { color: var(--color-accent-dark); font-weight: 700; }
+        .case-study-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.1rem, 5.2vw, 3.6rem);
+            font-weight: 800; line-height: 1.05; letter-spacing: -0.03em;
+            margin-bottom: 10px;
+        }
+        .case-study-subhead {
+            font-family: var(--font-display);
+            font-size: clamp(1.25rem, 2.6vw, 1.9rem);
+            font-weight: 800; letter-spacing: -0.02em; line-height: 1.15;
+            margin: 0 0 20px;
+            color: #8A8A8A;
+        }
+        .case-study-subhead .grad {
+            background: none; color: inherit;
+            -webkit-text-fill-color: currentColor;
+        }
+        .case-study-intro b { color: var(--color-text); font-weight: 700; }
+        .case-study-intro .case-lead { display: block; margin-bottom: 8px; }
+        .case-study-intro .emp-green { color: #178A3C; }
+        .case-study-subline {
+            font-size: 0.95rem; color: var(--color-text-muted);
+            margin-bottom: 22px; letter-spacing: 0.01em;
+        }
+        .case-study-subline b { color: var(--color-text-secondary); font-weight: 700; }
+        .case-study-title .grad {
+            background: linear-gradient(100deg, #C03050 0%, #F5A623 70%);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
         }
         .case-study-intro {
-            max-width: 600px;
+            max-width: 680px;
             margin: 0 auto;
             color: var(--color-text-secondary);
-            font-size: 0.9rem;
-            line-height: 1.7;
+            font-size: 0.98rem;
+            line-height: 1.75;
+        }
+        .case-study-client-line b { color: var(--color-accent-dark); font-weight: 800; }
+        /* Eyebrow-Badge über dem Titel + Bereichs-Tags darunter */
+        .case-eyebrow-badge { margin-bottom: 18px; }
+        .case-toprow { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; margin-bottom: 22px; }
+        .case-study-badge {
+            display: inline-flex; align-items: center;
+            padding: 6px 14px; border-radius: 999px;
+            background: linear-gradient(135deg, #C03050, #F5A623); color: #FFFFFF;
+            font-family: var(--font-display); font-weight: 800;
+            font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase;
+            box-shadow: 0 4px 14px rgba(192,48,80,0.28);
+        }
+        .case-cat {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 6px 13px; border-radius: 999px;
+            background: var(--color-bg-card); border: 1px solid var(--color-border);
+            font-size: 0.74rem; font-weight: 700; letter-spacing: 0.02em; color: var(--color-text);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .case-cat::before {
+            content: ''; width: 7px; height: 7px; border-radius: 50%;
+            background: linear-gradient(135deg, #C03050, #F5A623);
         }
 
         /* Row 1: Vorher-Bilder (1,2,3) */
@@ -1134,19 +1396,11 @@
            RESULTS / ZAHLEN
            ============================================ */
         .results {
-            padding: var(--section-padding) 0;
-            background: var(--color-bg-elevated);
+            padding: var(--section-padding) 0 8px;
+            background: #FFFFFF;
             position: relative;
         }
-        .results::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--color-border), transparent);
-        }
+        .results::before { display: none; }
         .results-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -1177,26 +1431,60 @@
             font-size: 0.9rem;
             color: var(--color-text-secondary);
         }
+        /* Vorher / Nachher Vergleich (EMPLOYA Instagram-Reichweite) */
+        .ba-compare {
+            display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+            gap: 30px; max-width: 960px; margin: 56px auto 0;
+        }
+        /* Zitat des Geschäftsführers */
+        .result-quote { max-width: 760px; margin: 60px auto 0; text-align: center; }
+        .result-quote blockquote {
+            font-family: var(--font-display); font-weight: 700;
+            font-size: clamp(1.15rem, 2.1vw, 1.55rem); line-height: 1.45; letter-spacing: -0.01em;
+            color: var(--color-text); margin: 0 0 26px;
+        }
+        .result-author { display: inline-flex; align-items: center; gap: 14px; }
+        .result-author img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; box-shadow: var(--shadow-card); }
+        .result-author-text { text-align: left; display: flex; flex-direction: column; }
+        .result-author-name { font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--color-text); line-height: 1.2; }
+        .result-author-role { font-size: 0.85rem; color: var(--color-text-secondary); margin-top: 2px; }
+        .ba-item { position: relative; margin: 0; text-align: center; min-width: 0; }
+        .ba-badge {
+            display: inline-block; margin-bottom: 14px; padding: 6px 16px; border-radius: 999px;
+            font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+        }
+        .ba-badge--before { background: var(--color-bg-card-hover); color: var(--color-text-muted); border: 1px solid var(--color-border); }
+        .ba-badge--after { background: linear-gradient(135deg, #C03050, #F5A623); color: #FFFFFF; box-shadow: 0 4px 14px rgba(192,48,80,0.28); }
+        .ba-frame {
+            border-radius: 18px; overflow: hidden; border: 1px solid var(--color-border);
+            box-shadow: 0 16px 42px rgba(0,0,0,0.14); background: #0b0d10;
+            transition: transform 0.55s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s ease;
+        }
+        .ba-frame img { width: 100%; height: auto; display: block; }
+        .ba-item:hover .ba-frame { transform: translateY(-6px); box-shadow: 0 28px 60px rgba(0,0,0,0.20); }
+        .ba-item figcaption { margin-top: 16px; font-size: 0.92rem; color: var(--color-text-secondary); }
+        .ba-num { font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; color: var(--color-text); }
+        .ba-num--hl {
+            background: linear-gradient(100deg, #C03050 0%, #F5A623 70%);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
+        }
+        .ba-arrow { display: flex; align-items: center; justify-content: center; color: var(--color-accent-dark); }
+        .ba-arrow svg { width: 44px; height: 44px; }
+        @media (max-width: 768px) {
+            .ba-compare { grid-template-columns: 1fr; gap: 16px; max-width: 400px; }
+            .ba-arrow svg { transform: rotate(90deg); width: 36px; height: 36px; }
+        }
 
         /* ============================================
            TESTIMONIALS
            ============================================ */
         .testimonials {
-            padding: var(--section-padding) 0;
-            background: var(--color-bg-elevated);
+            padding: 8px 0 56px;
+            background: #FFFFFF;
             position: relative;
         }
-        .testimonials::before,
-        .testimonials::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--color-border), transparent);
-        }
-        .testimonials::before { top: 0; }
-        .testimonials::after { bottom: 0; }
+        .testimonials::before, .testimonials::after { display: none; }
         .testimonials-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -1208,6 +1496,13 @@
             border: 1px solid var(--color-border);
             border-radius: var(--radius-lg);
             padding: 36px;
+            box-shadow: 0 8px 24px rgba(20,20,20,0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(20,20,20,0.10);
+            border-color: var(--color-accent);
         }
         .testimonial-stars {
             color: var(--color-accent);
@@ -1239,6 +1534,8 @@
             font-size: 0.9rem;
             color: var(--color-accent);
             border: 1px solid var(--color-border);
+            object-fit: cover;
+            flex-shrink: 0;
         }
         .testimonial-name {
             font-weight: 600;
@@ -1253,18 +1550,11 @@
            FAQ
            ============================================ */
         .faq {
-            padding: var(--section-padding) 0;
+            padding: 60px 0 var(--section-padding);
             position: relative;
+            background: #FFFFFF;
         }
-        .faq::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--color-border), transparent);
-        }
+        .faq::before { display: none; }
         .faq-grid {
             max-width: 800px;
             margin: 60px auto 0;
@@ -1399,9 +1689,14 @@
            CONTACT SECTION
            ============================================ */
         .contact {
-            padding: var(--section-padding) 0;
-            background: var(--color-bg-elevated);
+            padding: var(--section-padding) 0 48px;
+            background: linear-gradient(150deg, #EB5E28 0%, #F5A623 100%);
+            position: relative;
         }
+        .contact .section-label { color: #FFFFFF; }
+        .contact .section-label::before { background: rgba(255,255,255,0.85); }
+        .contact .section-title { color: #FFFFFF; }
+        .contact .section-subtitle { color: rgba(255,255,255,0.92); }
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1470,6 +1765,7 @@
             border: 1px solid var(--color-border);
             border-radius: var(--radius-lg);
             padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.06);
         }
         .form-group {
             margin-bottom: 20px;
@@ -1512,6 +1808,12 @@
         .form-submit {
             width: 100%;
             margin-top: 8px;
+            background: #14161B;
+            color: #FFFFFF;
+        }
+        .form-submit:hover {
+            background: #000000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
         }
 
         /* ============================================
@@ -1579,7 +1881,7 @@
            ============================================ */
         @media (max-width: 1024px) {
             .services-grid { grid-template-columns: 1fr; }
-            .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+            .portfolio-card { flex: 0 0 calc((100% - 24px) / 2); }   /* Tablet: 2 pro Reihe */
             .results-grid { grid-template-columns: repeat(2, 1fr); }
             .testimonials-grid { grid-template-columns: 1fr; }
             .process-steps { grid-template-columns: repeat(2, 1fr); }
@@ -1609,6 +1911,9 @@
             /* Mobiles Menü öffnet als heller Overlay -> Links dort dunkel halten, Schließen-X sichtbar */
             .nav:not(.scrolled) .nav-links a { color: var(--color-text); }
             .nav:not(.scrolled) .nav-hamburger.active span { background: #1A1A1A; }
+            .nav-dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none; border: none; background: transparent; padding: 6px 0 0; min-width: 0; text-align: center; }
+            .nav-dropdown-menu a { font-size: 1rem; }
+            .nav-caret { display: none; }
             .nav-hamburger { display: flex; }
             .hero { min-height: auto; padding-top: 140px; padding-bottom: 80px; }
             .hero-actions { flex-direction: column; align-items: flex-start; }
@@ -1723,14 +2028,12 @@
                 display: block;
             }
 
-            /* FIX 8: Referenzen - Button navigation */
+            /* Referenzen: Handy = 1 volles Video, Zähler, Umbruch */
             .portfolio-grid {
-                display: flex !important;
-                grid-template-columns: unset !important;
                 overflow: hidden;
+                scroll-snap-type: none;
                 gap: 12px;
                 padding: 0;
-                position: relative;
             }
             .portfolio-card {
                 flex: 0 0 100%;
@@ -1739,6 +2042,10 @@
             .portfolio-card.active-slide {
                 display: block;
             }
+            .portfolio-slider { padding: 0; }
+            .portfolio-arrow { display: none; }
+            .portfolio-nav { display: flex; }
+            .portfolio-nav .slider-counter { display: inline-block; }
 
             /* Slider navigation buttons */
             .slider-nav {
@@ -1779,6 +2086,148 @@
         @media (max-width: 480px) {
             .results-grid { grid-template-columns: 1fr !important; }
         }
+        /* Neue EMPLOYA Case Study */
+        .case-stats { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 720px; margin: 8px auto 100px; }
+        .case-stat { text-align: center; padding: 0 48px; position: relative; }
+        .case-stat + .case-stat::before {
+            content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+            width: 1px; height: 58px; background: var(--color-border);
+        }
+        .case-stat-icon { display: none; }
+        .case-stat-text { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .case-stat-num {
+            font-family: var(--font-display); font-weight: 800; line-height: 1;
+            font-size: clamp(1.7rem, 3.8vw, 2.5rem); letter-spacing: -0.02em;
+            background-image: linear-gradient(100deg, #C03050 0%, #F5A623 70%);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
+        }
+        .case-stat-label { margin-top: 8px; font-size: 0.9rem; font-weight: 500; color: var(--color-text-secondary); }
+        /* Künstlerische, überlappende Collage: Instagram als großer Held in der Mitte */
+        .case-platforms { display: flex; justify-content: center; align-items: flex-start; width: min(1520px, 94vw); max-width: none; margin-left: calc(50% - min(1520px, 94vw) / 2); }
+        .case-platform { position: relative; flex: 0 0 auto; margin: 0; transition: transform 0.45s cubic-bezier(0.16,1,0.3,1); backface-visibility: hidden; -webkit-backface-visibility: hidden; will-change: transform; }
+        .case-platform.tt { width: 34%; z-index: 2; margin: 58px -4.5% 0 0; transform: rotate(-4.5deg) translateZ(0); }
+        .case-platform.ig { width: 40%; z-index: 3; transform: translateZ(0); }
+        .case-platform.yt { width: 34%; z-index: 1; margin: 58px 0 0 -4.5%; transform: rotate(4.5deg) translateZ(0); }
+        .case-platform img { position: relative; z-index: 1; width: 100%; height: auto; display: block; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+        .case-platform.ig img { filter: drop-shadow(0 24px 50px rgba(0,0,0,0.20)); }
+        .case-platform.tt img, .case-platform.yt img { filter: drop-shadow(0 16px 40px rgba(0,0,0,0.15)); }
+        /* Sanftes Aufrichten beim Hover */
+        .case-platform:hover { transform: rotate(0deg) translateY(-10px) translateZ(0); z-index: 4; }
+        .case-platform figcaption {
+            display: block;
+            position: absolute; left: 50%; top: 0; transform: translate(-50%, -118%);
+            z-index: 2;
+            font-family: var(--font-display); font-weight: 800;
+            font-size: clamp(0.95rem, 1.5vw, 1.55rem); letter-spacing: 0.03em;
+            text-transform: uppercase; white-space: nowrap;
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
+        }
+        .case-platform.tt figcaption { background-image: linear-gradient(90deg, #F5B921 0%, #9B51E0 100%); }
+        .case-platform.ig figcaption { background-image: linear-gradient(90deg, #29C5E6 0%, #F5B921 100%); }
+        .case-platform.yt figcaption { background-image: linear-gradient(90deg, #E8382B 0%, #B01E14 100%); }
+        /* Weicher farbiger Glow hinter jedem Plattform-Cluster */
+        .case-platform::before {
+            content: ''; position: absolute; z-index: 0; pointer-events: none;
+            left: 50%; top: 48%; transform: translate(-50%, -50%);
+            width: 94%; height: 78%; border-radius: 50%;
+            filter: blur(60px); opacity: 0.30;
+        }
+        .case-platform.tt::before { background: radial-gradient(circle at 50% 50%, #9B51E0 0%, #F5B921 92%); }
+        .case-platform.ig::before { background: radial-gradient(circle at 50% 50%, #29C5E6 0%, #5AD1EA 92%); }
+        .case-platform.yt::before { background: radial-gradient(circle at 50% 50%, #E8382B 0%, #B01E14 92%); }
+
+        /* ===== Case Study – Journey: Paid Ads / Funnel / Ergebnis ===== */
+        .case-more { text-align: center; margin-top: 14px; }
+        .case-more-btn {
+            display: inline-flex; flex-direction: column; align-items: center; gap: 12px;
+            background: none; border: none; cursor: pointer; padding: 6px 10px;
+            color: var(--color-accent-dark);
+            font-family: var(--font-body); font-size: 0.74rem; font-weight: 700;
+            letter-spacing: 0.16em; text-transform: uppercase;
+            transition: color 0.3s;
+        }
+        .case-more-btn:hover { color: var(--color-accent); }
+        .case-more-icon {
+            width: 38px; height: 38px; padding: 9px; border-radius: 50%;
+            border: 1.5px solid currentColor;
+            animation: scrollBounce 1.8s ease-in-out infinite;
+            transition: transform 0.35s, background 0.3s;
+        }
+        .case-more-btn:hover .case-more-icon { background: var(--color-accent-glow); }
+        .case-more-btn[aria-expanded="true"] .case-more-icon { animation: none; transform: rotate(180deg); }
+        @media (prefers-reduced-motion: reduce) { .case-more-icon { animation: none; } }
+        .case-journey {
+            position: relative; max-height: 104px; overflow: hidden; margin-top: 84px;
+            transition: max-height 0.65s cubic-bezier(0.16,1,0.3,1), margin-top 0.45s ease;
+        }
+        .case-journey::after {
+            content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 104px;
+            background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #FFFFFF 88%);
+            pointer-events: none; opacity: 1; transition: opacity 0.45s ease;
+        }
+        .case-journey.open { margin-top: 96px; }
+        .case-journey.open::after { opacity: 0; }
+        .case-journey-intro { text-align: center; max-width: 860px; margin: 0 auto 44px; }
+        .case-journey-intro h3 { font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800; line-height: 1.18; letter-spacing: -0.02em; color: var(--color-text); margin-bottom: 18px; }
+        .case-journey-intro p { color: var(--color-text-secondary); font-size: 1rem; line-height: 1.75; max-width: 620px; margin: 0 auto; }
+        /* Gemeinsamer Gradient-Glow hinter den Frames */
+        .case-system-media figure, .case-result figure { position: relative; margin: 0; text-align: center; }
+        .case-system-media figure::before, .case-result figure::before {
+            content: ''; position: absolute; inset: 14px 10px 44px; border-radius: 24px;
+            background: linear-gradient(150deg, #C03050 0%, #F5A623 100%);
+            filter: blur(34px); opacity: 0.28; transform: translateY(16px) scale(1);
+            pointer-events: none; z-index: 0;
+        }
+
+        .case-system-media { counter-reset: sysstep; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 860px; margin: 0 auto 84px; align-items: start; }
+        .case-system-frame { position: relative; z-index: 1; aspect-ratio: 11 / 10; border-radius: 18px; overflow: hidden; border: 1px solid var(--color-border); transform: translateY(-8px); box-shadow: 0 30px 66px rgba(0,0,0,0.20); background: #FFFFFF; }
+        .case-system-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+        .case-system-media figcaption {
+            counter-increment: sysstep; position: relative; z-index: 1;
+            display: inline-flex; align-items: center; gap: 12px; margin-top: 20px;
+            padding: 8px 20px 8px 8px; background: #FFFFFF; border: 1px solid var(--color-border);
+            border-radius: 999px; box-shadow: 0 5px 16px rgba(0,0,0,0.06);
+            font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text);
+        }
+        .case-system-media figcaption::before {
+            content: counter(sysstep, decimal-leading-zero); display: grid; place-items: center;
+            width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #C03050 0%, #F5A623 100%);
+            color: #FFFFFF; font-size: 0.92rem; letter-spacing: 0; box-shadow: 0 4px 10px rgba(192,48,80,0.35);
+        }
+
+        .case-result { text-align: center; margin-bottom: clamp(32px, 4vw, 56px); }
+        .case-result-title { font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800; letter-spacing: -0.02em; margin: 12px auto 12px; max-width: 720px; }
+        .case-result-sub { color: var(--color-text-secondary); max-width: 560px; margin: 0 auto 46px; line-height: 1.7; }
+        .case-result-media { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 860px; margin: 0 auto; align-items: start; }
+        .case-proof-frame { position: relative; z-index: 1; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 18px; border: 1px solid var(--color-border); transform: translateY(-8px); box-shadow: 0 30px 64px rgba(0,0,0,0.19); background: #FFFFFF; }
+        .case-proof-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+        .case-proof-frame img.proof-mid { object-position: center; }
+        .case-proof-frame::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #FFFFFF 100%); pointer-events: none; }
+        .case-result figcaption {
+            position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 12px; margin-top: 18px;
+            padding: 8px 20px 8px 8px; background: #FFFFFF; border: 1px solid var(--color-border);
+            border-radius: 999px; box-shadow: 0 5px 16px rgba(0,0,0,0.06);
+            font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text);
+        }
+        .case-result figcaption::before {
+            content: '✓'; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%;
+            background: linear-gradient(135deg, #C03050 0%, #F5A623 100%); color: #FFFFFF;
+            font-size: 1rem; box-shadow: 0 4px 10px rgba(192,48,80,0.35);
+        }
+
+        @media (max-width: 768px) {
+            .case-platforms { flex-direction: column; align-items: center; width: auto; max-width: 340px; margin: 0 auto; gap: 40px; }
+            .case-platform.tt, .case-platform.ig, .case-platform.yt { width: 100%; margin: 0; transform: none; }
+            .case-platform:hover { transform: translateY(-10px); }
+            .case-stats { flex-direction: column; gap: 26px; max-width: 340px; }
+            .case-stats .case-stat { padding: 0; }
+            .case-stats .case-stat + .case-stat::before { display: none; }
+            .case-more { margin-top: 44px; }
+            .case-system-media { grid-template-columns: 1fr; max-width: 360px; gap: 34px; margin-bottom: 56px; }
+            .case-result-media { grid-template-columns: 1fr; max-width: 400px; }
+        }
     </style>
 </head>
 <body>
@@ -1786,16 +2235,15 @@
     <!-- ========== NAVIGATION ========== -->
     <nav class="nav" id="nav">
         <div class="container nav-inner">
-            <a href="#" class="nav-logo">
+            <a href="#hero" class="nav-logo">
                 <img src="images/logo.png" alt="Wendepunkt Marketing Logo">
                 <div class="nav-logo-text">Wendepunkt<span>.</span></div>
             </a>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#about">Über uns</a></li>
-                <li><a href="#leistungen">Leistungen</a></li>
-                <li><a href="#ablauf">Ablauf</a></li>
-                <li><a href="#referenzen">Referenzen</a></li>
+                <li><a href="#case-employa">Fallstudie</a></li>
+                <li><a href="#ergebnisse">Ergebnisse</a></li>
                 <li><a href="#faq">FAQ</a></li>
+                <li><a href="leistungen.html">Leistungen</a></li>
                 <li><a href="blog.html">Blog</a></li>
                 <li><a href="#kontakt" class="nav-cta">Erstgespräch sichern</a></li>
             </ul>
@@ -1827,7 +2275,7 @@
             </div>
             <h1>
                 <span class="hero-line-1">Ihre Social Media Agentur</span><br>
-                <span class="hero-line-2">für <span class="highlight">Video & Content.</span></span>
+                <span class="hero-line-2">für <span class="highlight">Video & Content</span></span>
             </h1>
             <p class="hero-sub">
                 Wendepunkt Marketing aus Hamburg – deutschlandweit. Wir produzieren Content, 
@@ -1839,389 +2287,303 @@
                     Kostenloses Erstgespräch
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
-                <a href="#referenzen" class="btn-secondary">Referenzen ansehen</a>
+                <a href="#ergebnisse" class="btn-secondary">Ergebnisse ansehen</a>
             </div>
         </div>
+        <a href="#plattformen" class="hero-scroll" aria-label="Nach unten scrollen">
+            Scroll
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+        </a>
     </header>
 
     <main>
 
     <!-- ========== TRUST BAR ========== -->
-    <section class="trust-bar">
+    <section class="trust-bar" id="plattformen">
         <div class="container">
-            <div class="trust-bar-label">Aktiv auf allen relevanten Plattformen</div>
-            <div class="trust-bar-logos">
-                <div class="platform">
-                    <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                    Instagram
+            <div class="trust-stats">
+                <div class="trust-stat">
+                    <span class="trust-stat-num" data-count="30" data-suffix="+">30+</span>
+                    <span class="trust-stat-label">Kunden</span>
                 </div>
-                <div class="platform">
-                    <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V8.75a8.18 8.18 0 004.76 1.52V6.82a4.83 4.83 0 01-1-.13z"/></svg>
-                    TikTok
+                <div class="trust-stat-sep"></div>
+                <div class="trust-stat">
+                    <span class="trust-stat-num" data-count="50000000" data-suffix="+">50.000.000+</span>
+                    <span class="trust-stat-label">Aufrufe erzielt</span>
                 </div>
-                <div class="platform">
-                    <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                    YouTube
-                </div>
-                <div class="platform">
-                    <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                    LinkedIn
-                </div>
-                <div class="platform">
-                    <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                    Facebook
+                <div class="trust-stat-sep"></div>
+                <div class="trust-stat">
+                    <span class="trust-stat-num" data-count="500" data-suffix="+">500+</span>
+                    <span class="trust-stat-label">Produzierte Videos</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ========== ABOUT ========== -->
-    <section class="about" id="about">
-        <div class="container">
-            <div class="about-grid">
-                <div class="about-text reveal reveal-delay-1">
-                    <div class="section-label">Über mich</div>
-                    <h2 class="section-title">Content-Produktion, die Ergebnisse liefert.</h2>
-                </div>
-                <div class="about-video-wrap reveal">
-                    <div class="about-image">
-                        <video src="videos/vorstellung.mp4" controls playsinline preload="metadata" poster="images/thumb-vorstellung.png" aria-label="Vorstellungsvideo von Wendepunkt Marketing – Social Media Agentur Hamburg" style="width:100%;height:100%;object-fit:cover;"></video>
-                    </div>
-                </div>
-                <div class="about-paragraphs reveal reveal-delay-1">
-                    <p>
-                        Als Gründer von Wendepunkt Marketing begleite ich Unternehmen dabei, auf Social Media sichtbar zu werden – mit echtem Content aus dem Alltag statt austauschbarem Stock-Marketing.
-                    </p>
-                    <p>
-                        Dabei entstehen Videos, die Aufmerksamkeit erzeugen, Vertrauen aufbauen und gezielt Kunden sowie Mitarbeiter gewinnen. Vor jedem Dreh entwickle ich maßgeschneiderte Ideen und Skripte auf Basis einer fundierten Analyse und Ihrer individuellen Ziele.
-                    </p>
-                    <p>
-                        Aktuell produziere ich unter anderem ein langfristiges YouTube-Format, das Unternehmer im Alltag begleitet und ihre Geschichte authentisch erzählt.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========== STATS STRIP ========== -->
-    <section class="stats-strip">
-        <div class="stats-strip-inner">
-            <div class="stats-strip-item">
-                <span class="stats-strip-number">30+</span>
-                <span class="stats-strip-label">Kunden</span>
-            </div>
-            <div class="stats-strip-divider"></div>
-            <div class="stats-strip-item">
-                <span class="stats-strip-number">50.000.000+</span>
-                <span class="stats-strip-label">Erreichte Zuschauer</span>
-            </div>
-            <div class="stats-strip-divider"></div>
-            <div class="stats-strip-item">
-                <span class="stats-strip-number">500+</span>
-                <span class="stats-strip-label">Produzierte Videos</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========== SERVICES ========== -->
-    <section class="services" id="leistungen">
-        <div class="container">
-            <div class="reveal">
-                <div class="section-label">Leistungen</div>
-                <h2 class="section-title">Von der Idee bis<br>zum fertigen Video.</h2>
-                <p class="section-subtitle">Social Media Marketing aus einer Hand – Konzept, Dreh, Editing & Account Management.</p>
-            </div>
-            <div class="services-grid">
-                <div class="service-card reveal reveal-delay-1">
-                    <div class="service-icon">
-                        <svg viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </div>
-                    <h3>Konzept & Ideenentwicklung</h3>
-                    <p>Individuelle Content-Strategien, die zu Ihrem Unternehmen passen. Wir kombinieren aktuelle Trends mit datenbasierten Ansätzen und entwickeln Skripte, die Emotionen wecken und auf Reichweite ausgelegt sind – von der ersten Hook bis zur letzten Szene.</p>
-                </div>
-                <div class="service-card reveal reveal-delay-2">
-                    <div class="service-icon">
-                        <svg viewBox="0 0 24 24"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </div>
-                    <h3>Drehtag vor Ort</h3>
-                    <p>Wir kommen zu Ihnen und begleiten Ihr Unternehmen im Alltag. Ein einziger Drehtag pro Monat liefert genug Content für 1–2 Monate – so können Sie sich voll auf Ihr Kerngeschäft konzentrieren, während wir für Ihre Sichtbarkeit sorgen.</p>
-                </div>
-                <div class="service-card reveal reveal-delay-3">
-                    <div class="service-icon">
-                        <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </div>
-                    <h3>Professionelles Video-Editing</h3>
-                    <p>Vom Schnitt über Farbkorrektur und Texteinblendungen bis zu Sounddesign und Formatoptimierung für alle Plattformen. Unser klarer, moderner Stil hebt sich ab und holt das Maximum aus jedem Clip heraus.</p>
-                </div>
-                <div class="service-card reveal reveal-delay-4">
-                    <div class="service-icon">
-                        <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </div>
-                    <h3>Posting & Account Management</h3>
-                    <p>Vom Upload über Captions und Hashtags bis zur Performance-Auswertung. Wir sorgen mit klaren Strategien und kontinuierlicher Optimierung dafür, dass Ihr Account nachhaltig wächst – oder Sie übernehmen die fertigen Videos selbst.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- ========== PORTFOLIO ========== -->
-    <section class="portfolio" id="referenzen">
-        <div class="container">
-            <div class="reveal">
-                <div class="section-label">Referenzen</div>
-                <h2 class="section-title">Referenzen & Cases.</h2>
-                <p class="section-subtitle">Über 50 Millionen Aufrufe erzielt – echte Kundenprojekte, echte Ergebnisse.</p>
-            </div>
-            <div class="portfolio-grid">
-                <!-- B.U.N.T. -->
-                <div class="portfolio-card reveal reveal-delay-1">
-                    <div class="portfolio-card-image">
-                        <video src="videos/bunt.mp4" controls playsinline preload="metadata" poster="images/thumb-bunt.png" aria-label="B.U.N.T. Vorstellungsvideo – Tiergestützte Psychomotorik"></video>
-                    </div>
-                    <div class="portfolio-card-body">
-                        <div class="portfolio-card-tag">Instagram & Webseite</div>
-                        <h3>B.U.N.T. – Tiergestützte Psychomotorik</h3>
-                        <p>Vorstellungsvideo für <a href="https://psychomotorik-tgi.de" target="_blank" rel="noopener" style="color:var(--color-accent)">B.U.N.T.</a> – tiergestützte Therapie und Alltagsbegleitung authentisch in Szene gesetzt.</p>
-                        <div class="portfolio-card-stats">
-                            <div class="portfolio-card-stat"><strong>Vorstellungsvideo</strong></div>
-                            <div class="portfolio-card-stat"><strong>Instagram</strong></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Easter Markets Praha -->
-                <div class="portfolio-card reveal reveal-delay-2">
-                    <div class="portfolio-card-image">
-                        <video src="videos/eastermarket.mp4" controls playsinline preload="metadata" poster="images/thumb-eastermarket.png" aria-label="Easter Markets Praha – Event Video-Content"></video>
-                    </div>
-                    <div class="portfolio-card-body">
-                        <div class="portfolio-card-tag">Event-Content</div>
-                        <h3>Prager Ostermärkte – Kultur & Atmosphäre</h3>
-                        <p>Stimmungsvoller Video-Content für die Prager Ostermärkte – Atmosphäre, Kultur und Erlebnis in einem Kurzfilm eingefangen.</p>
-                        <div class="portfolio-card-stats">
-                            <div class="portfolio-card-stat"><strong>Event-Video</strong></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Fisch Schloh -->
-                <div class="portfolio-card reveal reveal-delay-3">
-                    <div class="portfolio-card-image">
-                        <video src="videos/schloh.mp4" controls playsinline preload="metadata" poster="images/thumb-schloh.png" aria-label="Fisch Schloh Video – Hamburger Traditions-Fischhändler"></video>
-                    </div>
-                    <div class="portfolio-card-body">
-                        <div class="portfolio-card-tag">Multi-Plattform</div>
-                        <h3>Fisch Schloh – Frischer Fisch seit 1949</h3>
-                        <p>Authentischer Content für <a href="https://www.fisch-schloh.de" target="_blank" rel="noopener" style="color:var(--color-accent)">Fisch Schloh</a> – Hamburger Traditions-Fischhändler auf den Wochenmärkten.</p>
-                        <div class="portfolio-card-stats">
-                            <div class="portfolio-card-stat"><strong>Gastro-Content</strong></div>
-                            <div class="portfolio-card-stat"><strong>Multi-Plattform</strong></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Matari Solar -->
-                <div class="portfolio-card reveal reveal-delay-1">
-                    <div class="portfolio-card-image">
-                        <video src="videos/matari.mp4" controls playsinline preload="metadata" poster="images/thumb-matari.png" aria-label="Matari Solar Imagefilm – Photovoltaik Unternehmen"></video>
-                    </div>
-                    <div class="portfolio-card-body">
-                        <div class="portfolio-card-tag">Multi-Plattform</div>
-                        <h3>Matari Solar – Solarenergie für Norddeutschland</h3>
-                        <p>Imagefilm für <a href="https://www.matari.de" target="_blank" rel="noopener" style="color:var(--color-accent)">Matari Solar</a> – regionaler Meisterbetrieb für Photovoltaik in Hamburg, Hannover & Rostock.</p>
-                        <div class="portfolio-card-stats">
-                            <div class="portfolio-card-stat"><strong>Imagefilm</strong></div>
-                            <div class="portfolio-card-stat"><strong>Multi-Plattform</strong></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Citizen the Artist -->
-                <div class="portfolio-card reveal reveal-delay-2">
-                    <div class="portfolio-card-image">
-                        <video src="videos/citizen.mp4" controls playsinline preload="metadata" poster="images/thumb-citizen.png" aria-label="Citizen the Artist – Time Trend Teilnahme"></video>
-                    </div>
-                    <div class="portfolio-card-body">
-                        <div class="portfolio-card-tag">Musik & Künstler</div>
-                        <h3>Citizen the Artist – Time Trend</h3>
-                        <p>Kreative Video-Teilnahme am Time Trend für den Künstler Citizen the Artist – moderner Content mit Wiedererkennungswert.</p>
-                        <div class="portfolio-card-stats">
-                            <div class="portfolio-card-stat"><strong>Trend-Content</strong></div>
-                            <div class="portfolio-card-stat"><strong>Social Media</strong></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- EMPLOYA -->
-                <div class="portfolio-card reveal reveal-delay-3">
-                    <div class="portfolio-card-image">
-                        <video src="videos/employa-ref.mp4" controls playsinline preload="metadata" poster="images/thumb-employa-ref.png" aria-label="EMPLOYA Recruiting-Video"></video>
-                    </div>
-                    <div class="portfolio-card-body">
-                        <div class="portfolio-card-tag">Multi-Plattform</div>
-                        <h3>EMPLOYA – Recruiting-Content</h3>
-                        <p>Monatliche Video-Produktion für die Pflege-Zeitarbeitsfirma <a href="https://employa.org" target="_blank" rel="noopener" style="color:var(--color-accent)">EMPLOYA</a> – authentisch, emotional und auf den Punkt.</p>
-                        <div class="portfolio-card-stats">
-                            <div class="portfolio-card-stat"><strong>Dauerauftrag</strong></div>
-                            <div class="portfolio-card-stat"><strong>Multi-Plattform</strong></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="slider-nav" id="portfolioNav" style="display:none;">
-                <button class="slider-btn" onclick="slidePortfolio(-1)">←</button>
-                <span class="slider-counter" id="portfolioCounter">1 / 6</span>
-                <button class="slider-btn" onclick="slidePortfolio(1)">→</button>
+    <!-- ========== COLLAGE ========== -->
+    <section class="collage-section" id="einblicke">
+        <div class="collage" aria-label="Bildergalerie unserer Projekte">
+            <div class="collage-track">
+                <!-- Set 1 -->
+                <div class="collage-item"><img src="images/collage/collage-01.jpg" alt="Elegant gedeckter Tisch" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-02.jpg" alt="Kranarbeiten auf der Baustelle" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-03.jpg" alt="Solaranlage aus der Drohnenperspektive" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-04.jpg" alt="Kind mit Huhn – B.U.N.T." loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-05.jpg" alt="Oldtimer" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-06.jpg" alt="Frischer Fisch bei Fisch Schloh" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-07.jpg" alt="Orango Saft-Automat" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-08.jpg" alt="Training im Fitnessstudio" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-09.jpg" alt="Fisch aus der Fritteuse" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-10.jpg" alt="Garten- & Landschaftsbau" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-11.jpg" alt="Kaffee-Content" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-12.jpg" alt="Teamgeist – Hände im Kreis" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-13.jpg" alt="Schloss in Štramberk" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-14.jpg" alt="Elektriker bei der Arbeit" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-15.jpg" alt="Fisch auf Eis" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-16.jpg" alt="Spanferkel über dem Feuer" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-17.jpg" alt="Solar-Team aus der Drohnenperspektive" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-18.jpg" alt="Fitness – Mitarbeiterin" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-19.jpg" alt="Gepflegter Garten" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-20.jpg" alt="Elektroarbeiten in Nahaufnahme" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-21.jpg" alt="Logo – Goldene Biene Kaffee" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-22.jpg" alt="Arbeiten am Stromkasten" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-23.jpg" alt="Frisches Fischbrötchen" loading="lazy"></div>
+                <!-- Set 2 (Duplikat für nahtlose Endlos-Schleife) -->
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-01.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-02.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-03.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-04.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-05.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-06.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-07.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-08.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-09.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-10.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-11.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-12.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-13.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-14.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-15.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-16.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-17.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-18.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-19.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-20.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-21.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-22.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-23.jpg" alt="" loading="lazy"></div>
             </div>
         </div>
     </section>
 
     <!-- ========== CASE STUDY: EMPLOYA ========== -->
     <section class="case-study" id="case-employa">
+        <div class="case-watermark" aria-hidden="true"><span>EMPLOYA</span></div>
         <div class="container">
             <div class="case-study-header reveal">
-                <div class="case-study-client">★ Fallbeispiel</div>
-                <div class="section-label" style="justify-content:center;">Case Study</div>
-                <h2 class="section-title">EMPLOYA GmbH<br>Ein Fallbeispiel.</h2>
-                <p class="case-study-intro">Von 0 auf Millionen-Reichweite. 8 Videos pro Monat, 4 Plattformen, echte Bewerbungen – ein Dauerauftrag.</p>
+                <h2 class="case-study-title">Fallstudie</h2>
+                <p class="case-study-subhead">Von 0 auf <span class="grad">Millionen-Reichweite.</span></p>
+                <div class="case-toprow">
+                    <span class="case-cat">Organisch</span>
+                    <span class="case-cat">Paid Ads</span>
+                    <span class="case-cat">Social Recruiting</span>
+                </div>
+                <p class="case-study-intro"><span class="case-lead"><b class="emp-green">Kundenprojekt EMPLOYA GmbH</b> · Zeitarbeit für Pflege, Medizin &amp; Pädagogik.</span> Der Wettbewerb um examinierte Pflegefachkräfte ist enorm – klassische Stellenanzeigen reichen längst nicht mehr. Für EMPLOYA haben wir Social Media von Grund auf aufgebaut: ein System, das planbar Reichweite, Bewerbungen und neue Mitarbeiter bringt.</p>
             </div>
 
-            <!-- Herausforderung & Lösung -->
-            <div class="case-challenge-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:40px;">
-                <div class="case-img" style="padding:28px;">
-                    <div style="font-size:0.72rem; font-weight:600; text-transform:uppercase; letter-spacing:0.12em; color:var(--color-accent); margin-bottom:10px;">Die Herausforderung</div>
-                    <div style="font-family:var(--font-display); font-size:1.1rem; font-weight:700; margin-bottom:10px;">Fachkräftemangel in der Pflege</div>
-                    <p style="color:var(--color-text-secondary); font-size:0.88rem; line-height:1.7;">EMPLOYA ist eine Zeitarbeitsfirma im Bereich Pflege, Medizin und Pädagogik. Klassische Recruiting-Methoden reichten nicht mehr aus – der Wettbewerb um Pflegekräfte ist enorm. Social Media war kaum bespielt, die Reichweite minimal.</p>
+            <div class="case-study-eyebrow reveal" style="justify-content:center; display:flex; margin: 0 auto 24px;">Das Ergebnis</div>
+
+            <div class="case-stats reveal">
+                <div class="case-stat">
+                    <div class="case-stat-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <div class="case-stat-text">
+                        <span class="case-stat-num">8.000+</span>
+                        <span class="case-stat-label">Follower gewonnen</span>
+                    </div>
                 </div>
-                <div class="case-img" style="padding:28px;">
-                    <div style="font-size:0.72rem; font-weight:600; text-transform:uppercase; letter-spacing:0.12em; color:var(--color-accent); margin-bottom:10px;">Unsere Lösung</div>
-                    <div style="font-family:var(--font-display); font-size:1.1rem; font-weight:700; margin-bottom:10px;">8 Videos pro Monat, 4 Plattformen</div>
-                    <p style="color:var(--color-text-secondary); font-size:0.88rem; line-height:1.7;">→ Monatlich 8 Videos: authentischer Pflege-Alltag<br>→ Multi-Plattform: Instagram, TikTok, YouTube & Facebook<br>→ Emotionales Storytelling statt Stellenanzeigen<br>→ POV-Content der die Zielgruppe direkt anspricht<br>→ Dauerauftrag mit laufender Optimierung</p>
+                <div class="case-stat">
+                    <div class="case-stat-icon">
+                        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </div>
+                    <div class="case-stat-text">
+                        <span class="case-stat-num">10.000.000+</span>
+                        <span class="case-stat-label">Views generiert</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Row 1: Instagram Vorher vs Nachher - kompakt -->
-            <div class="case-row-title reveal">Instagram: <span>Vorher vs. Nachher</span></div>
-            <div class="case-vorher-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:40px; max-width:700px; margin-left:auto; margin-right:auto;" class="reveal">
-                <div class="case-img">
-                    <img src="images/case/1-insta-vorher.png" alt="Instagram vorher – 6.751 Aufrufe" loading="lazy" style="width:100%;height:auto;display:block;">
-                    <div class="case-img-label">Vorher: 6.751 Aufrufe / 30 Tage</div>
+            <div class="case-platforms reveal">
+                <figure class="case-platform tt">
+                    <img src="images/employa-tiktok.png" alt="EMPLOYA TikTok Views – bis zu 620K Aufrufe pro Video" loading="lazy">
+                    <figcaption>TikTok</figcaption>
+                </figure>
+                <figure class="case-platform ig">
+                    <img src="images/employa-instagram.png" alt="EMPLOYA Instagram Views – bis zu 1 Mio. Aufrufe pro Video" loading="lazy">
+                    <figcaption>Instagram</figcaption>
+                </figure>
+                <figure class="case-platform yt">
+                    <img src="images/employa-youtube.png" alt="EMPLOYA YouTube Aufrufe – bis zu 364K pro Video" loading="lazy">
+                    <figcaption>YouTube</figcaption>
+                </figure>
+            </div>
+
+            <div class="case-journey" id="caseJourney">
+                <div class="case-journey-intro">
+                    <h3>EMPLOYA sucht qualifizierte Mitarbeiter</h3>
+                    <p>Organische Reichweite ist der Anfang – <strong>zusätzlich</strong> schalten wir gezielte Meta Ads und haben eine eigene Bewerbungsseite gebaut. So wird aus Aufmerksamkeit ein planbarer, messbarer Bewerbungs-Funnel.</p>
                 </div>
-                <div class="case-img">
-                    <img src="images/case/2-insta-nachher.jpg" alt="Instagram nachher – 1,1 Mio Aufrufe" loading="lazy" style="width:100%;height:auto;display:block;">
-                    <div class="case-img-label highlight">Nachher: 1,1 Mio. Aufrufe / 30 Tage</div>
+
+                <div class="case-system-media">
+                    <figure>
+                        <div class="case-system-frame"><img src="images/case-ads.png" alt="Gezielte Meta-Anzeigen von EMPLOYA" loading="lazy"></div>
+                        <figcaption>Gezielte Meta Ads</figcaption>
+                    </figure>
+                    <figure>
+                        <div class="case-system-frame"><img src="images/case-funnel.png" alt="Speziell angefertigte Bewerbungsseite von EMPLOYA" loading="lazy"></div>
+                        <figcaption>Eigene Bewerbungsseite</figcaption>
+                    </figure>
+                </div>
+
+                <div class="case-result">
+                    <h4 class="case-result-title">Planbar mehr Bewerbungen und Anfragen</h4>
+                    <p class="case-result-sub">Ein Recruiting-System, das messbar funktioniert – statt auf Zufall zu hoffen.</p>
+                    <div class="case-result-media">
+                        <figure class="case-proof">
+                            <div class="case-proof-frame">
+                                <img src="images/case-bewerbungen.png" alt="Laufend neue Bewerbungen über den Funnel" loading="lazy">
+                            </div>
+                            <figcaption>Neue Bewerbungen</figcaption>
+                        </figure>
+                        <figure class="case-proof">
+                            <div class="case-proof-frame">
+                                <img class="proof-mid" src="images/case-nachrichten.png" alt="Nachrichten und Anfragen von Interessenten" loading="lazy">
+                            </div>
+                            <figcaption>Anfragen &amp; Nachrichten</figcaption>
+                        </figure>
+                    </div>
                 </div>
             </div>
 
-            <!-- Row 2: Ergebnisse - Instagram Feed zentral, TikTok + YouTube klein drum herum -->
-            <div class="case-row-title reveal"><span>Ergebnisse</span> auf allen Plattformen</div>
-            <div class="case-ergebnisse-grid" style="display:grid; grid-template-columns:120px 1fr 120px; gap:10px; align-items:center; max-width:600px; margin:0 auto;" class="reveal">
-                <!-- Links: 2 kleine Karten -->
-                <div class="case-small-cards" style="display:flex; flex-direction:column; gap:8px;">
-                    <div class="case-img">
-                        <img src="images/case/6-3-50k.png" alt="TikTok 50K Views" loading="lazy" style="width:100%;height:auto;display:block;">
-                        <div class="case-img-label">TikTok · 50.9K</div>
-                    </div>
-                    <div class="case-img">
-                        <img src="images/case/6-2-256k.jpg" alt="TikTok 256K Views" loading="lazy" style="width:100%;height:auto;display:block;">
-                        <div class="case-img-label">TikTok · 256K</div>
-                    </div>
-                </div>
-                <!-- Mitte: Instagram Feed -->
-                <div class="case-img" style="border-color:var(--color-accent); box-shadow:0 4px 24px rgba(245,166,35,0.1);">
-                    <img src="images/case/5-insta-feed.png" alt="Instagram Feed mit hohen View-Zahlen" loading="lazy" style="width:100%;height:auto;display:block;">
-                    <div class="case-img-label highlight">Instagram · bis zu 776K Views pro Reel</div>
-                </div>
-                <!-- Rechts: 2 kleine Karten -->
-                <div class="case-small-cards" style="display:flex; flex-direction:column; gap:8px;">
-                    <div class="case-img" style="border-color:var(--color-accent);">
-                        <img src="images/case/6-1-520k.png" alt="TikTok 520K Views" loading="lazy" style="width:100%;height:auto;display:block;">
-                        <div class="case-img-label highlight">TikTok · 520K</div>
-                    </div>
-                    <div class="case-img">
-                        <img src="images/case/4-youtube.jpg" alt="YouTube 335K Views" loading="lazy" style="width:100%;height:auto;display:block;">
-                        <div class="case-img-label">YouTube · 335K</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Mobile only: Text-Stats unter dem Instagram-Bild -->
-            <div class="case-mobile-stats" style="display:none; text-align:center; margin-top:16px; font-size:0.88rem; color:var(--color-text-secondary); line-height:1.8;">
-                <p style="margin-bottom:6px;">Dazu: über <strong style="color:var(--color-accent);">800.000 Aufrufe auf YouTube</strong> in nur 30 Tagen.</p>
-                <p>Und auf TikTok? Über <strong style="color:var(--color-accent);">700.000 Aufrufe</strong> im selben Zeitraum.</p>
+            <div class="case-more">
+                <button class="case-more-btn" type="button" aria-expanded="false" aria-controls="caseJourney">
+                    <span class="case-more-label">Ganze Case Study anschauen</span>
+                    <svg class="case-more-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
             </div>
         </div>
     </section>
+
+
+
+
+    <!-- ========== COLLAGE ========== -->
+    <section class="collage-section" id="einblicke-2">
+        <div class="collage" aria-label="Bildergalerie unserer Projekte">
+            <div class="collage-track">
+                <!-- Set 1 -->
+                <div class="collage-item"><img src="images/collage/collage-01.jpg" alt="Elegant gedeckter Tisch" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-02.jpg" alt="Kranarbeiten auf der Baustelle" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-03.jpg" alt="Solaranlage aus der Drohnenperspektive" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-04.jpg" alt="Kind mit Huhn – B.U.N.T." loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-05.jpg" alt="Oldtimer" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-06.jpg" alt="Frischer Fisch bei Fisch Schloh" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-07.jpg" alt="Orango Saft-Automat" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-08.jpg" alt="Training im Fitnessstudio" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-09.jpg" alt="Fisch aus der Fritteuse" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-10.jpg" alt="Garten- & Landschaftsbau" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-11.jpg" alt="Kaffee-Content" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-12.jpg" alt="Teamgeist – Hände im Kreis" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-13.jpg" alt="Schloss in Štramberk" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-14.jpg" alt="Elektriker bei der Arbeit" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-15.jpg" alt="Fisch auf Eis" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-16.jpg" alt="Spanferkel über dem Feuer" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-17.jpg" alt="Solar-Team aus der Drohnenperspektive" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-18.jpg" alt="Fitness – Mitarbeiterin" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-19.jpg" alt="Gepflegter Garten" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-20.jpg" alt="Elektroarbeiten in Nahaufnahme" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-21.jpg" alt="Logo – Goldene Biene Kaffee" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-22.jpg" alt="Arbeiten am Stromkasten" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-23.jpg" alt="Frisches Fischbrötchen" loading="lazy"></div>
+                <!-- Set 2 (Duplikat für nahtlose Endlos-Schleife) -->
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-01.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-02.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-03.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-04.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-05.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-06.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-07.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-08.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-09.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-10.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-11.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-12.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-13.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-14.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-15.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-16.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-17.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-18.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-19.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-20.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-21.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-22.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-23.jpg" alt="" loading="lazy"></div>
+            </div>
+        </div>
+    </section>
+
+
+
 
     <!-- ========== RESULTS ========== -->
     <section class="results" id="ergebnisse">
         <div class="container">
             <div class="reveal" style="text-align:center;">
-                <div class="section-label" style="justify-content:center;">Ergebnisse</div>
-                <h2 class="section-title">Ergebnisse, die sprechen.</h2>
+                <h2 class="section-title">Ergebnisse, die sprechen</h2>
             </div>
-            <div class="results-grid">
-                <div class="result-card reveal reveal-delay-1">
-                    <div class="result-number">50.000.000+</div>
-                    <div class="result-label">Erreichte Zuschauer</div>
+            <div class="ba-compare reveal">
+                <figure class="ba-item">
+                    <span class="ba-badge ba-badge--before">Vorher</span>
+                    <div class="ba-frame">
+                        <img src="images/employa-insta-vorher.png" alt="EMPLOYA Instagram Professional-Dashboard – 6.751 Aufrufe in 30 Tagen (vorher)" loading="lazy">
+                    </div>
+                    <figcaption><span class="ba-num">6.751</span> Aufrufe · 30 Tage</figcaption>
+                </figure>
+                <div class="ba-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
                 </div>
-                <div class="result-card reveal reveal-delay-2">
-                    <div class="result-number">30+</div>
-                    <div class="result-label">Zufriedene Kunden</div>
-                </div>
-                <div class="result-card reveal reveal-delay-3">
-                    <div class="result-number">500+</div>
-                    <div class="result-label">Produzierte Videos</div>
-                </div>
-                <div class="result-card reveal reveal-delay-4">
-                    <div class="result-number">5+</div>
-                    <div class="result-label">Plattformen bespielt</div>
-                </div>
+                <figure class="ba-item">
+                    <span class="ba-badge ba-badge--after">Nachher</span>
+                    <div class="ba-frame">
+                        <img src="images/employa-insta-nachher.png" alt="EMPLOYA Instagram Professional-Dashboard – 1,3 Mio. Aufrufe in 30 Tagen (nachher)" loading="lazy">
+                    </div>
+                    <figcaption><span class="ba-num ba-num--hl">1,3 Mio.</span> Aufrufe · 30 Tage</figcaption>
+                </figure>
             </div>
-        </div>
-    </section>
-
-    <!-- ========== PROCESS ========== -->
-    <section class="process" id="ablauf">
-        <div class="container">
-            <div class="reveal" style="text-align:center;">
-                <div class="section-label" style="justify-content:center;">Ablauf</div>
-                <h2 class="section-title">So arbeiten wir zusammen.</h2>
-                <p class="section-subtitle" style="margin:0 auto;">In 4 Schritten zu Social Media Content, der wirkt.</p>
-            </div>
-            <div class="process-steps">
-                <div class="process-step reveal reveal-delay-1">
-                    <div class="process-step-number">01</div>
-                    <h3>Erstgespräch</h3>
-                    <p>Wir lernen Ihr Unternehmen kennen, verstehen Ihre Ziele und entwickeln eine erste Strategie.</p>
-                </div>
-                <div class="process-step reveal reveal-delay-2">
-                    <div class="process-step-number">02</div>
-                    <h3>Konzeption</h3>
-                    <p>Auf Basis der Analyse entstehen maßgeschneiderte Content-Ideen, Skripte und ein klarer Drehplan.</p>
-                </div>
-                <div class="process-step reveal reveal-delay-3">
-                    <div class="process-step-number">03</div>
-                    <h3>Produktion</h3>
-                    <p>Drehtag vor Ort, professionelles Editing und Optimierung für alle relevanten Plattformen.</p>
-                </div>
-                <div class="process-step reveal reveal-delay-4">
-                    <div class="process-step-number">04</div>
-                    <h3>Veröffentlichung</h3>
-                    <p>Posting, Performance-Tracking und kontinuierliche Optimierung für nachhaltiges Wachstum.</p>
-                </div>
-            </div>
+            <figure class="result-quote reveal">
+                <blockquote>„Wendepunkt hat unseren Social-Media-Auftritt komplett gedreht: In nur zwei Monaten von ein paar Tausend auf über eine Million Aufrufe im Monat – und endlich planbar Bewerbungen von qualifizierten Fachkräften. Genau das, was wir gebraucht haben."</blockquote>
+                <figcaption class="result-author">
+                    <img src="images/christian-zapatka.jpg" alt="Christian Z., Geschäftsführer von EMPLOYA">
+                    <span class="result-author-text">
+                        <span class="result-author-name">Christian Z.</span>
+                        <span class="result-author-role">Geschäftsführer · EMPLOYA</span>
+                    </span>
+                </figcaption>
+            </figure>
         </div>
     </section>
 
     <!-- ========== TESTIMONIALS ========== -->
     <section class="testimonials" id="bewertungen">
         <div class="container">
-            <div class="reveal" style="text-align:center;">
-                <div class="section-label" style="justify-content:center;">Kundenstimmen</div>
-                <h2 class="section-title">Was unsere Kunden sagen.</h2>
-            </div>
             <div class="testimonials-grid">
                 <div class="testimonial-card reveal reveal-delay-1">
                     <div class="testimonial-stars">★★★★★</div>
-                    <div class="testimonial-text">„Wendepunkt Marketing hat unsere tiergestützte Arbeit wunderschön und authentisch in Szene gesetzt. Die Videos vermitteln genau die Wärme und Werte, für die wir stehen und kommen auch bei unseren Kunden hervorragend an. Besonders überzeugt hat uns die professionelle, kreative und gleichzeitig unkomplizierte Zusammenarbeit. Wir sind sehr zufrieden und arbeiten regelmäßig mit Wendepunkt Marketing zusammen."</div>
+                    <div class="testimonial-text">„Wendepunkt hat unsere tiergestützte Arbeit wunderschön und authentisch in Szene gesetzt. Professionell, kreativ und unkompliziert – wir sind sehr zufrieden und arbeiten regelmäßig zusammen."</div>
                     <div class="testimonial-author">
-                        <div class="testimonial-avatar" style="background:#2D8B4E; color:#fff;">SG</div>
+                        <img class="testimonial-avatar" src="images/svenja-gruen.jpg" alt="Svenja Grün, Gründerin & Geschäftsführerin von B.U.N.T." loading="lazy">
                         <div>
                             <div class="testimonial-name">Svenja Grün</div>
                             <div class="testimonial-role">Gründerin & Geschäftsführerin, B.U.N.T.</div>
@@ -2230,9 +2592,9 @@
                 </div>
                 <div class="testimonial-card reveal reveal-delay-2">
                     <div class="testimonial-stars">★★★★★</div>
-                    <div class="testimonial-text">„Professionell, kreativ und zuverlässig. Ferris versteht es, komplexe Themen verständlich und ansprechend in Videos zu verpacken. Die Zusammenarbeit läuft reibungslos und die Ergebnisse übertreffen unsere Erwartungen. Aktuell arbeiten wir gemeinsam an einer YouTube-Serie, die er für uns konzipiert, leitet und umsetzt. Darüber hinaus sorgt er für einen professionellen Unternehmensauftritt, unter anderem auch bei unserer anderen Firma Orango, wo er unsere Saftautomaten optimal in Szene setzt und wöchentlich Content für uns postet."</div>
+                    <div class="testimonial-text">„Professionell, kreativ und zuverlässig. Ferris verpackt komplexe Themen verständlich und ansprechend in Videos – die Zusammenarbeit läuft reibungslos und die Ergebnisse übertreffen unsere Erwartungen."</div>
                     <div class="testimonial-author">
-                        <div class="testimonial-avatar" style="background:#2563EB; color:#fff;">LW</div>
+                        <img class="testimonial-avatar" src="images/leynes-wandrey.jpeg" alt="Leynes Wandrey, Gründer & Geschäftsführer der Habatec GmbH" loading="lazy">
                         <div>
                             <div class="testimonial-name">Leynes Wandrey</div>
                             <div class="testimonial-role">Gründer & Geschäftsführer, Habatec GmbH</div>
@@ -2241,12 +2603,12 @@
                 </div>
                 <div class="testimonial-card reveal reveal-delay-3">
                     <div class="testimonial-stars">★★★★★</div>
-                    <div class="testimonial-text">„Die Videoproduktion war erstklassig. Von der Planung bis zum fertigen Schnitt lief alles strukturiert und auf höchstem Niveau. Unser Team und unsere Flotte wurden perfekt und authentisch in Szene gesetzt. Allein im letzten Monat hat Wendepunkt Marketing für uns neun Videos umgesetzt, die sowohl uns als auch unsere Kunden überzeugt haben. Die Zusammenarbeit ist professionell, effizient und zuverlässig. Auch in Zukunft werden wir sehr gerne weiter auf Wendepunkt Marketing setzen."</div>
+                    <div class="testimonial-text">„Die Videoproduktion war erstklassig – von der Planung bis zum Schnitt alles auf höchstem Niveau. Allein im letzten Monat neun Videos, die uns und unsere Kunden überzeugt haben. Professionell, effizient und zuverlässig."</div>
                     <div class="testimonial-author">
-                        <div class="testimonial-avatar" style="background:#EAB308; color:#fff;">LW</div>
+                        <img class="testimonial-avatar" src="images/lara-winterhalter.avif" alt="Lara Winterhalter, Marketing Managerin bei Matari GmbH" loading="lazy">
                         <div>
                             <div class="testimonial-name">Lara Winterhalter</div>
-                            <div class="testimonial-role">Marketing, Matari GmbH</div>
+                            <div class="testimonial-role">Marketing Managerin, Matari GmbH</div>
                         </div>
                     </div>
                 </div>
@@ -2259,12 +2621,24 @@
         </div>
     </section>
 
+    <!-- ========== CTA NACH KUNDENSTIMMEN ========== -->
+    <section class="case-cta case-cta--orange">
+        <div class="container reveal">
+            <h2 class="case-cta-title">Machen wir dein Unternehmen sichtbar</h2>
+            <a href="#kontakt" class="btn-primary">
+                Kontakt aufnehmen
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <p class="case-cta-note">Kostenloses Erstgespräch · Antwort innerhalb von 24 Stunden</p>
+            <a href="leistungen.html" class="case-cta-alt">Noch unsicher? Sieh dir unsere Leistungen an →</a>
+        </div>
+    </section>
+
     <!-- ========== FAQ ========== -->
     <section class="faq" id="faq">
         <div class="container">
             <div class="reveal" style="text-align:center;">
-                <div class="section-label" style="justify-content:center;">FAQ</div>
-                <h2 class="section-title">Häufige Fragen.</h2>
+                <h2 class="section-title">Häufige Fragen</h2>
             </div>
             <div class="faq-grid">
                 <div class="faq-item reveal">
@@ -2334,26 +2708,11 @@
         </div>
     </section>
 
-    <!-- ========== CTA BANNER ========== -->
-    <section class="cta-banner">
-        <div class="container">
-            <div class="cta-banner-inner reveal">
-                <h2>Bereit für den <span style="color:var(--color-accent)">Wendepunkt</span>?</h2>
-                <p>Lassen Sie uns in einem kostenlosen Erstgespräch herausfinden, wie wir Ihre Sichtbarkeit auf das nächste Level bringen.</p>
-                <a href="#kontakt" class="btn-primary">
-                    Jetzt Erstgespräch sichern
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </a>
-            </div>
-        </div>
-    </section>
-
     <!-- ========== CONTACT ========== -->
     <section class="contact" id="kontakt">
         <div class="container">
             <div class="reveal" style="text-align:center;">
-                <div class="section-label" style="justify-content:center;">Kontakt</div>
-                <h2 class="section-title" style="text-align:center;">Kontakt aufnehmen.</h2>
+                <h2 class="section-title" style="text-align:center;">Kontakt aufnehmen</h2>
                 <p class="section-subtitle" style="text-align:center; max-width:500px; margin:0 auto;">Sie haben eine Frage, möchten ein Projekt besprechen oder einfach mal hören, was für Ihr Unternehmen möglich ist? Schreiben Sie uns – wir melden uns zeitnah.</p>
             </div>
             <div style="max-width:640px; margin:40px auto 0;">
@@ -2374,8 +2733,8 @@
                             <input type="email" id="email" name="email" required placeholder="max@unternehmen.de">
                         </div>
                         <div class="form-group">
-                            <label for="phone">Telefon (optional)</label>
-                            <input type="tel" id="phone" name="phone" placeholder="+49 XXX XXXXXXX">
+                            <label for="phone">Telefon *</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="+49 XXX XXXXXXX">
                         </div>
                         <div class="form-group">
                             <label for="message">Nachricht *</label>
@@ -2386,13 +2745,6 @@
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </button>
                     </form>
-                </div>
-                <div style="text-align:center; margin-top:24px;">
-                    <p style="color:var(--color-text-muted); font-size:0.85rem; margin-bottom:12px;">Oder direkt per E-Mail</p>
-                    <a href="mailto:kontakt@wendepunktmarketing.de" style="display:inline-flex; align-items:center; gap:12px; padding:14px 24px; background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:12px; transition:all 0.3s; color:var(--color-text); text-decoration:none;">
-                        <svg viewBox="0 0 24 24" style="width:18px; height:18px; stroke:var(--color-accent); fill:none; stroke-width:1.5;"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <span style="font-weight:600; font-size:0.9rem;">kontakt@wendepunktmarketing.de</span>
-                    </a>
                 </div>
             </div>
         </div>
@@ -2452,6 +2804,46 @@
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+        // Views-Karten etwas frueher einblenden – weniger weisser Leerraum davor
+        const platformsEl = document.querySelector('.case-platforms');
+        if (platformsEl && 'IntersectionObserver' in window) {
+            const earlyObserver = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0, rootMargin: '0px 0px 180px 0px' });
+            earlyObserver.observe(platformsEl);
+        }
+
+        // Kundenstimmen deutlich frueher einblenden (nicht verspaetet)
+        if ('IntersectionObserver' in window) {
+            const testiObserver = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0, rootMargin: '0px 0px 320px 0px' });
+            document.querySelectorAll('.testimonial-card').forEach(el => testiObserver.observe(el));
+        }
+
+        // Ergebnisse-Sektion etwas frueher einblenden (Effekt bleibt sichtbar)
+        if ('IntersectionObserver' in window) {
+            const resultsObserver = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0, rootMargin: '0px 0px 60px 0px' });
+            document.querySelectorAll('.results .reveal').forEach(el => resultsObserver.observe(el));
+        }
+
         // FAQ
         function toggleFaq(button) {
             const item = button.parentElement;
@@ -2477,14 +2869,8 @@
 
         function initMobileSliders() {
             const isMobile = window.innerWidth <= 768;
-            
-            // Show/hide nav buttons
-            const pNav = document.getElementById('portfolioNav');
             const tNav = document.getElementById('testimonialNav');
-            if (pNav) pNav.style.display = isMobile ? 'flex' : 'none';
             if (tNav) tNav.style.display = isMobile ? 'flex' : 'none';
-
-            // Portfolio slides
             const pCards = document.querySelectorAll('.portfolio-card');
             pCards.forEach((card, i) => {
                 if (isMobile) {
@@ -2494,8 +2880,10 @@
                     card.style.display = '';
                 }
             });
-
-            // Testimonial slides
+            if (isMobile) {
+                const pc = document.getElementById('portfolioCounter');
+                if (pc) pc.textContent = (portfolioIndex + 1) + ' / ' + pCards.length;
+            }
             const tCards = document.querySelectorAll('.testimonial-card');
             tCards.forEach((card, i) => {
                 if (isMobile) {
@@ -2507,12 +2895,28 @@
             });
         }
 
+        // Desktop: um genau EIN Video weiterscrollen
+        function scrollPortfolio(dir) {
+            const track = document.querySelector('.portfolio-grid');
+            if (!track) return;
+            const card = track.querySelector('.portfolio-card');
+            const gap = 24;
+            const step = card ? card.offsetWidth + gap : track.clientWidth;
+            track.scrollBy({ left: dir * step, behavior: 'smooth' });
+        }
+
+        // Handy: 1-Karten-Slider mit Umbruch + Zähler
         function slidePortfolio(dir) {
             const cards = document.querySelectorAll('.portfolio-card');
+            if (!cards.length) return;
             portfolioIndex = (portfolioIndex + dir + cards.length) % cards.length;
             cards.forEach((card, i) => card.classList.toggle('active-slide', i === portfolioIndex));
-            document.getElementById('portfolioCounter').textContent = (portfolioIndex + 1) + ' / ' + cards.length;
+            const pc = document.getElementById('portfolioCounter');
+            if (pc) pc.textContent = (portfolioIndex + 1) + ' / ' + cards.length;
         }
+
+        function portfolioPrev() { window.innerWidth <= 768 ? slidePortfolio(-1) : scrollPortfolio(-1); }
+        function portfolioNext() { window.innerWidth <= 768 ? slidePortfolio(1) : scrollPortfolio(1); }
 
         function slideTestimonial(dir) {
             const cards = document.querySelectorAll('.testimonial-card');
@@ -2552,6 +2956,105 @@
     function acceptCookies(){localStorage.setItem('cookie-consent','accepted');document.getElementById('cookieBanner').style.display='none';loadGA();}
     function declineCookies(){localStorage.setItem('cookie-consent','declined');document.getElementById('cookieBanner').style.display='none';}
     if(!localStorage.getItem('cookie-consent')){document.getElementById('cookieBanner').style.display='block';}
+    </script>
+
+    <!-- Zähl-Animation für die Kennzahlen-Leiste -->
+    <script>
+    (function () {
+        var els = document.querySelectorAll('.trust-stat-num[data-count]');
+        if (!els.length || !('IntersectionObserver' in window)) return;
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        function fmt(n){ return Math.round(n).toLocaleString('de-DE'); }
+        function run(el){
+            var target = parseInt(el.dataset.count, 10) || 0;
+            var suffix = el.dataset.suffix || '';
+            if (reduce){ el.textContent = fmt(target) + suffix; return; }
+            var dur = 1700, start = null;
+            el.textContent = '0' + suffix;
+            function step(ts){
+                if (!start) start = ts;
+                var p = Math.min((ts - start) / dur, 1);
+                var eased = 1 - Math.pow(1 - p, 3);
+                el.textContent = fmt(target * eased) + suffix;
+                if (p < 1) requestAnimationFrame(step);
+                else el.textContent = fmt(target) + suffix;
+            }
+            requestAnimationFrame(step);
+        }
+        var io = new IntersectionObserver(function(entries){
+            entries.forEach(function(e){
+                if (e.isIntersecting){ run(e.target); io.unobserve(e.target); }
+            });
+        }, { threshold: 0.5 });
+        els.forEach(function(el){ io.observe(el); });
+    })();
+    </script>
+
+    <!-- Case Study: Rest aufklappen -->
+    <script>
+    (function () {
+        var btn = document.querySelector('.case-more-btn');
+        var panel = document.getElementById('caseJourney');
+        if (!btn || !panel) return;
+        var label = btn.querySelector('.case-more-label');
+        var section = panel.closest('.case-study');
+        btn.addEventListener('click', function () {
+            var open = !panel.classList.contains('open');
+            if (open) {
+                panel.classList.add('open');
+                panel.style.maxHeight = panel.scrollHeight + 'px';
+                panel.addEventListener('transitionend', function te(e) {
+                    if (e.propertyName === 'max-height' && panel.classList.contains('open')) {
+                        panel.style.maxHeight = 'none';
+                    }
+                    panel.removeEventListener('transitionend', te);
+                });
+                if (section) section.classList.add('expanded');
+                if (label) label.textContent = 'Case Study einklappen';
+                btn.setAttribute('aria-expanded', 'true');
+            } else {
+                // Position des Buttons im Viewport merken, damit er beim Einklappen
+                // nicht nach oben wegspringt und der User "nach unten geschubst" wird.
+                var targetTop = btn.getBoundingClientRect().top;
+                var pinning = true;
+                // Globales scroll-behavior: smooth wuerde jeden scrollBy einzeln
+                // animieren -> ruckelt. Waehrend des Pinnens auf 'auto' schalten.
+                var htmlEl = document.documentElement;
+                var prevBehavior = htmlEl.style.scrollBehavior;
+                htmlEl.style.scrollBehavior = 'auto';
+                function stopPin() {
+                    if (!pinning) return;
+                    pinning = false;
+                    htmlEl.style.scrollBehavior = prevBehavior;
+                }
+                panel.style.maxHeight = panel.scrollHeight + 'px';
+                requestAnimationFrame(function () {
+                    requestAnimationFrame(function () {
+                        panel.classList.remove('open');
+                        panel.style.maxHeight = '104px';
+                        // Waehrend der Einklapp-Animation den Button an gleicher
+                        // Viewport-Position halten (jeden Frame nachkorrigieren).
+                        (function pin() {
+                            if (!pinning) return;
+                            window.scrollBy(0, btn.getBoundingClientRect().top - targetTop);
+                            requestAnimationFrame(pin);
+                        })();
+                    });
+                });
+                panel.addEventListener('transitionend', function te(e) {
+                    if (e.propertyName === 'max-height') {
+                        stopPin();
+                        panel.removeEventListener('transitionend', te);
+                    }
+                });
+                setTimeout(stopPin, 800); // Fallback
+
+                if (section) section.classList.remove('expanded');
+                if (label) label.textContent = 'Ganze Case Study anschauen';
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    })();
     </script>
 
 </body>
