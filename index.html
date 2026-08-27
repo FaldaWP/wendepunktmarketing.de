@@ -2244,9 +2244,10 @@
             .case-cat { padding: 6px 10px; font-size: clamp(0.6rem, 2.9vw, 0.72rem); gap: 5px; white-space: nowrap; }
             /* Plattform-Views: ein großes, mittiges Bild mit Pfeilen links/rechts (Insta, TikTok, YouTube) */
             .case-platforms { display: block; position: relative; overflow: visible; scroll-snap-type: none;
-                width: 100%; max-width: none; margin-left: 0; padding: 16px 0 4px; touch-action: pan-y; }
+                width: 100%; max-width: none; margin-left: 0; padding: 16px 0 4px; touch-action: pan-y;
+                min-height: 356px; }   /* Höhe reservieren -> kein Springen beim Umschalten */
             .case-platform.tt, .case-platform.ig, .case-platform.yt {
-                display: none; width: 100%; max-width: none; margin: 0 auto; transform: none; }
+                display: none; width: 86%; max-width: 320px; margin: 0 auto; transform: none; }
             .case-platform.active-slide { display: block; }
             .case-platform::before { display: none; }        /* Glow raus */
             /* Transparente Seitenränder der PNG wegschneiden, damit die Collage fast die ganze Breite füllt */
@@ -2463,15 +2464,15 @@
 
             <div class="case-platforms reveal">
                 <figure class="case-platform tt">
-                    <span class="plat-clip"><img src="images/employa-tiktok.png" alt="EMPLOYA TikTok Views – bis zu 620K Aufrufe pro Video" loading="lazy"></span>
+                    <span class="plat-clip"><img src="images/employa-tiktok.png" alt="EMPLOYA TikTok Views – bis zu 620K Aufrufe pro Video"></span>
                     <figcaption>TikTok</figcaption>
                 </figure>
                 <figure class="case-platform ig">
-                    <span class="plat-clip"><img src="images/employa-instagram.png" alt="EMPLOYA Instagram Views – bis zu 1 Mio. Aufrufe pro Video" loading="lazy"></span>
+                    <span class="plat-clip"><img src="images/employa-instagram.png" alt="EMPLOYA Instagram Views – bis zu 1 Mio. Aufrufe pro Video"></span>
                     <figcaption>Instagram</figcaption>
                 </figure>
                 <figure class="case-platform yt">
-                    <span class="plat-clip"><img src="images/employa-youtube.png" alt="EMPLOYA YouTube Aufrufe – bis zu 364K pro Video" loading="lazy"></span>
+                    <span class="plat-clip"><img src="images/employa-youtube.png" alt="EMPLOYA YouTube Aufrufe – bis zu 364K pro Video"></span>
                     <figcaption>YouTube</figcaption>
                 </figure>
                 <button class="plat-arrow plat-arrow--prev" type="button" aria-label="Vorherige Plattform" onclick="slidePlatform(-1)">←</button>
