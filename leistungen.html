@@ -164,9 +164,13 @@
         }
         @media (max-width:600px) {
             .hero { padding-top:118px; }
-            .hero-visual { min-height:340px; }
-            .hero-card--main { width:200px; }
-            .hero-card--b1, .hero-card--b2 { display:none; }
+            .hero-tags { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+            .hero-tag { justify-content:center; text-align:center; }
+            .hero-visual { min-height:300px; }
+            .hero-card--main { width:190px; }
+            .hero-card--b1, .hero-card--b2 { display:block; width:118px; }
+            .hero-card--b1 { transform:translate(-96%,-56%) rotate(-11deg); }
+            .hero-card--b2 { transform:translate(-4%,-46%) rotate(10deg); }
             .cap-grid { grid-template-columns:1fr; }
             .cap-card--accent { flex-direction:column; align-items:flex-start; gap:20px; padding:30px; }
             .cap-accent-btn { width:100%; justify-content:center; }

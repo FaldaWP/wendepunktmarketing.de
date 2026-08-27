@@ -640,6 +640,11 @@
             text-transform: uppercase; letter-spacing: 0.13em; color: var(--color-text-muted);
         }
         .trust-stat-sep { width: 1px; height: 46px; background: var(--color-border); }
+        @media (max-width: 768px) {
+            .trust-stats { flex-wrap: nowrap; gap: clamp(12px, 3.5vw, 24px); align-items: flex-start; }
+            .trust-stat-num { font-size: clamp(1.15rem, 5.4vw, 1.7rem); }
+            .trust-stat-label { margin-top: 6px; font-size: 0.6rem; letter-spacing: 0.08em; }
+        }
         @media (max-width: 600px) { .trust-stat-sep { display: none; } }
 
         /* ============================================
@@ -2222,15 +2227,24 @@
         }
 
         @media (max-width: 768px) {
-            .case-platforms { flex-direction: column; align-items: center; width: auto; max-width: 340px; margin: 0 auto; gap: 40px; }
-            .case-platform.tt, .case-platform.ig, .case-platform.yt { width: 100%; margin: 0; transform: none; }
-            .case-platform:hover { transform: translateY(-10px); }
-            .case-stats { flex-direction: column; gap: 26px; max-width: 340px; }
-            .case-stats .case-stat { padding: 0; }
-            .case-stats .case-stat + .case-stat::before { display: none; }
+            /* Ergebnis-Zahlen in einer Reihe */
+            .case-stats { flex-direction: row; flex-wrap: nowrap; gap: 0; max-width: none; }
+            .case-stats .case-stat { padding: 0 clamp(14px, 5vw, 32px); }
+            .case-stat-num { font-size: clamp(1.3rem, 6vw, 2rem); }
+            .case-stat-label { font-size: 0.8rem; }
+            /* Plattform-Views als Fächer: Instagram groß mittig, TikTok/YouTube dahinter */
+            .case-platforms { flex-direction: row; align-items: flex-start; width: 96vw; max-width: none; margin-left: calc(50% - 48vw); gap: 0; }
+            .case-platform.tt { width: 30%; z-index: 2; margin: 26px -10% 0 0; transform: rotate(-5deg); }
+            .case-platform.ig { width: 60%; z-index: 3; margin: 0; transform: none; }
+            .case-platform.yt { width: 30%; z-index: 1; margin: 26px 0 0 -10%; transform: rotate(5deg); }
+            .case-platform figcaption { font-size: clamp(0.72rem, 3.2vw, 0.95rem); }
             .case-more { margin-top: 44px; }
             .case-system-media { grid-template-columns: 1fr; max-width: 360px; gap: 34px; margin-bottom: 56px; }
             .case-result-media { grid-template-columns: 1fr; max-width: 400px; }
+            /* Fallstudien-Karten wie die Leistungs-Karten: Bild bündig oben, Label darunter */
+            .case-system-media figure, .case-result figure { padding: 0; overflow: hidden; border-radius: 20px; }
+            .case-system-frame, .case-proof-frame { border: none; border-radius: 0; }
+            .case-system-media figcaption, .case-result figcaption { margin: 0; padding: 15px 18px 17px; }
         }
     </style>
 </head>
@@ -3016,6 +3030,23 @@
                 if (section) section.classList.add('expanded');
                 if (label) label.textContent = 'Case Study einklappen';
                 btn.setAttribute('aria-expanded', 'true');
+            } else if (window.matchMedia('(max-width: 768px)').matches) {
+                // Mobil: sauberes, sofortiges Einklappen ohne das ruckelnde
+                // Frame-fuer-Frame-Scroll-Pinning (das auf Touch-Geraeten buggt).
+                var mTop = btn.getBoundingClientRect().top;
+                var prevTrans = panel.style.transition;
+                panel.style.transition = 'none';
+                panel.classList.remove('open');
+                panel.style.maxHeight = '104px';
+                void panel.offsetHeight; // Reflow erzwingen, bevor Transition zurueckkommt
+                if (section) section.classList.remove('expanded');
+                if (label) label.textContent = 'Ganze Case Study anschauen';
+                btn.setAttribute('aria-expanded', 'false');
+                // Button einmalig an gleicher Viewport-Position halten
+                window.scrollBy(0, btn.getBoundingClientRect().top - mTop);
+                requestAnimationFrame(function () {
+                    requestAnimationFrame(function () { panel.style.transition = prevTrans; });
+                });
             } else {
                 // Position des Buttons im Viewport merken, damit er beim Einklappen
                 // nicht nach oben wegspringt und der User "nach unten geschubst" wird.
