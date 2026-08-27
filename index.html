@@ -641,9 +641,9 @@
         }
         .trust-stat-sep { width: 1px; height: 46px; background: var(--color-border); }
         @media (max-width: 768px) {
-            .trust-stats { flex-wrap: nowrap; gap: clamp(12px, 3.5vw, 24px); align-items: flex-start; }
-            .trust-stat-num { font-size: clamp(1.15rem, 5.4vw, 1.7rem); }
-            .trust-stat-label { margin-top: 6px; font-size: 0.6rem; letter-spacing: 0.08em; }
+            .trust-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(6px, 2vw, 18px); align-items: start; }
+            .trust-stat-num { font-size: clamp(1rem, 4.7vw, 1.6rem); }
+            .trust-stat-label { margin-top: 6px; font-size: 0.6rem; letter-spacing: 0.07em; }
         }
         @media (max-width: 600px) { .trust-stat-sep { display: none; } }
 
@@ -2232,12 +2232,19 @@
             .case-stats .case-stat { padding: 0 clamp(14px, 5vw, 32px); }
             .case-stat-num { font-size: clamp(1.3rem, 6vw, 2rem); }
             .case-stat-label { font-size: 0.8rem; }
-            /* Plattform-Views als Fächer: Instagram groß mittig, TikTok/YouTube dahinter */
-            .case-platforms { flex-direction: row; align-items: flex-start; width: 96vw; max-width: none; margin-left: calc(50% - 48vw); gap: 0; }
-            .case-platform.tt { width: 30%; z-index: 2; margin: 26px -10% 0 0; transform: rotate(-5deg); }
-            .case-platform.ig { width: 60%; z-index: 3; margin: 0; transform: none; }
-            .case-platform.yt { width: 30%; z-index: 1; margin: 26px 0 0 -10%; transform: rotate(5deg); }
-            .case-platform figcaption { font-size: clamp(0.72rem, 3.2vw, 0.95rem); }
+            /* Plattform-Views als Swipe-Slider: Instagram, dann TikTok, dann YouTube */
+            .case-platforms { display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; align-items: flex-start;
+                width: 100%; max-width: none; margin-left: 0;
+                overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+                gap: 14px; padding: 46px 15px 14px; scrollbar-width: none; }
+            .case-platforms::-webkit-scrollbar { display: none; }
+            .case-platform.tt, .case-platform.ig, .case-platform.yt {
+                flex: 0 0 82%; width: 82%; margin: 0; transform: none; scroll-snap-align: center; }
+            .case-platform.ig { order: 1; }
+            .case-platform.tt { order: 2; }
+            .case-platform.yt { order: 3; }
+            .case-platform:hover { transform: none; }
+            .case-platform figcaption { font-size: clamp(0.85rem, 3.6vw, 1.05rem); }
             .case-more { margin-top: 44px; }
             .case-system-media { grid-template-columns: 1fr; max-width: 360px; gap: 34px; margin-bottom: 56px; }
             .case-result-media { grid-template-columns: 1fr; max-width: 400px; }
@@ -3031,22 +3038,40 @@
                 if (label) label.textContent = 'Case Study einklappen';
                 btn.setAttribute('aria-expanded', 'true');
             } else if (window.matchMedia('(max-width: 768px)').matches) {
-                // Mobil: sauberes, sofortiges Einklappen ohne das ruckelnde
-                // Frame-fuer-Frame-Scroll-Pinning (das auf Touch-Geraeten buggt).
-                var mTop = btn.getBoundingClientRect().top;
+                // Mobil: fluessiges Einklappen bei dem der Button (und alles darunter)
+                // optisch fest an Ort und Stelle bleibt – Panel-Hoehe und Scroll-Position
+                // werden aus DERSELBEN Easing-Kurve gefahren (statt ruckelndem
+                // Frame-fuer-Frame scrollBy). Nur der Inhalt DARUEBER zieht sich ein.
+                var htmlEl2 = document.documentElement;
+                var prevBeh2 = htmlEl2.style.scrollBehavior;
+                htmlEl2.style.scrollBehavior = 'auto';
                 var prevTrans = panel.style.transition;
                 panel.style.transition = 'none';
                 panel.classList.remove('open');
-                panel.style.maxHeight = '104px';
-                void panel.offsetHeight; // Reflow erzwingen, bevor Transition zurueckkommt
+                var startH = panel.getBoundingClientRect().height;
+                var endH = 104;
+                var startScroll = window.scrollY;
+                var delta = Math.max(0, startH - endH);
+                var t0 = null, dur = 480;
+                function easeInOut(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2; }
+                function tick(ts) {
+                    if (t0 === null) t0 = ts;
+                    var p = Math.min((ts - t0) / dur, 1);
+                    var e = easeInOut(p);
+                    panel.style.maxHeight = (startH - delta * e) + 'px';
+                    window.scrollTo(0, Math.max(0, startScroll - delta * e));
+                    if (p < 1) {
+                        requestAnimationFrame(tick);
+                    } else {
+                        panel.style.maxHeight = endH + 'px';
+                        panel.style.transition = prevTrans;
+                        htmlEl2.style.scrollBehavior = prevBeh2;
+                    }
+                }
+                requestAnimationFrame(tick);
                 if (section) section.classList.remove('expanded');
                 if (label) label.textContent = 'Ganze Case Study anschauen';
                 btn.setAttribute('aria-expanded', 'false');
-                // Button einmalig an gleicher Viewport-Position halten
-                window.scrollBy(0, btn.getBoundingClientRect().top - mTop);
-                requestAnimationFrame(function () {
-                    requestAnimationFrame(function () { panel.style.transition = prevTrans; });
-                });
             } else {
                 // Position des Buttons im Viewport merken, damit er beim Einklappen
                 // nicht nach oben wegspringt und der User "nach unten geschubst" wird.
