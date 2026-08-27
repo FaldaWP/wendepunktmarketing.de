@@ -2172,49 +2172,53 @@
         .case-journey-intro { text-align: center; max-width: 860px; margin: 0 auto 44px; }
         .case-journey-intro h3 { font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800; line-height: 1.18; letter-spacing: -0.02em; color: var(--color-text); margin-bottom: 18px; }
         .case-journey-intro p { color: var(--color-text-secondary); font-size: 1rem; line-height: 1.75; max-width: 620px; margin: 0 auto; }
-        /* Gemeinsamer Gradient-Glow hinter den Frames */
-        .case-system-media figure, .case-result figure { position: relative; margin: 0; text-align: center; }
-        .case-system-media figure::before, .case-result figure::before {
-            content: ''; position: absolute; inset: 14px 10px 44px; border-radius: 24px;
-            background: linear-gradient(150deg, #C03050 0%, #F5A623 100%);
-            filter: blur(34px); opacity: 0.28; transform: translateY(16px) scale(1);
-            pointer-events: none; z-index: 0;
+        /* Screenshots als eigenständige Karten mit integriertem Label */
+        .case-system-media figure, .case-result figure {
+            position: relative; margin: 0; text-align: left;
+            padding: 14px 14px 4px; background: var(--color-bg-card);
+            border: 1px solid var(--color-border); border-radius: 24px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 22px 48px rgba(0,0,0,0.09);
+            transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), box-shadow 0.45s ease;
+        }
+        .case-system-media figure:hover, .case-result figure:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 32px 64px rgba(0,0,0,0.13);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .case-system-media figure, .case-result figure { transition: none; }
+            .case-system-media figure:hover, .case-result figure:hover { transform: none; }
         }
 
-        .case-system-media { counter-reset: sysstep; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 860px; margin: 0 auto 84px; align-items: start; }
-        .case-system-frame { position: relative; z-index: 1; aspect-ratio: 11 / 10; border-radius: 18px; overflow: hidden; border: 1px solid var(--color-border); transform: translateY(-8px); box-shadow: 0 30px 66px rgba(0,0,0,0.20); background: #FFFFFF; }
+        .case-system-media { counter-reset: sysstep; display: grid; grid-template-columns: 1fr 1fr; gap: 36px; max-width: 720px; margin: 0 auto 84px; align-items: start; }
+        .case-system-frame { position: relative; z-index: 1; aspect-ratio: 11 / 10; border-radius: 14px; overflow: hidden; border: 1px solid var(--color-border); background: #FFFFFF; }
         .case-system-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
         .case-system-media figcaption {
             counter-increment: sysstep; position: relative; z-index: 1;
-            display: inline-flex; align-items: center; gap: 12px; margin-top: 20px;
-            padding: 8px 20px 8px 8px; background: #FFFFFF; border: 1px solid var(--color-border);
-            border-radius: 999px; box-shadow: 0 5px 16px rgba(0,0,0,0.06);
-            font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text);
+            display: flex; align-items: center; gap: 12px; margin: 14px 4px 12px;
+            font-size: 0.78rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-text);
         }
         .case-system-media figcaption::before {
-            content: counter(sysstep, decimal-leading-zero); display: grid; place-items: center;
-            width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #C03050 0%, #F5A623 100%);
-            color: #FFFFFF; font-size: 0.92rem; letter-spacing: 0; box-shadow: 0 4px 10px rgba(192,48,80,0.35);
+            content: counter(sysstep, decimal-leading-zero); display: grid; place-items: center; flex: none;
+            width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #C03050 0%, #F5A623 100%);
+            color: #FFFFFF; font-size: 0.86rem; letter-spacing: 0; box-shadow: 0 4px 10px rgba(192,48,80,0.35);
         }
 
         .case-result { text-align: center; margin-bottom: clamp(32px, 4vw, 56px); }
         .case-result-title { font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800; letter-spacing: -0.02em; margin: 12px auto 12px; max-width: 720px; }
         .case-result-sub { color: var(--color-text-secondary); max-width: 560px; margin: 0 auto 46px; line-height: 1.7; }
-        .case-result-media { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 860px; margin: 0 auto; align-items: start; }
-        .case-proof-frame { position: relative; z-index: 1; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 18px; border: 1px solid var(--color-border); transform: translateY(-8px); box-shadow: 0 30px 64px rgba(0,0,0,0.19); background: #FFFFFF; }
+        .case-result-media { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; max-width: 720px; margin: 0 auto; align-items: start; }
+        .case-proof-frame { position: relative; z-index: 1; aspect-ratio: 11 / 10; overflow: hidden; border-radius: 14px; border: 1px solid var(--color-border); background: #FFFFFF; }
         .case-proof-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
         .case-proof-frame img.proof-mid { object-position: center; }
-        .case-proof-frame::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #FFFFFF 100%); pointer-events: none; }
+        .case-proof-frame::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 90px; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #FFFFFF 100%); pointer-events: none; }
         .case-result figcaption {
-            position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 12px; margin-top: 18px;
-            padding: 8px 20px 8px 8px; background: #FFFFFF; border: 1px solid var(--color-border);
-            border-radius: 999px; box-shadow: 0 5px 16px rgba(0,0,0,0.06);
-            font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text);
+            position: relative; z-index: 1; display: flex; align-items: center; gap: 12px; margin: 14px 4px 12px;
+            font-size: 0.78rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--color-text);
         }
         .case-result figcaption::before {
-            content: '✓'; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%;
+            content: '✓'; display: grid; place-items: center; flex: none; width: 34px; height: 34px; border-radius: 50%;
             background: linear-gradient(135deg, #C03050 0%, #F5A623 100%); color: #FFFFFF;
-            font-size: 1rem; box-shadow: 0 4px 10px rgba(192,48,80,0.35);
+            font-size: 0.95rem; box-shadow: 0 4px 10px rgba(192,48,80,0.35);
         }
 
         @media (max-width: 768px) {
