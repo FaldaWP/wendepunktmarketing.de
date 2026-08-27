@@ -195,6 +195,7 @@
             line-height: 1.6;
             overflow-x: hidden;
             max-width: 100%;
+            overscroll-behavior-x: none;
         }
 
         a {
@@ -643,7 +644,7 @@
         @media (max-width: 768px) {
             .trust-bar { padding: 40px 0 30px; }
             .trust-stats { display: grid; grid-template-columns: repeat(3, auto); justify-content: center; align-items: start; gap: clamp(12px, 4vw, 28px); }
-            .trust-stat-num { font-size: clamp(1.6rem, 6.8vw, 2.3rem); }
+            .trust-stat-num { font-size: clamp(1.5rem, 6.2vw, 2.1rem); }
             .trust-stat-label { margin-top: 8px; font-size: 0.7rem; letter-spacing: 0.08em; white-space: nowrap; }
             .trust-stat-label .lbl-extra { display: none; }
         }
@@ -800,7 +801,8 @@
             .collage { overflow-x: auto; }
         }
         @media (max-width: 768px) {
-            .collage-item { width: 140px; border-radius: 12px; }
+            .collage-section { padding: 6px 0 6px; }
+            .collage-item { width: 165px; border-radius: 12px; }
             .collage-track { gap: 10px; animation-duration: 50s; }
         }
         /* CTA nach der Case Study / Collage */
@@ -2233,7 +2235,7 @@
 
         @media (max-width: 768px) {
             /* Ergebnis-Zahlen in einer Reihe */
-            .case-stats { flex-direction: row; flex-wrap: nowrap; gap: 0; max-width: none; }
+            .case-stats { flex-direction: row; flex-wrap: nowrap; gap: 0; max-width: none; margin: 8px auto 34px; }
             .case-stats .case-stat { padding: 0 clamp(14px, 5vw, 32px); }
             .case-stat-num { font-size: clamp(1.3rem, 6vw, 2rem); }
             .case-stat-label { font-size: 0.8rem; }
@@ -2242,7 +2244,7 @@
             .case-cat { padding: 6px 10px; font-size: clamp(0.6rem, 2.9vw, 0.72rem); gap: 5px; white-space: nowrap; }
             /* Plattform-Views: ein großes, mittiges Bild mit Pfeilen links/rechts (Insta, TikTok, YouTube) */
             .case-platforms { display: block; position: relative; overflow: visible; scroll-snap-type: none;
-                width: 100%; max-width: none; margin-left: 0; padding: 40px 0 4px; }
+                width: 100%; max-width: none; margin-left: 0; padding: 16px 0 4px; touch-action: pan-y; }
             .case-platform.tt, .case-platform.ig, .case-platform.yt {
                 display: none; width: 100%; max-width: none; margin: 0 auto; transform: none; }
             .case-platform.active-slide { display: block; }
@@ -2251,17 +2253,20 @@
             .plat-clip { display: block; overflow: hidden; }
             .case-platform.tt img, .case-platform.ig img, .case-platform.yt img {
                 filter: none;                                  /* grauer Schleier (Schatten-Haze) raus */
-                width: 172%; max-width: none; margin-left: -36%; }
+                width: 172%; max-width: none; margin-left: -36%;
+                -webkit-user-drag: none; user-select: none; pointer-events: none; }
             .case-platform:hover { transform: none; }
             .case-platform figcaption { font-size: clamp(0.9rem, 3.8vw, 1.1rem); }
-            .plat-arrow { display: flex; position: absolute; top: 54%; transform: translateY(-50%); z-index: 5;
+            .plat-arrow { display: flex; position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
                 width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--color-border);
-                background: rgba(255,255,255,0.9); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+                background: #FFFFFF;
                 align-items: center; justify-content: center; font-size: 1.2rem; color: var(--color-text);
                 cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.14); }
             .plat-arrow--prev { left: 0; }
             .plat-arrow--next { right: 0; }
             .plat-counter { display: block; text-align: center; margin-top: 6px; font-size: 0.85rem; color: var(--color-text-muted); font-weight: 500; }
+            /* Abstand unter dem View-Slider verkleinern */
+            .case-journey { margin-top: 34px; }
             .case-more { margin-top: 26px; }
             .case-system-media { grid-template-columns: 1fr; max-width: 360px; gap: 34px; margin-bottom: 56px; }
             .case-result-media { grid-template-columns: 1fr; max-width: 400px; }
