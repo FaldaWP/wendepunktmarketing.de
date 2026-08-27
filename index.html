@@ -641,9 +641,10 @@
         }
         .trust-stat-sep { width: 1px; height: 46px; background: var(--color-border); }
         @media (max-width: 768px) {
-            .trust-stats { display: grid; grid-template-columns: repeat(3, auto); justify-content: center; align-items: start; gap: clamp(12px, 4vw, 30px); }
-            .trust-stat-num { font-size: clamp(1.4rem, 6vw, 2rem); }
-            .trust-stat-label { margin-top: 7px; font-size: 0.68rem; letter-spacing: 0.08em; white-space: nowrap; }
+            .trust-bar { padding: 40px 0 30px; }
+            .trust-stats { display: grid; grid-template-columns: repeat(3, auto); justify-content: center; align-items: start; gap: clamp(12px, 4vw, 28px); }
+            .trust-stat-num { font-size: clamp(1.6rem, 6.8vw, 2.3rem); }
+            .trust-stat-label { margin-top: 8px; font-size: 0.7rem; letter-spacing: 0.08em; white-space: nowrap; }
             .trust-stat-label .lbl-extra { display: none; }
         }
         @media (max-width: 600px) { .trust-stat-sep { display: none; } }
@@ -2143,6 +2144,8 @@
         .case-platform.tt::before { background: radial-gradient(circle at 50% 50%, #9B51E0 0%, #F5B921 92%); }
         .case-platform.ig::before { background: radial-gradient(circle at 50% 50%, #29C5E6 0%, #5AD1EA 92%); }
         .case-platform.yt::before { background: radial-gradient(circle at 50% 50%, #E8382B 0%, #B01E14 92%); }
+        /* Pfeil-Slider nur auf dem Handy sichtbar */
+        .plat-arrow, .plat-counter { display: none; }
 
         /* ===== Case Study – Journey: Paid Ads / Funnel / Ergebnis ===== */
         .case-more { text-align: center; margin-top: 14px; }
@@ -2236,16 +2239,25 @@
             /* Fallstudie-Badges in einer Reihe */
             .case-toprow { flex-wrap: nowrap; gap: 6px; }
             .case-cat { padding: 6px 10px; font-size: clamp(0.6rem, 2.9vw, 0.72rem); gap: 5px; white-space: nowrap; }
-            /* Plattform-Views: ein großes, mittiges Bild mit Pfeil-Buttons (Insta, TikTok, YouTube) */
-            .case-platforms { display: block; overflow: visible; scroll-snap-type: none;
-                width: 100%; max-width: none; margin-left: 0; padding: 44px 0 6px; }
+            /* Plattform-Views: ein großes, mittiges Bild mit Pfeilen links/rechts (Insta, TikTok, YouTube) */
+            .case-platforms { display: block; position: relative; overflow: visible; scroll-snap-type: none;
+                width: 100%; max-width: none; margin-left: 0; padding: 40px 0 4px; }
             .case-platform.tt, .case-platform.ig, .case-platform.yt {
-                display: none; width: 84%; max-width: 350px; margin: 0 auto; transform: none; }
+                display: none; width: 100%; max-width: none; margin: 0 auto; transform: none; }
             .case-platform.active-slide { display: block; }
-            .case-platform::before { display: none; }   /* Glow raus */
+            .case-platform::before { display: none; }        /* Glow raus */
+            .case-platform.tt img, .case-platform.ig img, .case-platform.yt img { filter: none; }  /* grauer Schleier (Schatten-Haze) raus */
             .case-platform:hover { transform: none; }
             .case-platform figcaption { font-size: clamp(0.9rem, 3.8vw, 1.1rem); }
-            .case-more { margin-top: 30px; }
+            .plat-arrow { display: flex; position: absolute; top: 54%; transform: translateY(-50%); z-index: 5;
+                width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--color-border);
+                background: rgba(255,255,255,0.9); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+                align-items: center; justify-content: center; font-size: 1.2rem; color: var(--color-text);
+                cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.14); }
+            .plat-arrow--prev { left: 0; }
+            .plat-arrow--next { right: 0; }
+            .plat-counter { display: block; text-align: center; margin-top: 6px; font-size: 0.85rem; color: var(--color-text-muted); font-weight: 500; }
+            .case-more { margin-top: 26px; }
             .case-system-media { grid-template-columns: 1fr; max-width: 360px; gap: 34px; margin-bottom: 56px; }
             .case-result-media { grid-template-columns: 1fr; max-width: 400px; }
             /* Fallstudien-Karten wie die Leistungs-Karten: Bild bündig oben, Label darunter */
@@ -2452,12 +2464,10 @@
                     <img src="images/employa-youtube.png" alt="EMPLOYA YouTube Aufrufe – bis zu 364K pro Video" loading="lazy">
                     <figcaption>YouTube</figcaption>
                 </figure>
+                <button class="plat-arrow plat-arrow--prev" type="button" aria-label="Vorherige Plattform" onclick="slidePlatform(-1)">←</button>
+                <button class="plat-arrow plat-arrow--next" type="button" aria-label="Nächste Plattform" onclick="slidePlatform(1)">→</button>
             </div>
-            <div class="slider-nav" id="platformNav" style="display:none;">
-                <button class="slider-btn" type="button" aria-label="Vorherige Plattform" onclick="slidePlatform(-1)">←</button>
-                <span class="slider-counter" id="platformCounter">1 / 3</span>
-                <button class="slider-btn" type="button" aria-label="Nächste Plattform" onclick="slidePlatform(1)">→</button>
-            </div>
+            <div class="plat-counter" id="platformCounter" aria-hidden="true">1 / 3</div>
 
             <div class="case-journey" id="caseJourney">
                 <div class="case-journey-intro">
@@ -2927,9 +2937,7 @@
                     card.style.display = '';
                 }
             });
-            // Plattform-Views-Slider
-            const plNav = document.getElementById('platformNav');
-            if (plNav) plNav.style.display = isMobile ? 'flex' : 'none';
+            // Plattform-Views-Slider (Pfeile/Counter werden per CSS ein-/ausgeblendet)
             const plCards = document.querySelectorAll('.case-platform');
             plCards.forEach((card, i) => {
                 if (isMobile) {
