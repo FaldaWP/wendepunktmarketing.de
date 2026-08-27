@@ -2146,6 +2146,7 @@
         .case-platform.yt::before { background: radial-gradient(circle at 50% 50%, #E8382B 0%, #B01E14 92%); }
         /* Pfeil-Slider nur auf dem Handy sichtbar */
         .plat-arrow, .plat-counter { display: none; }
+        .plat-clip { display: contents; }   /* Desktop: transparent, Bild verhält sich wie zuvor */
 
         /* ===== Case Study – Journey: Paid Ads / Funnel / Ergebnis ===== */
         .case-more { text-align: center; margin-top: 14px; }
@@ -2246,7 +2247,11 @@
                 display: none; width: 100%; max-width: none; margin: 0 auto; transform: none; }
             .case-platform.active-slide { display: block; }
             .case-platform::before { display: none; }        /* Glow raus */
-            .case-platform.tt img, .case-platform.ig img, .case-platform.yt img { filter: none; }  /* grauer Schleier (Schatten-Haze) raus */
+            /* Transparente Seitenränder der PNG wegschneiden, damit die Collage fast die ganze Breite füllt */
+            .plat-clip { display: block; overflow: hidden; }
+            .case-platform.tt img, .case-platform.ig img, .case-platform.yt img {
+                filter: none;                                  /* grauer Schleier (Schatten-Haze) raus */
+                width: 172%; max-width: none; margin-left: -36%; }
             .case-platform:hover { transform: none; }
             .case-platform figcaption { font-size: clamp(0.9rem, 3.8vw, 1.1rem); }
             .plat-arrow { display: flex; position: absolute; top: 54%; transform: translateY(-50%); z-index: 5;
@@ -2453,15 +2458,15 @@
 
             <div class="case-platforms reveal">
                 <figure class="case-platform tt">
-                    <img src="images/employa-tiktok.png" alt="EMPLOYA TikTok Views – bis zu 620K Aufrufe pro Video" loading="lazy">
+                    <span class="plat-clip"><img src="images/employa-tiktok.png" alt="EMPLOYA TikTok Views – bis zu 620K Aufrufe pro Video" loading="lazy"></span>
                     <figcaption>TikTok</figcaption>
                 </figure>
                 <figure class="case-platform ig">
-                    <img src="images/employa-instagram.png" alt="EMPLOYA Instagram Views – bis zu 1 Mio. Aufrufe pro Video" loading="lazy">
+                    <span class="plat-clip"><img src="images/employa-instagram.png" alt="EMPLOYA Instagram Views – bis zu 1 Mio. Aufrufe pro Video" loading="lazy"></span>
                     <figcaption>Instagram</figcaption>
                 </figure>
                 <figure class="case-platform yt">
-                    <img src="images/employa-youtube.png" alt="EMPLOYA YouTube Aufrufe – bis zu 364K pro Video" loading="lazy">
+                    <span class="plat-clip"><img src="images/employa-youtube.png" alt="EMPLOYA YouTube Aufrufe – bis zu 364K pro Video" loading="lazy"></span>
                     <figcaption>YouTube</figcaption>
                 </figure>
                 <button class="plat-arrow plat-arrow--prev" type="button" aria-label="Vorherige Plattform" onclick="slidePlatform(-1)">←</button>
