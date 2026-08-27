@@ -641,9 +641,10 @@
         }
         .trust-stat-sep { width: 1px; height: 46px; background: var(--color-border); }
         @media (max-width: 768px) {
-            .trust-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(6px, 2vw, 18px); align-items: start; }
-            .trust-stat-num { font-size: clamp(1rem, 4.7vw, 1.6rem); }
-            .trust-stat-label { margin-top: 6px; font-size: 0.6rem; letter-spacing: 0.07em; }
+            .trust-stats { display: grid; grid-template-columns: repeat(3, auto); justify-content: center; align-items: start; gap: clamp(12px, 4vw, 30px); }
+            .trust-stat-num { font-size: clamp(1.4rem, 6vw, 2rem); }
+            .trust-stat-label { margin-top: 7px; font-size: 0.68rem; letter-spacing: 0.08em; white-space: nowrap; }
+            .trust-stat-label .lbl-extra { display: none; }
         }
         @media (max-width: 600px) { .trust-stat-sep { display: none; } }
 
@@ -2232,20 +2233,19 @@
             .case-stats .case-stat { padding: 0 clamp(14px, 5vw, 32px); }
             .case-stat-num { font-size: clamp(1.3rem, 6vw, 2rem); }
             .case-stat-label { font-size: 0.8rem; }
-            /* Plattform-Views als Swipe-Slider: Instagram, dann TikTok, dann YouTube */
-            .case-platforms { display: flex; flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; align-items: flex-start;
-                width: 100%; max-width: none; margin-left: 0;
-                overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
-                gap: 14px; padding: 46px 15px 14px; scrollbar-width: none; }
-            .case-platforms::-webkit-scrollbar { display: none; }
+            /* Fallstudie-Badges in einer Reihe */
+            .case-toprow { flex-wrap: nowrap; gap: 6px; }
+            .case-cat { padding: 6px 10px; font-size: clamp(0.6rem, 2.9vw, 0.72rem); gap: 5px; white-space: nowrap; }
+            /* Plattform-Views: ein großes, mittiges Bild mit Pfeil-Buttons (Insta, TikTok, YouTube) */
+            .case-platforms { display: block; overflow: visible; scroll-snap-type: none;
+                width: 100%; max-width: none; margin-left: 0; padding: 44px 0 6px; }
             .case-platform.tt, .case-platform.ig, .case-platform.yt {
-                flex: 0 0 82%; width: 82%; margin: 0; transform: none; scroll-snap-align: center; }
-            .case-platform.ig { order: 1; }
-            .case-platform.tt { order: 2; }
-            .case-platform.yt { order: 3; }
+                display: none; width: 84%; max-width: 350px; margin: 0 auto; transform: none; }
+            .case-platform.active-slide { display: block; }
+            .case-platform::before { display: none; }   /* Glow raus */
             .case-platform:hover { transform: none; }
-            .case-platform figcaption { font-size: clamp(0.85rem, 3.6vw, 1.05rem); }
-            .case-more { margin-top: 44px; }
+            .case-platform figcaption { font-size: clamp(0.9rem, 3.8vw, 1.1rem); }
+            .case-more { margin-top: 30px; }
             .case-system-media { grid-template-columns: 1fr; max-width: 360px; gap: 34px; margin-bottom: 56px; }
             .case-result-media { grid-template-columns: 1fr; max-width: 400px; }
             /* Fallstudien-Karten wie die Leistungs-Karten: Bild bündig oben, Label darunter */
@@ -2334,12 +2334,12 @@
                 <div class="trust-stat-sep"></div>
                 <div class="trust-stat">
                     <span class="trust-stat-num" data-count="50000000" data-suffix="+">50.000.000+</span>
-                    <span class="trust-stat-label">Aufrufe erzielt</span>
+                    <span class="trust-stat-label">Aufrufe<span class="lbl-extra"> erzielt</span></span>
                 </div>
                 <div class="trust-stat-sep"></div>
                 <div class="trust-stat">
                     <span class="trust-stat-num" data-count="500" data-suffix="+">500+</span>
-                    <span class="trust-stat-label">Produzierte Videos</span>
+                    <span class="trust-stat-label"><span class="lbl-extra">Produzierte </span>Videos</span>
                 </div>
             </div>
         </div>
@@ -2452,6 +2452,11 @@
                     <img src="images/employa-youtube.png" alt="EMPLOYA YouTube Aufrufe – bis zu 364K pro Video" loading="lazy">
                     <figcaption>YouTube</figcaption>
                 </figure>
+            </div>
+            <div class="slider-nav" id="platformNav" style="display:none;">
+                <button class="slider-btn" type="button" aria-label="Vorherige Plattform" onclick="slidePlatform(-1)">←</button>
+                <span class="slider-counter" id="platformCounter">1 / 3</span>
+                <button class="slider-btn" type="button" aria-label="Nächste Plattform" onclick="slidePlatform(1)">→</button>
             </div>
 
             <div class="case-journey" id="caseJourney">
@@ -2891,6 +2896,10 @@
         // Mobile slider for portfolio and testimonials
         let portfolioIndex = 0;
         let testimonialIndex = 0;
+        // Plattform-Slider (Handy): Reihenfolge Instagram, TikTok, YouTube
+        // DOM-Reihenfolge ist tt=0, ig=1, yt=2 -> gewuenschte Anzeige-Reihenfolge:
+        var platformOrder = [1, 0, 2];
+        var platformPos = 0;
 
         function initMobileSliders() {
             const isMobile = window.innerWidth <= 768;
@@ -2918,6 +2927,31 @@
                     card.style.display = '';
                 }
             });
+            // Plattform-Views-Slider
+            const plNav = document.getElementById('platformNav');
+            if (plNav) plNav.style.display = isMobile ? 'flex' : 'none';
+            const plCards = document.querySelectorAll('.case-platform');
+            plCards.forEach((card, i) => {
+                if (isMobile) {
+                    card.classList.toggle('active-slide', i === platformOrder[platformPos]);
+                } else {
+                    card.classList.remove('active-slide');
+                    card.style.display = '';
+                }
+            });
+            if (isMobile) {
+                const plc = document.getElementById('platformCounter');
+                if (plc) plc.textContent = (platformPos + 1) + ' / ' + plCards.length;
+            }
+        }
+
+        function slidePlatform(dir) {
+            const cards = document.querySelectorAll('.case-platform');
+            if (!cards.length) return;
+            platformPos = (platformPos + dir + platformOrder.length) % platformOrder.length;
+            cards.forEach((card, i) => card.classList.toggle('active-slide', i === platformOrder[platformPos]));
+            const plc = document.getElementById('platformCounter');
+            if (plc) plc.textContent = (platformPos + 1) + ' / ' + cards.length;
         }
 
         // Desktop: um genau EIN Video weiterscrollen
