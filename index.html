@@ -2244,20 +2244,24 @@
             .case-cat { padding: 6px 10px; font-size: clamp(0.6rem, 2.9vw, 0.72rem); gap: 5px; white-space: nowrap; }
             /* Plattform-Views: künstlerische Collage – alle drei überlappend (kein Slider) */
             .case-platforms { display: block; position: relative; overflow: visible; scroll-snap-type: none;
-                width: 100%; max-width: none; margin-left: 0; height: 256px; padding: 0; }
+                width: 100%; max-width: none; margin-left: 0; height: 312px; padding: 0; }
             .case-platform.tt, .case-platform.ig, .case-platform.yt { position: absolute; margin: 0; }
             .case-platform::before { display: none; }        /* Glow raus */
-            .case-platform img {
-                filter: none; width: 100%; max-width: none; margin: 0; display: block;
+            /* Transparente Seitenränder der PNG wegschneiden -> Bilder wirken deutlich größer */
+            .plat-clip { display: block; overflow: hidden; }
+            .case-platform.tt img, .case-platform.ig img, .case-platform.yt img {
+                filter: none;                                  /* grauer Schatten-Schleier raus */
+                width: 172%; max-width: none; margin-left: -36%; display: block;
                 -webkit-user-drag: none; user-select: none; }
-            .case-platform.ig { width: 62%; left: 50%; top: 14px; transform: translateX(-50%) rotate(-3deg); z-index: 3; }
-            .case-platform.tt { width: 55%; left: -11%; top: 60px; transform: rotate(-9deg); z-index: 2; }
-            .case-platform.yt { width: 55%; left: auto; right: -11%; top: 46px; transform: rotate(9deg); z-index: 1; }
+            .case-platform.ig { width: 54%; left: 50%; top: 42px; transform: translateX(-50%) rotate(-3deg); z-index: 3; }
+            .case-platform.tt { width: 46%; left: -8%; top: 86px; transform: rotate(-9deg); z-index: 2; }
+            .case-platform.yt { width: 46%; left: auto; right: -8%; top: 72px; transform: rotate(9deg); z-index: 1; }
             /* keine Hover-Verschiebung auf dem Handy */
             .case-platform.ig:hover { transform: translateX(-50%) rotate(-3deg); z-index: 3; }
             .case-platform.tt:hover { transform: rotate(-9deg); z-index: 2; }
             .case-platform.yt:hover { transform: rotate(9deg); z-index: 1; }
-            .case-platform figcaption { display: none; }
+            /* Plattform-Namen über jedem Cluster */
+            .case-platform figcaption { display: block; z-index: 6; font-size: 0.76rem; letter-spacing: 0.06em; }
             .plat-arrow, .plat-counter { display: none; }
             /* Abstand unter dem View-Slider verkleinern */
             .case-journey { margin-top: 34px; }
