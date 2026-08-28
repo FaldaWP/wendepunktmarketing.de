@@ -2277,7 +2277,8 @@
             .case-platform figcaption { display: block; z-index: 6; font-size: 0.76rem; letter-spacing: 0.06em; }
             .plat-arrow, .plat-counter { display: none; }
             /* Abstand unter dem View-Slider verkleinern */
-            .case-journey { margin-top: 34px; }
+            /* gleicher Abstand ein- wie ausgeklappt (Basis-Regel .open setzt sonst 96px) */
+            .case-journey, .case-journey.open { margin-top: 34px; }
             .case-more { margin-top: 26px; }
             .case-system-media { grid-template-columns: 1fr; max-width: 360px; gap: 34px; margin-bottom: 56px; }
             .case-result-media { grid-template-columns: 1fr; max-width: 400px; }
