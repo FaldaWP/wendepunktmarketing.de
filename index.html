@@ -2253,6 +2253,8 @@
                 filter: none;                                  /* grauer Schatten-Schleier raus */
                 width: 172%; max-width: none; margin-left: -36%; display: block;
                 -webkit-user-drag: none; user-select: none; }
+            /* TikTok/YouTube treten zurück (leicht dunkler + entsättigt) -> Instagram ist der Held */
+            .case-platform.tt img, .case-platform.yt img { filter: brightness(0.82) saturate(0.68); }
             .case-platform.ig { width: 54%; left: 50%; top: 42px; transform: translateX(-50%) rotate(-3deg); z-index: 3; }
             .case-platform.tt { width: 40%; left: -1%; top: 86px; transform: rotate(-9deg); z-index: 2; }
             .case-platform.yt { width: 40%; left: auto; right: -1%; top: 86px; transform: rotate(9deg); z-index: 1; }
