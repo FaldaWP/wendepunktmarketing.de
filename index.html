@@ -2256,7 +2256,16 @@
             /* TikTok/YouTube treten zurück: verblassen leicht zum hellen Hintergrund
                (atmosphärische Perspektive) -> Instagram wirkt vorn und kräftig.
                Farben bleiben echt, nichts wird "schmutzig". Labels bleiben voll sichtbar. */
-            .case-platform.tt img, .case-platform.yt img { opacity: 0.75; filter: blur(1.5px); }
+            .case-platform.tt img, .case-platform.yt img { opacity: 0.78; filter: blur(1px); }
+            /* Weicher Bodenschatten unter Instagram -> hebt es von den anderen ab.
+               Bewusst KEIN drop-shadow auf dem Bild: das PNG hat transparente Lücken,
+               durch die der Schatten als grauer Schleier durchscheinen würde. */
+            .case-platform.ig::after {
+                content: ''; position: absolute; z-index: -1; pointer-events: none;
+                left: 20%; right: 20%; bottom: -3px; height: 20px; border-radius: 50%;
+                background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0) 72%);
+                filter: blur(5px);
+            }
             .case-platform.ig { width: 54%; left: 50%; top: 42px; transform: translateX(-50%) rotate(-3deg); z-index: 3; }
             .case-platform.tt { width: 40%; left: -1%; top: 86px; transform: rotate(-9deg); z-index: 2; }
             .case-platform.yt { width: 40%; left: auto; right: -1%; top: 86px; transform: rotate(9deg); z-index: 1; }
