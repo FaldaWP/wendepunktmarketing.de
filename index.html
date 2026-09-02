@@ -782,6 +782,19 @@
             .collage-track { gap: 10px; animation-duration: 50s; }
         }
         /* CTA nach der Case Study / Collage */
+        .pre-cta { padding: clamp(28px, 4vw, 56px) 0 0; background: #FFFFFF; }
+        .pre-cta-inner { max-width: 880px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px); display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+        .pre-cta-card { display: flex; flex-direction: column; gap: 8px; background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: 20px; padding: 26px 28px; box-shadow: var(--shadow-card); transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; }
+        .pre-cta-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.10); border-color: var(--color-accent); }
+        .pre-cta-eyebrow { display: inline-flex; align-items: center; gap: 7px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--color-accent-dark); }
+        .pre-cta-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); }
+        .pre-cta-card h3 { font-family: var(--font-display); font-size: 1.14rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; color: var(--color-text); }
+        .pre-cta-card p { font-size: 0.9rem; line-height: 1.6; color: var(--color-text-secondary); }
+        .pre-cta-link { margin-top: auto; padding-top: 14px; display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 700; color: var(--color-text); transition: color 0.3s; }
+        .pre-cta-link svg { width: 16px; height: 16px; transition: transform 0.3s; }
+        .pre-cta-card:hover .pre-cta-link { color: var(--color-accent-dark); }
+        .pre-cta-card:hover .pre-cta-link svg { transform: translateX(3px); }
+        @media (max-width: 700px) { .pre-cta-inner { grid-template-columns: 1fr; gap: 14px; } }
         .case-cta { padding: clamp(28px, 4vw, 56px) 0; text-align: center; background: #FFFFFF; }
         .case-cta .container {
             max-width: 880px;
@@ -2279,6 +2292,7 @@
                 <li><a href="#ergebnisse">Ergebnisse</a></li>
                 <li><a href="#faq">FAQ</a></li>
                 <li><a href="leistungen.html">Leistungen</a></li>
+                <li><a href="referenzen.html">Referenzen</a></li>
                 <li><a href="blog.html">Blog</a></li>
                 <li><a href="#kontakt" class="nav-cta">Erstgespräch sichern</a></li>
             </ul>
@@ -2659,6 +2673,28 @@
         </div>
     </section>
 
+    <!-- ========== LEISTUNGEN / REFERENZEN VOR DEM CTA ========== -->
+    <section class="pre-cta">
+        <div class="pre-cta-inner reveal">
+            <a href="leistungen.html" class="pre-cta-card">
+                <span class="pre-cta-eyebrow">Leistungen</span>
+                <h3>Noch unsicher, was du brauchst?</h3>
+                <p>Von Reel über Imagefilm und Event-Content bis Recruiting-Video: Hier steht, was wir machen und wie wir arbeiten.</p>
+                <span class="pre-cta-link">Leistungen ansehen
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </span>
+            </a>
+            <a href="referenzen.html" class="pre-cta-card">
+                <span class="pre-cta-eyebrow">Referenzen</span>
+                <h3>Lieber erst Ergebnisse sehen?</h3>
+                <p>15 Produktionen aus echten Kundenprojekten, die du dir direkt auf der Seite ansehen kannst.</p>
+                <span class="pre-cta-link">Referenzen ansehen
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </span>
+            </a>
+        </div>
+    </section>
+
     <!-- ========== CTA NACH KUNDENSTIMMEN ========== -->
     <section class="case-cta case-cta--orange">
         <div class="container reveal">
@@ -2668,7 +2704,6 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
             <p class="case-cta-note">Kostenloses Erstgespräch · Antwort innerhalb von 24 Stunden</p>
-            <a href="leistungen.html" class="case-cta-alt">Noch unsicher? Sieh dir unsere Leistungen an →</a>
         </div>
     </section>
 
