@@ -149,6 +149,16 @@
                 overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0;
             }
             .ref-head p { display:none; }
+
+            /* Hochkant mobil: Firmenname und Titel als ein Satz, ohne Trennlinie.
+               Der echte Firmenname bleibt fuer Screenreader/Suche im Dokument. */
+            .ref-card:not(.ref-card--wide) .ref-body h3::before { content:attr(data-client) " · "; color:var(--color-text-secondary); font-weight:600; }
+            .ref-card:not(.ref-card--wide) .ref-tagline { white-space:nowrap; font-size:0.66rem; letter-spacing:0.08em; }
+            .ref-card:not(.ref-card--wide) .ref-body h3 { font-size:0.82rem; line-height:1.35; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden; min-height:4.05em; }
+            .ref-card:not(.ref-card--wide) .ref-client {
+                position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+                overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0;
+            }
             .ref-head { margin-bottom:16px; }
             .ref-head .section-label { margin-bottom:0; }
             .ref-card:not(.ref-card--wide) .ref-body { gap:6px; padding-bottom:16px; }
@@ -223,7 +233,7 @@
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Event &amp; Vlog</div>
-                    <h3>Running Club</h3>
+                    <h3 data-client="Easyhugs">Running Club</h3>
                     <p>Die Stimmung beim Lauf eingefangen: Energie, Gesichter, Vorfreude aufs nächste Mal.</p>
                     <div class="ref-client">Easyhugs</div>
                 </div>
@@ -240,7 +250,7 @@
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Social &amp; Reels</div>
-                    <h3>Prag Nahverkehr Edit</h3>
+                    <h3 data-client="Eigenproduktion">Prag Nahverkehr Edit</h3>
                     <p>Schnitt auf den Beat: wie aus Alltagsaufnahmen ein Reel wird, das Leute anhält.</p>
                     <div class="ref-client">Eigenproduktion</div>
                 </div>
@@ -257,7 +267,7 @@
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Event &amp; Vlog</div>
-                    <h3>Messe-Vlog</h3>
+                    <h3 data-client="Matari GmbH">Messe-Vlog</h3>
                     <p>Ein Vlog über den Messeauftritt: Stimmung, Gespräche und Produkt am Stand.</p>
                     <div class="ref-client">Matari GmbH</div>
                 </div>
@@ -274,7 +284,7 @@
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Event &amp; Vlog</div>
-                    <h3>Running Club Ankündigung</h3>
+                    <h3 data-client="EasyFitness">Running Club Ankündigung</h3>
                     <p>Ankündigungsvideo, das Teilnehmer bringt. Klare Botschaft, klarer Call-to-Action.</p>
                     <div class="ref-client">EasyFitness</div>
                 </div>
@@ -291,7 +301,7 @@
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Imagefilm</div>
-                    <h3>Konzept-Vorstellung</h3>
+                    <h3 data-client="Orango">Konzept-Vorstellung</h3>
                     <p>Das Geschäftsmodell auf den Punkt gebracht, für Website, Pitch und Social gleichermaßen.</p>
                     <div class="ref-client">Orango</div>
                 </div>
@@ -308,7 +318,7 @@
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Event &amp; Vlog</div>
-                    <h3>Unternehmer-Begleitung im Vlog-Style</h3>
+                    <h3 data-client="Kundenprojekt">Unternehmer-Begleitung im Vlog-Style</h3>
                     <p>Ein Tag im Unternehmen, dokumentarisch begleitet. Diese Nähe schaffen klassische Imagefilme nicht.</p>
                     <div class="ref-client">Kundenprojekt</div>
                 </div>
@@ -325,7 +335,7 @@
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Social &amp; Reels</div>
-                    <h3>Social-Media-Content</h3>
+                    <h3 data-client="Fisch Schloh">Social-Media-Content</h3>
                     <p>Laufende Content-Produktion für den Account, mit Handwerk und Produkt im Mittelpunkt.</p>
                     <div class="ref-client">Fisch Schloh</div>
                 </div>
@@ -342,7 +352,7 @@
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Recruiting</div>
-                    <h3>Mitarbeiter-Interviews</h3>
+                    <h3 data-client="EMPLOYA GmbH">Mitarbeiter-Interviews</h3>
                     <p>Echte Stimmen aus dem Team als Performance-Creative, authentisch statt Hochglanz.</p>
                     <div class="ref-client">EMPLOYA GmbH</div>
                 </div>
@@ -359,7 +369,7 @@
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Imagefilm</div>
-                    <h3>Vorstellungsvideo</h3>
+                    <h3 data-client="B.U.N.T.">Vorstellungsvideo</h3>
                     <p>Ein Konzept in unter einer Minute erklärt, nah an den Menschen, die dahinterstehen.</p>
                     <div class="ref-client">B.U.N.T.</div>
                 </div>
@@ -376,7 +386,7 @@
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Social &amp; Reels</div>
-                    <h3>Trend-Edit</h3>
+                    <h3 data-client="CITIZEN The Artist">Trend-Edit</h3>
                     <p>Ein Trend-Format sauber umgesetzt: wenig Zeit, viel Wirkung, direkt im Feed platziert.</p>
                     <div class="ref-client">CITIZEN The Artist</div>
                 </div>
@@ -393,7 +403,7 @@
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Event &amp; Vlog</div>
-                    <h3>Ostermarkt Prag</h3>
+                    <h3 data-client="Praha EM">Ostermarkt Prag</h3>
                     <p>Event-Recap fürs Social-Media-Profil, kompakt geschnitten und direkt nach dem Drehtag fertig.</p>
                     <div class="ref-client">Praha EM</div>
                 </div>
@@ -410,7 +420,7 @@
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Recruiting</div>
-                    <h3>Pflege-Content I</h3>
+                    <h3 data-client="EMPLOYA GmbH">Pflege-Content I</h3>
                     <p>Acht solcher Videos pro Monat, rein organisch, direkt aus dem Arbeitsalltag gefilmt.</p>
                     <div class="ref-client">EMPLOYA GmbH</div>
                 </div>
@@ -427,7 +437,7 @@
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Recruiting</div>
-                    <h3>Pflege-Content II</h3>
+                    <h3 data-client="EMPLOYA GmbH">Pflege-Content II</h3>
                     <p>Low Budget, hohe Frequenz: Volumen statt Hochglanz, sofort ausspielbar.</p>
                     <div class="ref-client">EMPLOYA GmbH</div>
                 </div>
@@ -444,7 +454,7 @@
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Recruiting</div>
-                    <h3>Pflege-Content III</h3>
+                    <h3 data-client="EMPLOYA GmbH">Pflege-Content III</h3>
                     <p>Über 10 Millionen organische Aufrufe für EMPLOYA, erzielt mit genau diesem Format.</p>
                     <div class="ref-client">EMPLOYA GmbH</div>
                 </div>
@@ -461,7 +471,7 @@
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Erklärvideo</div>
-                    <h3>SaaS-Erklärvideo mit Motion Graphics</h3>
+                    <h3 data-client="ZweiradDesk">SaaS-Erklärvideo mit Motion Graphics</h3>
                     <p>Komplexe Software verständlich erzählt: Animation, Screendesign und Schnitt aus einer Hand.</p>
                     <div class="ref-client">ZweiradDesk</div>
                 </div>
