@@ -24,8 +24,8 @@
     <link rel="icon" type="image/png" sizes="192x192" href="images/favicon-192.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-    <title>Leistungen – Content & Video-Marketing aus einer Hand | Wendepunkt Marketing</title>
-    <meta name="description" content="Von Social-Media-Content über Imagefilm, Event-Content und Recruiting-Videos bis Performance Marketing – Wendepunkt Marketing produziert Content, der wirkt. In jedem Format.">
+    <title>Leistungen – Creative Directing, Werbespots & Social-Media-Content | Wendepunkt Marketing</title>
+    <meta name="description" content="Creative Directing, Werbespots, Influencer- und Testimonial-Kampagnen, Social-Media-Content, Imagefilm, Event- und Recruiting-Videos bis Performance Marketing – Wendepunkt Marketing produziert Content, der wirkt. In jedem Format.">
     <link rel="canonical" href="https://wendepunktmarketing.de/leistungen.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,8 +62,11 @@
         .nav-links a:hover { color:var(--color-text); }
         .nav-cta { background:var(--color-accent); color:#FFFFFF !important; padding:10px 22px; border-radius:100px; font-weight:700; font-size:0.85rem; transition:all 0.3s; }
         .nav-cta:hover { background:var(--color-accent-hover); }
-        .nav-hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:8px; }
+        .nav-hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:8px; z-index:1001; }   /* über dem offenen Handy-Menü, sonst lässt es sich nicht schließen */
         .nav-hamburger span { width:24px; height:2px; background:#1A1A1A; border-radius:2px; transition:all 0.3s; }
+        .nav-hamburger.active span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+        .nav-hamburger.active span:nth-child(2) { opacity:0; }
+        .nav-hamburger.active span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
 
         .section-label { display:inline-flex; align-items:center; gap:8px; font-size:0.78rem; font-weight:600; text-transform:uppercase; letter-spacing:0.14em; color:var(--color-accent); margin-bottom:18px; }
 
@@ -95,23 +98,47 @@
         .hero-badge .pulse { width:8px; height:8px; border-radius:50%; background:#F5A623; box-shadow:0 0 0 0 rgba(245,166,35,0.6); animation:heroPulse 2s infinite; }
         @keyframes heroPulse { 0%{box-shadow:0 0 0 0 rgba(245,166,35,0.55);} 70%{box-shadow:0 0 0 9px rgba(245,166,35,0);} 100%{box-shadow:0 0 0 0 rgba(245,166,35,0);} }
 
+        /* ===== Neues Level (dunkle, abgerundete Karte mit Abstand zum Rand, Top-Leistungen mit Video-Loops; 11.11. 23:15, vorher volles schwarzes Band) ===== */
+        .pro-band { position:relative; overflow:hidden; margin:clamp(8px,1.5vw,20px) clamp(10px,1.8vw,24px) 0; border-radius:clamp(22px,2.6vw,34px); background:linear-gradient(160deg,#1E1A17 0%,#121110 60%); color:#fff; padding:clamp(44px,5.5vw,76px) 0 clamp(44px,5.5vw,72px); }
+        .pro-band::before { content:''; position:absolute; top:-180px; left:-140px; width:560px; aspect-ratio:1; background:radial-gradient(circle, rgba(235,94,40,0.22), rgba(235,94,40,0) 65%); pointer-events:none; }
+        .pro-inner { position:relative; max-width:1200px; margin:0 auto; padding:0 clamp(20px,4vw,48px); }
+        .pro-head { display:grid; grid-template-columns:1.1fr 1fr; gap:clamp(20px,4vw,56px); align-items:end; margin-bottom:clamp(30px,4vw,44px); }
+        .pro-eyebrow { display:block; font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.16em; color:var(--color-accent); margin-bottom:14px; }
+        .pro-head h2 { font-family:var(--font-display); font-size:clamp(1.8rem,4vw,2.9rem); font-weight:800; letter-spacing:-0.03em; line-height:1.06; }
+        .pro-head h2 .grad { background:linear-gradient(100deg,#F5A623 0%, #EB5E28 92%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; }
+        .pro-head p { color:rgba(255,255,255,0.68); font-size:1.02rem; line-height:1.7; max-width:470px; }
+        .pro-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+        .pro-card { display:flex; flex-direction:column; color:#fff; }
+        .pro-media { position:relative; aspect-ratio:4/5; border-radius:18px; overflow:hidden; background:#000; box-shadow:0 22px 50px rgba(0,0,0,0.45); }
+        .pro-media video { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+        .pro-card:hover .pro-media video { transform:scale(1.04); }
+        .pro-media::after { content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 70%, rgba(0,0,0,0.35) 100%); }
+        .pro-num { position:absolute; z-index:2; top:14px; left:16px; font-family:var(--font-display); font-weight:800; font-size:0.9rem; letter-spacing:0.06em; color:#fff; }
+        .pro-body { padding:20px 2px 0; display:flex; flex-direction:column; flex:1; }
+        .pro-body h3 { font-family:var(--font-display); font-size:clamp(1.15rem,1.8vw,1.35rem); font-weight:800; letter-spacing:-0.01em; margin-bottom:8px; }
+        .pro-body p { color:rgba(255,255,255,0.66); font-size:0.93rem; line-height:1.68; margin-bottom:16px; }
+        .pro-ref { margin-top:auto; display:inline-flex; align-items:center; gap:8px; font-size:0.84rem; font-weight:700; color:var(--color-accent); }
+        .pro-ref svg { width:16px; height:16px; flex:0 0 auto; transition:transform 0.3s; }
+        .pro-card:hover .pro-ref svg { transform:translateX(4px); }
+        .pro-ref .pro-ref-label { color:rgba(255,255,255,0.5); font-weight:500; }
+
         /* ===== Capability-Grid (Bandbreite) ===== */
-        .cap-section { max-width:1200px; margin:0 auto; padding:clamp(40px,5vw,72px) clamp(20px,4vw,48px) clamp(20px,4vw,40px); }
-        .cap-head { max-width:720px; margin-bottom:40px; }
-        .cap-head h2 { font-family:var(--font-display); font-size:clamp(1.6rem,3.6vw,2.4rem); font-weight:800; letter-spacing:-0.02em; line-height:1.12; margin-bottom:14px; }
-        .cap-head p { color:var(--color-text-secondary); font-size:1.02rem; line-height:1.7; }
-        .cap-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+        .cap-section { max-width:1200px; margin:0 auto; padding:clamp(48px,6vw,80px) clamp(20px,4vw,48px) clamp(20px,4vw,40px); }
+        .cap-head { max-width:720px; margin-bottom:32px; }
+        .cap-head h2 { font-family:var(--font-display); font-size:clamp(1.4rem,3vw,1.9rem); font-weight:800; letter-spacing:-0.02em; line-height:1.12; margin-bottom:10px; }
+        .cap-head p { color:var(--color-text-secondary); font-size:1rem; line-height:1.7; }
+        .cap-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
         .cap-card { background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:20px; padding:0; overflow:hidden; box-shadow:var(--shadow-card); transition:transform 0.3s, box-shadow 0.3s, border-color 0.3s; }
         .cap-card:hover { transform:translateY(-6px); box-shadow:0 18px 46px rgba(0,0,0,0.12); border-color:var(--color-accent); }
-        .cap-media { position:relative; aspect-ratio:16/10; overflow:hidden; background:var(--color-surface); }
+        .cap-media { position:relative; aspect-ratio:16/9; overflow:hidden; background:var(--color-surface); }
         .cap-media img { position:relative; z-index:1; width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.6s cubic-bezier(0.16,1,0.3,1); }
         .cap-card:hover .cap-media img { transform:scale(1.07); }
         .cap-media::after { content:''; position:absolute; inset:0; z-index:2; pointer-events:none; background:linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,0.28) 100%); }
         .cap-icon { position:absolute; z-index:3; top:14px; left:14px; width:44px; height:44px; border-radius:12px; background:rgba(255,255,255,0.94); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; box-shadow:0 6px 18px rgba(0,0,0,0.18); }
         .cap-icon svg { width:23px; height:23px; stroke:var(--color-accent); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-        .cap-body { padding:22px 24px 26px; }
-        .cap-body h3 { font-family:var(--font-display); font-size:1.12rem; font-weight:700; margin-bottom:9px; }
-        .cap-body p { color:var(--color-text-secondary); font-size:0.92rem; line-height:1.7; }
+        .cap-body { padding:18px 22px 22px; }
+        .cap-body h3 { font-family:var(--font-display); font-size:1.05rem; font-weight:700; margin-bottom:7px; }
+        .cap-body p { color:var(--color-text-secondary); font-size:0.9rem; line-height:1.65; }
         .cap-card--accent { grid-column:1 / -1; background:linear-gradient(120deg,#EB5E28 0%, #F5A623 100%); border:none; color:#fff; padding:34px 40px; display:flex; flex-direction:row; align-items:center; justify-content:space-between; gap:28px; box-shadow:0 18px 44px rgba(235,94,40,0.24); }
         .cap-card--accent:hover { transform:none; box-shadow:0 18px 44px rgba(235,94,40,0.24); border:none; }
         .cap-accent-copy { min-width:0; }
@@ -130,7 +157,7 @@
         .collage { width:100%; overflow:hidden;
             -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
             mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent); }
-        .collage-track { display:flex; gap:14px; width:max-content; animation:collageScroll 70s linear infinite; }
+        .collage-track { display:flex; gap:14px; width:max-content; animation:collageScroll 82s linear infinite; }
         .collage-item { flex:0 0 auto; width:clamp(150px,15vw,220px); aspect-ratio:4/5; border-radius:14px; overflow:hidden; background:var(--color-surface); box-shadow:0 8px 24px rgba(0,0,0,0.08); }
         .collage-item img { width:100%; height:100%; object-fit:cover; display:block; }
         @keyframes collageScroll { from { transform:translateX(0); } to { transform:translateX(calc(-50% - 7px)); } }
@@ -161,6 +188,19 @@
             .hero::before { top:auto; bottom:-40px; right:auto; left:50%; transform:translateX(-50%); }
             .hero-visual { min-height:400px; margin-top:12px; order:2; }
             .cap-grid { grid-template-columns:repeat(2,1fr); }
+            .pro-head { grid-template-columns:1fr; gap:14px; }
+            .pro-grid { gap:16px; }
+            .pro-body p { font-size:0.88rem; }
+        }
+        @media (max-width:700px) {
+            /* Handy: Top-Leistungen als Wisch-Reihe, die nächste Karte schaut rein */
+            .pro-grid { display:flex; overflow-x:auto; -webkit-overflow-scrolling:touch; scroll-snap-type:x mandatory; scrollbar-width:none; gap:14px; margin:0 calc(-1 * clamp(20px,4vw,48px)); padding:0 clamp(20px,4vw,48px) 4px; scroll-padding:0 clamp(20px,4vw,48px); }
+            .pro-grid::-webkit-scrollbar { display:none; }
+            .pro-card { flex:0 0 80%; scroll-snap-align:start; }
+            .pro-body { padding-top:16px; }
+            .pro-ref { display:block; font-size:0.8rem; line-height:1.5; }   /* Beispiel-Link fließt als Text, Pfeil hängt am Ende */
+            .pro-ref svg { display:inline-block; vertical-align:-3px; margin-left:4px; }
+            .pro-ref .pro-ref-label { margin-right:4px; }
         }
         @media (max-width:600px) {
             .hero { padding-top:118px; }
@@ -173,7 +213,7 @@
             .cap-card--accent { flex-direction:column; align-items:flex-start; gap:20px; padding:30px; }
             .cap-accent-btn { width:100%; justify-content:center; }
             .collage-item { width:140px; border-radius:12px; }
-            .collage-track { gap:10px; animation-duration:50s; }
+            .collage-track { gap:10px; animation-duration:59s; }
         }
     </style>
 </head>
@@ -205,7 +245,7 @@
         <div class="hero-copy">
             <div class="hero-eyebrow"><span class="dot"></span>Leistungen</div>
             <h1><span class="l1">Content, der wirkt.</span><br><span class="grad">In jedem Format.</span></h1>
-            <p class="hero-lead">Ob Reel, Imagefilm, Event oder ganze Social-Media-Betreuung: Wir produzieren Content, der Aufmerksamkeit erzeugt, Vertrauen aufbaut und messbar Kunden gewinnt.</p>
+            <p class="hero-lead">Ob Reel, Werbespot, Event oder ganze Social-Media-Betreuung: Wir produzieren Content, der Aufmerksamkeit erzeugt, Vertrauen aufbaut und messbar Kunden gewinnt.</p>
             <p class="hero-note">Dein Projekt steht hier nicht dabei? Frag uns einfach, wir sind flexibel.</p>
             <div class="hero-tags">
                 <span class="hero-tag">Drehtag vor Ort</span>
@@ -227,10 +267,70 @@
         </div>
     </header>
 
+    <!-- ========== NEUES LEVEL ========== -->
+    <section class="pro-band" aria-labelledby="pro-title">
+        <div class="pro-inner">
+            <div class="pro-head">
+                <div>
+                    <span class="pro-eyebrow">Neues Level</span>
+                    <h2 id="pro-title">Produktionen auf <span class="grad">Marken-Niveau</span></h2>
+                </div>
+                <p>Werbespot mit Box-Weltmeister Agit Kabayel für TWLV, <span style="white-space:nowrap">Race-Day-Edit</span> bei Hyrox mit AG1: Diese Qualität bringen wir jetzt auch in deine Marke.</p>
+            </div>
+            <div class="pro-grid">
+                <a class="pro-card" href="referenzen.html">
+                    <div class="pro-media">
+                        <video muted loop playsinline preload="none" poster="videos/leistungen/creative-directing.jpg" aria-hidden="true">
+                            <source src="videos/leistungen/creative-directing.mp4" type="video/mp4">
+                        </video>
+                        <span class="pro-num">01</span>
+                    </div>
+                    <div class="pro-body">
+                        <h3>Creative Directing</h3>
+                        <p>Konzept, Storyboard, Casting und Regie am Set: Wir führen dein Projekt kreativ von der ersten Idee bis zum letzten Frame, damit Bild, Ton und Botschaft aus einem Guss sind.</p>
+                        <span class="pro-ref"><span class="pro-ref-label">Beispiel:</span> TWLV · Storyline-Spot
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </span>
+                    </div>
+                </a>
+                <a class="pro-card" href="referenzen.html">
+                    <div class="pro-media">
+                        <video muted loop playsinline preload="none" poster="videos/leistungen/werbespot.jpg" aria-hidden="true">
+                            <source src="videos/leistungen/werbespot.mp4" type="video/mp4">
+                        </video>
+                        <span class="pro-num">02</span>
+                    </div>
+                    <div class="pro-body">
+                        <h3>Professionelle Werbespots</h3>
+                        <p>Werbefilme mit Kino-Look: durchdachtes Licht, hochwertige Kameras, Color Grading und Sounddesign. Spots, die auf jedem Screen bestehen, vom Handy bis zur großen Leinwand.</p>
+                        <span class="pro-ref"><span class="pro-ref-label">Beispiel:</span> Markenfilm mit Agit Kabayel
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </span>
+                    </div>
+                </a>
+                <a class="pro-card" href="referenzen.html">
+                    <div class="pro-media">
+                        <video muted loop playsinline preload="none" poster="videos/leistungen/athleten-sport.jpg" aria-hidden="true">
+                            <source src="videos/leistungen/athleten-sport.mp4" type="video/mp4">
+                        </video>
+                        <span class="pro-num">03</span>
+                    </div>
+                    <div class="pro-body">
+                        <h3>Kampagnen mit Gesichtern</h3>
+                        <p>Deine Marke mit den richtigen Gesichtern: Wir drehen mit Creatorn, Markenbotschaftern und Profis, am Set oder mitten im Geschehen, und machen daraus Kampagnen, die sich echt anfühlen.</p>
+                        <span class="pro-ref"><span class="pro-ref-label">Beispiel:</span> AG1 × Hyrox · Race-Day-Edit
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- ========== BANDBREITE ========== -->
     <section class="cap-section">
         <div class="cap-head">
-            <h2>Das setzen wir für dich um</h2>
+            <h2>Außerdem für dich</h2>
             <p>Von der einzelnen Videoproduktion bis zur kompletten Social-Media-Betreuung – gemeinsam finden wir heraus, was zu deinem Ziel passt.</p>
         </div>
         <div class="cap-grid">
@@ -347,50 +447,59 @@
                 <div class="collage-item"><img src="images/collage/collage-01.jpg" alt="Elegant gedeckter Tisch" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-02.jpg" alt="Kranarbeiten auf der Baustelle" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-03.jpg" alt="Solaranlage aus der Drohnenperspektive" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-24.jpg" alt="Agit Kabayel mit Boxerin im Ring – TWLV" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-04.jpg" alt="Kind mit Huhn – B.U.N.T." loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-05.jpg" alt="Oldtimer" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-06.jpg" alt="Frischer Fisch bei Fisch Schloh" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-07.jpg" alt="Orango Saft-Automat" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-08.jpg" alt="Training im Fitnessstudio" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-09.jpg" alt="Fisch aus der Fritteuse" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-25.jpg" alt="Rote TWLV-Gummies in der Hand" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-10.jpg" alt="Garten- & Landschaftsbau" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-11.jpg" alt="Kaffee-Content" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-12.jpg" alt="Teamgeist – Hände im Kreis" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-13.jpg" alt="Schloss in Štramberk" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-14.jpg" alt="Elektriker bei der Arbeit" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-15.jpg" alt="Fisch auf Eis" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-26.jpg" alt="Agit Kabayel mit WBC-Gürtel – TWLV" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-16.jpg" alt="Spanferkel über dem Feuer" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-17.jpg" alt="Solar-Team aus der Drohnenperspektive" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-18.jpg" alt="Fitness – Mitarbeiterin" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-19.jpg" alt="Gepflegter Garten" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-20.jpg" alt="Elektroarbeiten in Nahaufnahme" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-21.jpg" alt="Logo – Goldene Biene Kaffee" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-27.jpg" alt="Agit Kabayel in Deckung – TWLV" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-22.jpg" alt="Arbeiten am Stromkasten" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-23.jpg" alt="Frisches Fischbrötchen" loading="lazy"></div>
                 <!-- Set 2 (Duplikat für nahtlose Endlos-Schleife) -->
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-01.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-02.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-03.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-24.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-04.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-05.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-06.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-07.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-08.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-09.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-25.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-10.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-11.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-12.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-13.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-14.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-15.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-26.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-16.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-17.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-18.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-19.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-20.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-21.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-27.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-22.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-23.jpg" alt="" loading="lazy"></div>
+
             </div>
         </div>
     </section>
@@ -431,6 +540,20 @@
     function acceptCookies(){localStorage.setItem("cookie-consent","accepted");document.getElementById("cookieBanner").style.display="none";loadGA();}
     function declineCookies(){localStorage.setItem("cookie-consent","declined");document.getElementById("cookieBanner").style.display="none";}
     if(!localStorage.getItem("cookie-consent")){document.getElementById("cookieBanner").style.display="block";}
+    </script>
+    <script>
+    // Top-Leistungen: stumme Loops laufen nur, solange sie zu sehen sind
+    (function(){
+        var vids = Array.prototype.slice.call(document.querySelectorAll('.pro-media video'));
+        if (!vids.length) return;
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        function play(v){ var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+        if (!('IntersectionObserver' in window)) { vids.forEach(play); return; }
+        var io = new IntersectionObserver(function(entries){
+            entries.forEach(function(e){ if (e.isIntersecting) play(e.target); else e.target.pause(); });
+        }, { threshold:0.3 });
+        vids.forEach(function(v){ io.observe(v); });
+    })();
     </script>
 </body>
 </html>

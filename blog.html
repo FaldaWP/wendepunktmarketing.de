@@ -64,8 +64,11 @@
         .nav-links a:hover { color:var(--color-text); }
         .nav-cta { background:var(--color-accent); color:#FFFFFF !important; padding:10px 24px; border-radius:100px; font-weight:700; font-size:0.85rem; transition:all 0.3s; }
         .nav-cta:hover { background:var(--color-accent-hover); }
-        .nav-hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:8px; }
+        .nav-hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:8px; z-index:1001; }   /* über dem offenen Handy-Menü, sonst lässt es sich nicht schließen */
         .nav-hamburger span { width:24px; height:2px; background:#1A1A1A; border-radius:2px; transition:all 0.3s; }
+        .nav-hamburger.active span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+        .nav-hamburger.active span:nth-child(2) { opacity:0; }
+        .nav-hamburger.active span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
 
         /* Hero */
         .blog-hero { padding:140px 0 60px; text-align:center; }

@@ -62,37 +62,77 @@
         .nav-links a:hover { color:var(--color-text); }
         .nav-cta { background:var(--color-accent); color:#FFFFFF !important; padding:10px 22px; border-radius:100px; font-weight:700; font-size:0.85rem; transition:all 0.3s; }
         .nav-cta:hover { background:var(--color-accent-hover); }
-        .nav-hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:8px; }
+        .nav-hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:8px; z-index:1001; }   /* über dem offenen Handy-Menü, sonst lässt es sich nicht schließen */
         .nav-hamburger span { width:24px; height:2px; background:#1A1A1A; border-radius:2px; transition:all 0.3s; }
+        .nav-hamburger.active span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+        .nav-hamburger.active span:nth-child(2) { opacity:0; }
+        .nav-hamburger.active span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
 
         .section-label { display:inline-flex; align-items:center; gap:8px; font-size:0.78rem; font-weight:600; text-transform:uppercase; letter-spacing:0.14em; color:var(--color-accent); margin-bottom:18px; }
 
-        /* ===== Hero ===== */
-        .ref-hero { position:relative; max-width:1200px; margin:0 auto; padding:150px clamp(20px,4vw,48px) 20px; overflow-x:hidden; overflow-x:clip; }
-        .ref-hero::before { content:''; position:absolute; top:80px; right:-60px; width:min(520px,55vw); aspect-ratio:1; background:radial-gradient(circle, rgba(245,166,35,0.28), rgba(245,166,35,0) 66%); z-index:0; pointer-events:none; }
-        .ref-hero-copy { position:relative; z-index:1; max-width:760px; }
-        .hero-eyebrow { display:inline-flex; align-items:center; gap:9px; font-size:0.74rem; font-weight:700; text-transform:uppercase; letter-spacing:0.16em; color:var(--color-accent-dark); background:var(--color-accent-glow); border:1px solid rgba(245,166,35,0.32); padding:8px 15px; border-radius:100px; margin-bottom:24px; }
-        .hero-eyebrow .dot { width:7px; height:7px; border-radius:50%; background:var(--color-accent); box-shadow:0 0 0 4px rgba(245,166,35,0.22); }
-        .ref-hero h1 { font-family:var(--font-display); font-size:clamp(2rem,5vw,3.8rem); font-weight:800; line-height:1.05; letter-spacing:-0.035em; margin-bottom:22px; }
-        .ref-hero h1 .grad { background:linear-gradient(100deg,#F5A623 0%, #EB5E28 92%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; }
-        .ref-hero p { color:var(--color-text-secondary); font-size:clamp(1.02rem,1.4vw,1.16rem); line-height:1.7; max-width:620px; }
+        /* ===== Kopf: schlicht, eine Spalte: Überschrift, darunter kurzer Text ===== */
+        .ref-hero { max-width:1200px; margin:0 auto; padding:clamp(118px,11vw,140px) clamp(20px,4vw,48px) 0; }
+        .ref-label { font-size:0.74rem; font-weight:700; text-transform:uppercase; letter-spacing:0.16em; color:var(--color-accent-dark); margin-bottom:12px; }
+        .ref-hero h1 { font-family:var(--font-display); font-size:clamp(1.9rem,3.8vw,3rem); font-weight:800; line-height:1.08; letter-spacing:-0.03em; margin-bottom:14px; }
+        .ref-intro { color:var(--color-text-secondary); font-size:1.02rem; line-height:1.65; max-width:640px; }
+        /* Hinweis als heller Orange-Chip, damit man ihn sieht (Ferris 11.11.: „sieht man kaum“) */
+        .ref-hinweis { display:inline-flex; align-items:center; gap:9px; margin-top:16px; padding:8px 16px 8px 12px; border-radius:100px; background:rgba(245,166,35,0.13); border:1px solid rgba(245,166,35,0.38); font-size:0.9rem; font-weight:500; line-height:1.4; color:var(--color-text); }
+        .ref-hinweis svg { flex:0 0 auto; width:18px; height:18px; stroke:var(--color-accent-dark); fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round; }
+        @media (max-width:700px) { .ref-hinweis { border-radius:14px; font-size:0.84rem; padding:9px 14px 9px 11px; } }
 
-        .ref-note { position:relative; z-index:1; display:flex; align-items:flex-start; gap:11px; margin-top:26px; max-width:600px; background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:16px; padding:15px 18px; box-shadow:var(--shadow-card); }
-        .ref-note svg { flex:0 0 auto; width:19px; height:19px; margin-top:2px; stroke:var(--color-accent); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-        .ref-note p { font-size:0.88rem; line-height:1.6; color:var(--color-text-secondary); }
-        .ref-note b { color:var(--color-text); font-weight:700; }
+        /* ===== Bento: Showreel groß links, rechts AG1 × Hyrox und TWLV (Agit Kabayel) übereinander =====
+           Spalten 427:655 bei 22px Abstand: Die Querkacheln sind dann genau 16:9 und zusammen so hoch
+           wie das Showreel (9:16). Titel und Text liegen unten auf dem Video und verschwinden beim Abspielen. */
+        .bento { position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:clamp(30px,4vw,48px) clamp(20px,4vw,48px) 0; display:grid; grid-template-columns:minmax(0,427fr) minmax(0,655fr); grid-template-rows:1fr 1fr; gap:22px; }
+        /* Sprungziele (z. B. von leistungen.html) nicht unter dem festen Menü verstecken */
+        .bento-tile[id], .ref-card[id] { scroll-margin-top:96px; }
+        .bento-tile { position:relative; margin:0; border-radius:22px; overflow:hidden; background:#111; box-shadow:0 18px 50px rgba(0,0,0,0.16); transition:transform 0.3s, box-shadow 0.3s; }
+        .bento-tile:hover { transform:translateY(-4px); box-shadow:0 26px 60px rgba(0,0,0,0.22); }
+        .bento-showreel { grid-row:1 / 3; }
+        .bento-showreel .ref-media { aspect-ratio:9/16; }
+        .bento-quer .ref-media { position:absolute; inset:0; aspect-ratio:auto; }
+        .bento .ref-play::before { background:linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.80) 100%); }
+        .bento .ref-play-icon { width:66px; height:66px; }
+        .bento-tile:hover .ref-play-icon { transform:translate(-50%,-50%) scale(1.09); background:#fff; }
+        .bento-info { position:absolute; z-index:4; left:0; right:0; bottom:0; padding:clamp(16px,2vw,26px); pointer-events:none; color:#fff; transition:opacity 0.3s; }
+        .bento-info .ref-tagline { color:var(--color-accent); margin-bottom:7px; }
+        .bento-info h3 { font-family:var(--font-display); font-size:clamp(1.1rem,1.6vw,1.45rem); font-weight:800; letter-spacing:-0.015em; line-height:1.2; margin-bottom:6px; }
+        .bento-info p { font-size:0.9rem; line-height:1.55; color:rgba(255,255,255,0.86); max-width:540px; }
+        .bento-showreel .bento-info h3 { font-size:clamp(1.7rem,2.8vw,2.4rem); }
+        .ref-media.is-playing .bento-info { opacity:0; }
+        /* Tablet: Bento bleibt, Kacheltexte ohne Beschreibung */
+        @media (max-width:900px) {
+            .bento-quer .bento-info p { display:none; }
+        }
+        /* Handy: untereinander, Showreel zuerst */
+        @media (max-width:700px) {
+            .bento { grid-template-columns:1fr; grid-template-rows:auto; gap:14px; }
+            .bento-showreel { grid-row:auto; width:min(100%,360px); justify-self:center; }
+            .bento-quer .ref-media { position:relative; aspect-ratio:16/9; }
+            .bento .ref-play-icon { width:54px; height:54px; }
+        }
 
-        /* ===== Grid ===== */
-        .ref-section { max-width:1200px; margin:0 auto; padding:clamp(18px,2vw,26px) clamp(20px,4vw,48px) 0; }
-        .ref-head { margin-bottom:26px; }
-        .ref-head h2 { font-family:var(--font-display); font-size:clamp(1.5rem,3.2vw,2.15rem); font-weight:800; letter-spacing:-0.02em; line-height:1.14; margin-bottom:10px; }
-        .ref-head p { color:var(--color-text-secondary); font-size:1rem; line-height:1.7; max-width:620px; }
+        /* ===== Archiv (Raster) =====
+           Oben das Bento als Highlights (Text im Video), darunter abgesetzt das Archiv im Kartenstil
+           (Text unter dem Video). Die Zeile „Archiv“ macht den Wechsel bewusst (Ferris, 11.11.2026). */
+        .ref-section { max-width:1200px; margin:0 auto; padding:clamp(44px,5vw,64px) clamp(20px,4vw,48px) 0; }
+        .ref-archiv-head { display:flex; align-items:center; gap:18px; margin-bottom:22px; }
+        .ref-archiv-head h2 { font-family:var(--font-display); font-size:clamp(1.3rem,2.4vw,1.6rem); font-weight:800; letter-spacing:-0.02em; line-height:1; }
+        .ref-archiv-head::after { content:''; flex:1; height:1px; background:var(--color-border); order:1; }
+        .ref-archiv-count { order:2; font-size:0.86rem; font-weight:600; color:var(--color-text-muted); white-space:nowrap; }
 
         .ref-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:22px; grid-auto-flow:row dense; }
 
         .ref-card { background:var(--color-bg-card); border:1px solid var(--color-border); border-radius:20px; overflow:hidden; box-shadow:var(--shadow-card); display:flex; flex-direction:column; transition:transform 0.3s, box-shadow 0.3s, border-color 0.3s; }
         .ref-card:hover { transform:translateY(-5px); box-shadow:0 18px 46px rgba(0,0,0,0.12); border-color:var(--color-accent); }
         .ref-card--wide { grid-column:span 2; }
+        /* Querkarte neben Hochkant-Karten (letzte Reihe am PC, Tablet) wird auf deren Höhe gestreckt.
+           Statt leerer Fläche wächst der Videobereich mit: das Video bleibt ganz sichtbar (contain),
+           die Extra-Höhe füllt das unscharfe Vorschaubild (--bg am .ref-media). Ohne Streckung exakt 16:9, nichts sichtbar. */
+        .ref-card--wide .ref-media { flex:1 0 auto; }
+        .ref-card--wide .ref-body { flex:0 0 auto; }
+        .ref-card--wide .ref-media::before { content:''; position:absolute; inset:-40px; background:var(--bg, #111) center/cover no-repeat; filter:blur(28px) brightness(0.8); }
+        .ref-card--wide .ref-media video { position:relative; z-index:1; object-fit:contain; background:transparent; }
 
         .ref-media { position:relative; background:#111; overflow:hidden; }
         .ref-media { aspect-ratio:9/16; }
@@ -143,12 +183,10 @@
         @media (max-width:700px) {
             /* Mobil ruhiger: Zwischenueberschrift und Kachel-Beschreibungen optisch raus,
                fuer Screenreader und Suchmaschinen bleiben sie im Dokument. */
-            .ref-head h2,
             .ref-card:not(.ref-card--wide) .ref-body p {
                 position:absolute; width:1px; height:1px; padding:0; margin:-1px;
                 overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0;
             }
-            .ref-head p { display:none; }
 
             /* Hochkant mobil: Firmenname und Titel als ein Satz, ohne Trennlinie.
                Der echte Firmenname bleibt fuer Screenreader/Suche im Dokument. */
@@ -159,13 +197,13 @@
                 position:absolute; width:1px; height:1px; padding:0; margin:-1px;
                 overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap; border:0;
             }
-            .ref-head { margin-bottom:16px; }
-            .ref-head .section-label { margin-bottom:0; }
             .ref-card:not(.ref-card--wide) .ref-body { gap:6px; padding-bottom:12px; }
             .ref-card:not(.ref-card--wide) .ref-client { padding-top:10px; }
 
-            .ref-hero { padding-top:120px; }
+            .ref-hero { padding-top:112px; }
             .ref-grid { grid-template-columns:repeat(2,1fr); gap:14px; }
+            .ref-section { padding-top:36px; }
+            .ref-archiv-head { gap:12px; margin-bottom:14px; }
             .ref-body { padding:14px 15px 18px; }
             .ref-body h3 { font-size:0.96rem; }
             .ref-body p { font-size:0.83rem; }
@@ -202,28 +240,106 @@
     </nav>
 
     <header class="ref-hero">
-        <div class="ref-hero-copy">
-            <div class="hero-eyebrow"><span class="dot"></span>Referenzen</div>
-            <h1>Unsere Arbeit.<br><span class="grad">Zum Ansehen.</span></h1>
-            <p>Reels, Imagefilme, Event-Content, Recruiting-Videos und Erklärvideos – alles selbst produziert, geschnitten und veröffentlicht. Klick auf ein Video und sieh dir an, wie wir arbeiten.</p>
-        </div>
-        <div class="ref-note">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
-            <p><b>Hinweis zur Bildqualität:</b> Alle Videos hier sind stark komprimiert, damit die Seite so schnell wie möglich lädt. Beim Kunden landen sie natürlich in voller Auflösung.</p>
-        </div>
+        <div class="ref-label">Referenzen</div>
+        <h1>Unsere Produktionen im&nbsp;Überblick</h1>
+        <p class="ref-intro">Reels, Werbespots, Event- und Recruiting-Videos: alles selbst produziert, geschnitten und veröffentlicht.</p>
+        <p class="ref-hinweis"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg><span>Hier in Vorschau-Qualität für schnelles Laden. <span style="white-space:nowrap">Beim Kunden gestochen scharf.</span></span></p>
     </header>
 
-    <section class="ref-section">
-        <div class="ref-head">
-            <div class="section-label">Ausgewählte Projekte</div>
-            <h2>Produktionen im Überblick</h2>
-            <p>Reels, Imagefilme, Event-Content, Recruiting-Videos und Erklärvideos – vom 10-Sekünder bis zum achtminütigen Motion-Graphics-Film.</p>
+    <section class="bento" aria-label="Showreel und neueste Projekte">
+        <article class="bento-tile bento-showreel" id="showreel">
+            <div class="ref-media">
+                <video preload="none" playsinline controls poster="videos/referenzen/showreel.jpg">
+                    <source src="videos/referenzen/showreel.mp4" type="video/mp4">
+                </video>
+                <span class="ref-time">1:13</span>
+                <button class="ref-play" aria-label="Video abspielen: Showreel 2026 Teil 1">
+                    <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+                </button>
+                <div class="bento-info">
+                    <div class="ref-tagline">2026 · Teil 1</div>
+                    <h3>Showreel</h3>
+                    <p>Ein Querschnitt unserer Projekte in 73 Sekunden.</p>
+                </div>
+            </div>
+        </article>
+        <article class="bento-tile bento-quer" id="ag1-hyrox">
+            <div class="ref-media">
+                <video preload="none" playsinline controls poster="videos/referenzen/ag1-hyrox-hype-edit-2.jpg">
+                    <source src="videos/referenzen/ag1-hyrox-hype-edit.mp4" type="video/mp4">
+                </video>
+                <span class="ref-time">0:23</span>
+                <button class="ref-play" aria-label="Video abspielen: Race-Day Hype-Edit">
+                    <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+                </button>
+                <div class="bento-info">
+                    <div class="ref-tagline">Event &amp; Vlog · AG1 × Hyrox</div>
+                    <h3>Race-Day Hype-Edit</h3>
+                    <p>Hyrox Hamburg in 23 Sekunden: schneller Schwarz-Weiß-Schnitt vom Wettkampf, nur das AG1-Grün bleibt in Farbe.</p>
+                </div>
+            </div>
+        </article>
+        <article class="bento-tile bento-quer" id="twlv-kabayel">
+            <div class="ref-media">
+                <video preload="none" playsinline controls poster="videos/referenzen/twlv-teaser.jpg">
+                    <source src="videos/referenzen/twlv-teaser.mp4" type="video/mp4">
+                </video>
+                <span class="ref-time">0:16</span>
+                <button class="ref-play" aria-label="Video abspielen: Markenfilm mit Agit Kabayel">
+                    <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+                </button>
+                <div class="bento-info">
+                    <div class="ref-tagline">Werbespot · TWLV</div>
+                    <h3>Markenfilm mit Agit Kabayel</h3>
+                    <p>Agit Kabayel, WBC-Weltmeister im Schwergewicht und Mitgründer von TWLV: Boxen, Fokus, Wille im Schwarz-Weiß-Look.</p>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <section class="ref-section" aria-labelledby="archiv-title">
+        <div class="ref-archiv-head">
+            <h2 id="archiv-title">Archiv</h2>
+            <span class="ref-archiv-count">21 weitere Produktionen</span>
         </div>
         <div class="ref-grid" id="refGrid">
-
             <article class="ref-card">
                 <div class="ref-media">
-                    <video preload="none" playsinline controls poster="videos/referenzen/running-club-aftermovie.jpg">
+                    <video preload="none" playsinline controls poster="videos/referenzen/employa-mitarbeiter-interviews.jpg">
+                        <source src="videos/referenzen/employa-mitarbeiter-interviews.mp4" type="video/mp4">
+                    </video>
+                    <span class="ref-time">1:26</span>
+                    <button class="ref-play" aria-label="Video abspielen: Mitarbeiter-Interviews">
+                        <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+                    </button>
+                </div>
+                <div class="ref-body">
+                    <div class="ref-tagline">Recruiting</div>
+                    <h3 data-client="EMPLOYA">Mitarbeiter-Interviews</h3>
+                    <p>Echte Stimmen aus dem Team als Performance-Creative, authentisch statt Hochglanz.</p>
+                    <div class="ref-client">EMPLOYA</div>
+                </div>
+            </article>
+            <article class="ref-card" id="twlv-storyline">
+                <div class="ref-media">
+                    <video preload="none" playsinline controls poster="videos/referenzen/twlv-storyline-kopfhoerer.jpg">
+                        <source src="videos/referenzen/twlv-storyline.mp4" type="video/mp4">
+                    </video>
+                    <span class="ref-time">0:30</span>
+                    <button class="ref-play" aria-label="Video abspielen: Storyline-Spot">
+                        <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+                    </button>
+                </div>
+                <div class="ref-body">
+                    <div class="ref-tagline">Werbespot</div>
+                    <h3 data-client="TWLV">Storyline-Spot</h3>
+                    <p>Eine Athletin, ihre Routine, ihr Wille: Markenspot für TWLV, die Supplement-Marke von Mitgründer und Box-Weltmeister Agit Kabayel.</p>
+                    <div class="ref-client">TWLV</div>
+                </div>
+            </article>
+            <article class="ref-card">
+                <div class="ref-media">
+                    <video preload="none" playsinline controls poster="videos/referenzen/running-club-aftermovie-2.jpg">
                         <source src="videos/referenzen/running-club-aftermovie.mp4" type="video/mp4">
                     </video>
                     <span class="ref-time">1:20</span>
@@ -240,24 +356,7 @@
             </article>
             <article class="ref-card">
                 <div class="ref-media">
-                    <video preload="none" playsinline controls poster="videos/referenzen/prag-nahverkehr-edit.jpg">
-                        <source src="videos/referenzen/prag-nahverkehr-edit.mp4" type="video/mp4">
-                    </video>
-                    <span class="ref-time">0:16</span>
-                    <button class="ref-play" aria-label="Video abspielen: Prag Nahverkehr Edit">
-                        <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
-                    </button>
-                </div>
-                <div class="ref-body">
-                    <div class="ref-tagline">Social &amp; Reels</div>
-                    <h3 data-client="Eigenproduktion">Prag Nahverkehr Edit</h3>
-                    <p>Schnitt auf den Beat: wie aus Alltagsaufnahmen ein Reel wird, das Leute anhält.</p>
-                    <div class="ref-client">Eigenproduktion</div>
-                </div>
-            </article>
-            <article class="ref-card">
-                <div class="ref-media">
-                    <video preload="none" playsinline controls poster="videos/referenzen/matari-messe-vlog.jpg">
+                    <video preload="none" playsinline controls poster="videos/referenzen/matari-messe-vlog-2.jpg">
                         <source src="videos/referenzen/matari-messe-vlog.mp4" type="video/mp4">
                     </video>
                     <span class="ref-time">2:12</span>
@@ -274,53 +373,19 @@
             </article>
             <article class="ref-card">
                 <div class="ref-media">
-                    <video preload="none" playsinline controls poster="videos/referenzen/running-club-ankuendigung.jpg">
-                        <source src="videos/referenzen/running-club-ankuendigung.mp4" type="video/mp4">
+                    <video preload="none" playsinline controls poster="videos/referenzen/twlv-reel.jpg">
+                        <source src="videos/referenzen/twlv-reel.mp4" type="video/mp4">
                     </video>
-                    <span class="ref-time">0:55</span>
-                    <button class="ref-play" aria-label="Video abspielen: Running Club Ankündigung">
+                    <span class="ref-time">0:13</span>
+                    <button class="ref-play" aria-label="Video abspielen: Teaser Between Rounds">
                         <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
                     </button>
                 </div>
                 <div class="ref-body">
-                    <div class="ref-tagline">Event &amp; Vlog</div>
-                    <h3 data-client="EasyFitness">Running Club Ankündigung</h3>
-                    <p>Ankündigungsvideo, das Teilnehmer bringt. Klare Botschaft, klarer Call-to-Action.</p>
-                    <div class="ref-client">EasyFitness</div>
-                </div>
-            </article>
-            <article class="ref-card ref-card--wide">
-                <div class="ref-media">
-                    <video preload="none" playsinline controls poster="videos/referenzen/orango-konzept.jpg">
-                        <source src="videos/referenzen/orango-konzept.mp4" type="video/mp4">
-                    </video>
-                    <span class="ref-time">0:48</span>
-                    <button class="ref-play" aria-label="Video abspielen: Konzept-Vorstellung">
-                        <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
-                    </button>
-                </div>
-                <div class="ref-body">
-                    <div class="ref-tagline">Imagefilm</div>
-                    <h3 data-client="Orango">Konzept-Vorstellung</h3>
-                    <p>Das Geschäftsmodell auf den Punkt gebracht, für Website, Pitch und Social gleichermaßen.</p>
-                    <div class="ref-client">Orango</div>
-                </div>
-            </article>
-            <article class="ref-card ref-card--wide">
-                <div class="ref-media">
-                    <video preload="none" playsinline controls poster="videos/referenzen/unternehmer-begleitung-vlog.jpg">
-                        <source src="videos/referenzen/unternehmer-begleitung-vlog.mp4" type="video/mp4">
-                    </video>
-                    <span class="ref-time">3:31</span>
-                    <button class="ref-play" aria-label="Video abspielen: Unternehmer-Begleitung im Vlog-Style">
-                        <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
-                    </button>
-                </div>
-                <div class="ref-body">
-                    <div class="ref-tagline">Event &amp; Vlog</div>
-                    <h3 data-client="Kundenprojekt">Unternehmer-Begleitung im Vlog-Style</h3>
-                    <p>Ein Tag im Unternehmen, dokumentarisch begleitet. Diese Nähe schaffen klassische Imagefilme nicht.</p>
-                    <div class="ref-client">Kundenprojekt</div>
+                    <div class="ref-tagline">Social &amp; Reels</div>
+                    <h3 data-client="TWLV">Teaser „Between Rounds“</h3>
+                    <p>60 Sekunden Rundenpause als Countdown erzählt: Teaser für TWLV, die Marke von Mitgründer Agit Kabayel.</p>
+                    <div class="ref-client">TWLV</div>
                 </div>
             </article>
             <article class="ref-card">
@@ -342,36 +407,70 @@
             </article>
             <article class="ref-card">
                 <div class="ref-media">
-                    <video preload="none" playsinline controls poster="videos/referenzen/employa-mitarbeiter-interviews.jpg">
-                        <source src="videos/referenzen/employa-mitarbeiter-interviews.mp4" type="video/mp4">
+                    <video preload="none" playsinline controls poster="videos/referenzen/rbn-kundin-heimgeschickt.jpg">
+                        <source src="videos/referenzen/rbn-kundin-heimgeschickt.mp4" type="video/mp4">
                     </video>
-                    <span class="ref-time">1:26</span>
-                    <button class="ref-play" aria-label="Video abspielen: Mitarbeiter-Interviews">
+                    <span class="ref-time">0:22</span>
+                    <button class="ref-play" aria-label="Video abspielen: Kundin heimgeschickt">
                         <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
                     </button>
                 </div>
                 <div class="ref-body">
-                    <div class="ref-tagline">Recruiting</div>
-                    <h3 data-client="EMPLOYA">Mitarbeiter-Interviews</h3>
-                    <p>Echte Stimmen aus dem Team als Performance-Creative, authentisch statt Hochglanz.</p>
-                    <div class="ref-client">EMPLOYA</div>
+                    <div class="ref-tagline">Social &amp; Reels</div>
+                    <h3 data-client="Rotkehlchen">Kundin heimgeschickt</h3>
+                    <p>Olga erzählt, warum sie eine Kundin wieder nach Hause geschickt hat: eine ehrliche Story, die Vertrauen schafft.</p>
+                    <div class="ref-client">Rotkehlchen Beauty Nest</div>
                 </div>
             </article>
             <article class="ref-card">
                 <div class="ref-media">
-                    <video preload="none" playsinline controls poster="videos/referenzen/bunt-vorstellungsvideo.jpg">
-                        <source src="videos/referenzen/bunt-vorstellungsvideo.mp4" type="video/mp4">
+                    <video preload="none" playsinline controls poster="videos/referenzen/prag-nahverkehr-edit-2.jpg">
+                        <source src="videos/referenzen/prag-nahverkehr-edit.mp4" type="video/mp4">
                     </video>
-                    <span class="ref-time">0:39</span>
-                    <button class="ref-play" aria-label="Video abspielen: Vorstellungsvideo">
+                    <span class="ref-time">0:16</span>
+                    <button class="ref-play" aria-label="Video abspielen: Prag Nahverkehr Edit">
+                        <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+                    </button>
+                </div>
+                <div class="ref-body">
+                    <div class="ref-tagline">Social &amp; Reels</div>
+                    <h3 data-client="Eigenproduktion">Prag Nahverkehr Edit</h3>
+                    <p>Schnitt auf den Beat: wie aus Alltagsaufnahmen ein Reel wird, das Leute anhält.</p>
+                    <div class="ref-client">Eigenproduktion</div>
+                </div>
+            </article>
+            <article class="ref-card ref-card--wide">
+                <div class="ref-media" style="--bg:url('videos/referenzen/orango-konzept.jpg')">
+                    <video preload="none" playsinline controls poster="videos/referenzen/orango-konzept.jpg">
+                        <source src="videos/referenzen/orango-konzept.mp4" type="video/mp4">
+                    </video>
+                    <span class="ref-time">0:48</span>
+                    <button class="ref-play" aria-label="Video abspielen: Konzept-Vorstellung">
                         <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
                     </button>
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Imagefilm</div>
-                    <h3 data-client="B.U.N.T.">Vorstellungsvideo</h3>
-                    <p>Ein Konzept in unter einer Minute erklärt, nah an den Menschen, die dahinterstehen.</p>
-                    <div class="ref-client">B.U.N.T.</div>
+                    <h3 data-client="Orango">Konzept-Vorstellung</h3>
+                    <p>Das Geschäftsmodell auf den Punkt gebracht, für Website, Pitch und Social gleichermaßen.</p>
+                    <div class="ref-client">Orango</div>
+                </div>
+            </article>
+            <article class="ref-card ref-card--wide">
+                <div class="ref-media" style="--bg:url('videos/referenzen/unternehmer-begleitung-vlog.jpg')">
+                    <video preload="none" playsinline controls poster="videos/referenzen/unternehmer-begleitung-vlog.jpg">
+                        <source src="videos/referenzen/unternehmer-begleitung-vlog.mp4" type="video/mp4">
+                    </video>
+                    <span class="ref-time">3:31</span>
+                    <button class="ref-play" aria-label="Video abspielen: Unternehmer-Begleitung im Vlog-Style">
+                        <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+                    </button>
+                </div>
+                <div class="ref-body">
+                    <div class="ref-tagline">Event &amp; Vlog</div>
+                    <h3 data-client="Kundenprojekt">Unternehmer-Begleitung im Vlog-Style</h3>
+                    <p>Ein Tag im Unternehmen, dokumentarisch begleitet. Diese Nähe schaffen klassische Imagefilme nicht.</p>
+                    <div class="ref-client">Kundenprojekt</div>
                 </div>
             </article>
             <article class="ref-card">
@@ -393,19 +492,53 @@
             </article>
             <article class="ref-card">
                 <div class="ref-media">
-                    <video preload="none" playsinline controls poster="videos/referenzen/eastermarket-event.jpg">
-                        <source src="videos/referenzen/eastermarket-event.mp4" type="video/mp4">
+                    <video preload="none" playsinline controls poster="videos/referenzen/running-club-ankuendigung.jpg">
+                        <source src="videos/referenzen/running-club-ankuendigung.mp4" type="video/mp4">
                     </video>
-                    <span class="ref-time">0:27</span>
-                    <button class="ref-play" aria-label="Video abspielen: Ostermarkt Prag">
+                    <span class="ref-time">0:55</span>
+                    <button class="ref-play" aria-label="Video abspielen: Running Club Ankündigung">
                         <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
                     </button>
                 </div>
                 <div class="ref-body">
                     <div class="ref-tagline">Event &amp; Vlog</div>
-                    <h3 data-client="Praha EM">Ostermarkt Prag</h3>
-                    <p>Event-Recap fürs Social-Media-Profil, kompakt geschnitten und direkt nach dem Drehtag fertig.</p>
-                    <div class="ref-client">Praha EM</div>
+                    <h3 data-client="EasyFitness">Running Club Ankündigung</h3>
+                    <p>Ankündigungsvideo, das Teilnehmer bringt. Klare Botschaft, klarer Call-to-Action.</p>
+                    <div class="ref-client">EasyFitness</div>
+                </div>
+            </article>
+            <article class="ref-card">
+                <div class="ref-media">
+                    <video preload="none" playsinline controls poster="videos/referenzen/bunt-vorstellungsvideo.jpg">
+                        <source src="videos/referenzen/bunt-vorstellungsvideo.mp4" type="video/mp4">
+                    </video>
+                    <span class="ref-time">0:39</span>
+                    <button class="ref-play" aria-label="Video abspielen: Vorstellungsvideo">
+                        <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+                    </button>
+                </div>
+                <div class="ref-body">
+                    <div class="ref-tagline">Imagefilm</div>
+                    <h3 data-client="B.U.N.T.">Vorstellungs&shy;video</h3>
+                    <p>Ein Konzept in unter einer Minute erklärt, nah an den Menschen, die dahinterstehen.</p>
+                    <div class="ref-client">B.U.N.T.</div>
+                </div>
+            </article>
+            <article class="ref-card">
+                <div class="ref-media">
+                    <video preload="none" playsinline controls poster="videos/referenzen/yl-becher.jpg">
+                        <source src="videos/referenzen/yl-becher.mp4" type="video/mp4">
+                    </video>
+                    <span class="ref-time">0:25</span>
+                    <button class="ref-play" aria-label="Video abspielen: Das Becher-Problem">
+                        <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+                    </button>
+                </div>
+                <div class="ref-body">
+                    <div class="ref-tagline">Personal Brand</div>
+                    <h3 data-client="Younis &amp; Leynes">Das Becher-Problem</h3>
+                    <p>Schneller Social-Media-Clip im Streamer-Stil, Low Budget und hohe Frequenz: neue Becher, alte Software, Automaten offline.</p>
+                    <div class="ref-client">Younis &amp; Leynes</div>
                 </div>
             </article>
             <article class="ref-card">
@@ -427,6 +560,23 @@
             </article>
             <article class="ref-card">
                 <div class="ref-media">
+                    <video preload="none" playsinline controls poster="videos/referenzen/eastermarket-event.jpg">
+                        <source src="videos/referenzen/eastermarket-event.mp4" type="video/mp4">
+                    </video>
+                    <span class="ref-time">0:27</span>
+                    <button class="ref-play" aria-label="Video abspielen: Ostermarkt Prag">
+                        <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+                    </button>
+                </div>
+                <div class="ref-body">
+                    <div class="ref-tagline">Event &amp; Vlog</div>
+                    <h3 data-client="Praha EM">Ostermarkt Prag</h3>
+                    <p>Event-Recap fürs Social-Media-Profil, kompakt geschnitten und direkt nach dem Drehtag fertig.</p>
+                    <div class="ref-client">Praha EM</div>
+                </div>
+            </article>
+            <article class="ref-card">
+                <div class="ref-media">
                     <video preload="none" playsinline controls poster="videos/referenzen/employa-pflege-iphone-2.jpg">
                         <source src="videos/referenzen/employa-pflege-iphone-2.mp4" type="video/mp4">
                     </video>
@@ -440,6 +590,23 @@
                     <h3 data-client="EMPLOYA">Pflege-Content II</h3>
                     <p>Low Budget, hohe Frequenz: Volumen statt Hochglanz, sofort ausspielbar.</p>
                     <div class="ref-client">EMPLOYA</div>
+                </div>
+            </article>
+            <article class="ref-card">
+                <div class="ref-media">
+                    <video preload="none" playsinline controls poster="videos/referenzen/rbn-teuerstes-produkt.jpg">
+                        <source src="videos/referenzen/rbn-teuerstes-produkt.mp4" type="video/mp4">
+                    </video>
+                    <span class="ref-time">0:35</span>
+                    <button class="ref-play" aria-label="Video abspielen: Das teuerste Produkt">
+                        <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+                    </button>
+                </div>
+                <div class="ref-body">
+                    <div class="ref-tagline">Social &amp; Reels</div>
+                    <h3 data-client="Rotkehlchen">Das teuerste Produkt</h3>
+                    <p>Für alle, die viel Geld in Hautpflege stecken: Olga erklärt, warum das teuerste Produkt das ist, das nicht zur Haut passt.</p>
+                    <div class="ref-client">Rotkehlchen Beauty Nest</div>
                 </div>
             </article>
             <article class="ref-card">
@@ -459,8 +626,25 @@
                     <div class="ref-client">EMPLOYA</div>
                 </div>
             </article>
-            <article class="ref-card ref-card--wide">
+            <article class="ref-card">
                 <div class="ref-media">
+                    <video preload="none" playsinline controls poster="videos/referenzen/yl-kran.jpg">
+                        <source src="videos/referenzen/yl-kran.mp4" type="video/mp4">
+                    </video>
+                    <span class="ref-time">0:32</span>
+                    <button class="ref-play" aria-label="Video abspielen: Halbe Tonne vs. 1-Meter-Tür">
+                        <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+                    </button>
+                </div>
+                <div class="ref-body">
+                    <div class="ref-tagline">Personal Brand</div>
+                    <h3 data-client="Younis &amp; Leynes">Halbe Tonne vs. <span style="white-space:nowrap">1-Meter-Tür</span></h3>
+                    <p>Schneller Social-Media-Clip im Streamer-Stil, Low Budget und hohe Frequenz: ein O-Saft-Automat, eine zu schmale Tür und ein Kran.</p>
+                    <div class="ref-client">Younis &amp; Leynes</div>
+                </div>
+            </article>
+            <article class="ref-card ref-card--wide">
+                <div class="ref-media" style="--bg:url('videos/referenzen/zweiraddesk-erklaervideo.jpg')">
                     <video preload="none" playsinline controls poster="videos/referenzen/zweiraddesk-erklaervideo.jpg">
                         <source src="videos/referenzen/zweiraddesk-erklaervideo.mp4" type="video/mp4">
                     </video>
@@ -527,15 +711,42 @@
             // erst das Poster und blenden die Controls beim Abspielen ein.
             v.removeAttribute('controls');
 
+            var resetTimer = null;
+
             function start(){
                 v.controls = true;
                 btn.classList.add('is-gone');
                 media.classList.add('is-playing');
-                v.play();
+                var p = v.play(); if(p && p.catch){ p.catch(function(){}); }
             }
             btn.addEventListener('click', start);
 
+            // Zurück in den Ausgangszustand: Poster, Play-Knopf, Titel und Text.
+            // load() zeigt wieder das Poster (sonst bliebe das letzte Bild stehen).
+            function reset(){
+                clearTimeout(resetTimer); resetTimer = null;
+                v.controls = false;
+                btn.classList.remove('is-gone');
+                media.classList.remove('is-playing');
+                v.load();
+            }
+            function imVollbild(){
+                return document.fullscreenElement === v || document.webkitFullscreenElement === v ||
+                       v.webkitDisplayingFullscreen || document.pictureInPictureElement === v;
+            }
+            // Pausiert: nach 5 s zurücksetzen (Ferris, 11.11.2026). Im Vollbild/PiP oder beim
+            // Spulen noch nicht, dann in 5 s erneut prüfen.
+            function spaeterZuruecksetzen(){
+                clearTimeout(resetTimer);
+                resetTimer = setTimeout(function(){
+                    if(!v.paused || v.ended){ return; }
+                    if(imVollbild() || v.seeking){ spaeterZuruecksetzen(); return; }
+                    reset();
+                }, 5000);
+            }
+
             v.addEventListener('play', function(){
+                clearTimeout(resetTimer); resetTimer = null;
                 v.controls = true;
                 btn.classList.add('is-gone');
                 media.classList.add('is-playing');
@@ -543,12 +754,10 @@
                     if(other !== v && !other.paused){ other.pause(); }
                 });
             });
-            v.addEventListener('ended', function(){
-                v.controls = false;
-                v.currentTime = 0;
-                btn.classList.remove('is-gone');
-                media.classList.remove('is-playing');
+            v.addEventListener('pause', function(){
+                if(!v.ended && media.classList.contains('is-playing')){ spaeterZuruecksetzen(); }
             });
+            v.addEventListener('ended', reset);
         });
     })();
     </script>

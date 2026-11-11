@@ -760,7 +760,7 @@
         }
         .collage-track {
             display: flex; gap: 14px; width: max-content;
-            animation: collageScroll 70s linear infinite;
+            animation: collageScroll 82s linear infinite;   /* 27 Bilder (70 s bei 23) */
         }
         .collage-item {
             flex: 0 0 auto; width: clamp(150px, 15vw, 220px); aspect-ratio: 4 / 5;
@@ -772,8 +772,6 @@
             from { transform: translateX(0); }
             to { transform: translateX(calc(-50% - 7px)); }   /* halbe Strecke + halber gap = nahtlos */
         }
-        /* Zweite Collage versetzt starten (anderer Bildausschnitt) */
-        #einblicke-2 .collage-track { animation-delay: -35s; }
         @media (prefers-reduced-motion: reduce) {
             .collage-track { animation: none; }
             .collage { overflow-x: auto; }
@@ -781,7 +779,52 @@
         @media (max-width: 768px) {
             .collage-section { padding: 6px 0 6px; }
             .collage-item { width: 165px; border-radius: 12px; }
-            .collage-track { gap: 10px; animation-duration: 50s; }
+            .collage-track { gap: 10px; animation-duration: 59s; }
+        }
+        /* Zweite Collage versetzt starten (anderer Bildausschnitt) */
+        #einblicke-2 .collage-track { animation-delay: -41s; }
+        /* ============================================
+           NEUESTE PRODUKTIONEN (helles Band, 2 Querformat-Videos)
+           ============================================ */
+        /* hell statt schwarz (Ferris 11.11.: „das Schwarz ist mir zu doll“); dunkel bleiben nur die Videokacheln */
+        .highlights { position: relative; overflow: hidden; background: var(--color-bg); color: var(--color-text); padding: clamp(52px, 6.5vw, 88px) 0 clamp(44px, 5.5vw, 72px); }
+        .highlights::before { content: ''; position: absolute; top: -200px; right: -160px; width: 600px; aspect-ratio: 1; background: radial-gradient(circle, rgba(245,166,35,0.12), rgba(245,166,35,0) 65%); pointer-events: none; }
+        .highlights .container { position: relative; }
+        .hl-head { text-align: center; margin-bottom: clamp(26px, 3.5vw, 40px); }
+        /* Kopf wie bei der Fallstudie: großer Titel, darunter grauer Untertitel (Ferris 11.11.: „prägnanter“) */
+        .hl-title { font-family: var(--font-display); font-size: clamp(2.1rem, 5.2vw, 3.6rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 10px; color: var(--color-text); }
+        .hl-sub { font-family: var(--font-display); font-size: clamp(1.25rem, 2.6vw, 1.9rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; color: #8A8A8A; }
+        .hl-sub .grad { white-space: nowrap; }
+        .hl-sub .grad { background: linear-gradient(100deg, #F5A623 0%, #EB5E28 92%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+        .hl-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+        .hl-tile { position: relative; border-radius: 20px; overflow: hidden; background: #000; box-shadow: 0 18px 44px rgba(0,0,0,0.18); transition: transform 0.3s, box-shadow 0.3s; }
+        .hl-tile:hover { transform: translateY(-4px); box-shadow: 0 26px 56px rgba(0,0,0,0.24); }
+        .hl-tile .ref-media { position: relative; aspect-ratio: 16 / 9; background: #000; overflow: hidden; }
+        .hl-tile video { width: 100%; height: 100%; object-fit: cover; display: block; background: #000; }
+        .hl-tile .ref-play { position: absolute; inset: 0; z-index: 3; border: none; padding: 0; margin: 0; width: 100%; height: 100%; cursor: pointer; background: transparent; transition: opacity 0.3s; }
+        .hl-tile .ref-play::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.82) 100%); }
+        .hl-tile .ref-play-icon { position: absolute; top: 42%; left: 50%; transform: translate(-50%, -50%); width: 64px; height: 64px; border-radius: 50%; background: rgba(255,255,255,0.94); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.32); transition: transform 0.3s, background 0.3s; }
+        .hl-tile:hover .ref-play-icon { transform: translate(-50%, -50%) scale(1.09); background: #fff; }
+        .hl-tile .ref-play-icon svg { width: 24px; height: 24px; margin-left: 3px; fill: var(--color-accent-dark); }
+        .hl-tile .ref-play.is-gone { opacity: 0; pointer-events: none; }
+        .hl-tile .ref-time { position: absolute; z-index: 4; right: 12px; top: 12px; background: rgba(0,0,0,0.66); color: #fff; font-size: 0.74rem; font-weight: 700; padding: 5px 10px; border-radius: 100px; pointer-events: none; transition: opacity 0.3s; }
+        .hl-info { position: absolute; z-index: 4; left: 0; right: 0; bottom: 0; padding: clamp(16px, 2vw, 26px); pointer-events: none; transition: opacity 0.3s; }
+        .hl-tagline { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--color-accent); margin-bottom: 7px; }
+        .hl-info h3 { font-family: var(--font-display); font-size: clamp(1.1rem, 1.7vw, 1.45rem); font-weight: 800; letter-spacing: -0.015em; line-height: 1.2; margin-bottom: 6px; color: #fff; }
+        .hl-info p { font-size: 0.9rem; line-height: 1.55; color: rgba(255,255,255,0.86); max-width: 500px; }
+        .hl-tile .ref-media.is-playing .hl-info, .hl-tile .ref-media.is-playing .ref-time { opacity: 0; }
+        .hl-more { text-align: center; margin-top: clamp(22px, 3vw, 32px); }
+        .hl-link { display: inline-flex; align-items: center; gap: 9px; font-weight: 700; font-size: 0.95rem; color: var(--color-text); padding: 13px 26px; border: 1px solid var(--color-border-light); background: #fff; border-radius: 100px; transition: border-color 0.3s, background 0.3s; }
+        .hl-link:hover { border-color: var(--color-accent); background: rgba(245,166,35,0.10); }
+        .hl-link svg { width: 17px; height: 17px; transition: transform 0.3s; }
+        .hl-link:hover svg { transform: translateX(4px); }
+        @media (max-width: 900px) {
+            .hl-info p { display: none; }
+            .hl-tile .ref-play-icon { width: 54px; height: 54px; }
+        }
+        @media (max-width: 700px) {
+            .hl-grid { grid-template-columns: 1fr; gap: 14px; }
+            .hl-tile .ref-play-icon { top: 38%; }
         }
         /* CTA nach der Case Study / Collage */
         .pre-cta { padding: clamp(28px, 4vw, 56px) 0 0; background: #FFFFFF; }
@@ -1401,6 +1444,8 @@
             position: relative;
         }
         .results::before { display: none; }
+        /* gleiche Größe wie „Fallstudie“ und „Neueste Produktionen“ */
+        .results .section-title { font-size: clamp(2.1rem, 5.2vw, 3.6rem); line-height: 1.05; margin-bottom: 28px; }
         .results-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -2142,23 +2187,35 @@
         .plat-clip { display: contents; }   /* Desktop: transparent, Bild verhält sich wie zuvor */
 
         /* ===== Case Study – Journey: Paid Ads / Funnel / Ergebnis ===== */
-        .case-more { text-align: center; margin-top: 14px; }
-        .case-more-btn {
-            display: inline-flex; flex-direction: column; align-items: center; gap: 12px;
-            background: none; border: none; cursor: pointer; padding: 6px 10px;
-            color: var(--color-accent-dark);
-            font-family: var(--font-body); font-size: 0.74rem; font-weight: 700;
-            letter-spacing: 0.16em; text-transform: uppercase;
-            transition: color 0.3s;
+        .case-more { text-align: center; margin-top: 14px; position: relative; }
+        /* dünne Linie durch die Mitte des Pfeil-Kreises: zeigt, dass hier ein Bereich aufklappt */
+        .case-more::before {
+            content: ''; position: absolute; left: 50%; bottom: 24px; /* 6px Padding + halber Kreis */
+            width: min(900px, 100%); height: 1px; transform: translateX(-50%);
+            background: linear-gradient(90deg, rgba(208,206,201,0) 0%, #D0CEC9 18%, #D0CEC9 82%, rgba(208,206,201,0) 100%);
         }
-        .case-more-btn:hover { color: var(--color-accent); }
+        /* Aufklapp-Link: kein Knopf, sondern große Schrift im Orange-Verlauf + wippender Pfeil darunter */
+        .case-more-btn {
+            display: inline-flex; flex-direction: column; align-items: center; gap: 10px;
+            background: none; border: none; cursor: pointer; padding: 6px 10px;
+            color: #EB5E28;
+            font-family: var(--font-display); font-size: clamp(1.05rem, 1.6vw, 1.2rem); font-weight: 600;
+            letter-spacing: -0.01em; line-height: 1.2;
+            position: relative; z-index: 1;
+        }
+        .case-more-label {
+            background: linear-gradient(100deg, #F5A623 0%, #EB5E28 92%);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent;
+        }
         .case-more-icon {
-            width: 38px; height: 38px; padding: 9px; border-radius: 50%;
-            border: 1.5px solid currentColor;
-            animation: scrollBounce 1.8s ease-in-out infinite;
+            width: 36px; height: 36px; padding: 8px; border-radius: 50%;
+            border: 1.5px solid currentColor; background: #FFFFFF;
+            animation: caseBounce 1.8s ease-in-out infinite;
             transition: transform 0.35s, background 0.3s;
         }
-        .case-more-btn:hover .case-more-icon { background: var(--color-accent-glow); }
+        .case-more-btn:hover .case-more-icon { background: #FDEFEA; }
+        @keyframes caseBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
         .case-more-btn[aria-expanded="true"] .case-more-icon { animation: none; transform: rotate(180deg); }
         @media (prefers-reduced-motion: reduce) { .case-more-icon { animation: none; } }
         .case-journey {
@@ -2172,6 +2229,13 @@
         }
         .case-journey.open { margin-top: 96px; }
         .case-journey.open::after { opacity: 0; }
+        /* PC: eingeklappt genau zwischen 1. und 2. Textzeile abschneiden (Höhe Überschrift
+           + 18px Abstand + 27px). Sonst blitzt bei Browser-Zoom (z. B. Safari 110 %) die
+           Oberkante der 2. Zeile als dunkler Strich über dem Button durch. Handy bleibt bei 104px. */
+        @media (min-width: 769px) {
+            .case-journey { max-height: calc(clamp(1.5rem, 3vw, 2.1rem) * 1.18 + 45px); }
+            .case-journey::after { top: 0; bottom: auto; }
+        }
         .case-journey-intro { text-align: center; max-width: 860px; margin: 0 auto 44px; }
         .case-journey-intro h3 { font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800; line-height: 1.18; letter-spacing: -0.02em; color: var(--color-text); margin-bottom: 18px; }
         .case-journey-intro p { color: var(--color-text-secondary); font-size: 1rem; line-height: 1.75; max-width: 620px; margin: 0 auto; }
@@ -2275,6 +2339,12 @@
             .case-result-media { grid-template-columns: 1fr; max-width: 400px; }
             /* Fallstudien-Karten wie die Leistungs-Karten: Bild bündig oben, Label darunter */
             .case-system-media figure, .case-result figure { padding: 0; overflow: hidden; border-radius: 20px; }
+            /* kürzerer Schatten + mehr Platz unter der letzten Karte: sonst schneidet der
+               Aufklapp-Bereich (overflow hidden) den Schatten als grauen Streifen ab */
+            .case-system-media figure, .case-result figure,
+            .case-system-media figure:hover, .case-result figure:hover { box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 10px 24px rgba(0,0,0,0.08); }
+            .case-system-media figure:hover, .case-result figure:hover { transform: none; }
+            .case-result { margin-bottom: 40px; }
             .case-system-frame, .case-proof-frame { border: none; border-radius: 0; }
             .case-system-media figcaption, .case-result figcaption { margin: 0; padding: 15px 18px 17px; }
         }
@@ -2379,53 +2449,65 @@
                 <div class="collage-item"><img src="images/collage/collage-01.jpg" alt="Elegant gedeckter Tisch" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-02.jpg" alt="Kranarbeiten auf der Baustelle" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-03.jpg" alt="Solaranlage aus der Drohnenperspektive" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-24.jpg" alt="Agit Kabayel mit Boxerin im Ring – TWLV" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-04.jpg" alt="Kind mit Huhn – B.U.N.T." loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-05.jpg" alt="Oldtimer" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-06.jpg" alt="Frischer Fisch bei Fisch Schloh" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-07.jpg" alt="Orango Saft-Automat" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-08.jpg" alt="Training im Fitnessstudio" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-09.jpg" alt="Fisch aus der Fritteuse" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-25.jpg" alt="Rote TWLV-Gummies in der Hand" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-10.jpg" alt="Garten- & Landschaftsbau" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-11.jpg" alt="Kaffee-Content" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-12.jpg" alt="Teamgeist – Hände im Kreis" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-13.jpg" alt="Schloss in Štramberk" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-14.jpg" alt="Elektriker bei der Arbeit" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-15.jpg" alt="Fisch auf Eis" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-26.jpg" alt="Agit Kabayel mit WBC-Gürtel – TWLV" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-16.jpg" alt="Spanferkel über dem Feuer" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-17.jpg" alt="Solar-Team aus der Drohnenperspektive" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-18.jpg" alt="Fitness – Mitarbeiterin" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-19.jpg" alt="Gepflegter Garten" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-20.jpg" alt="Elektroarbeiten in Nahaufnahme" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-21.jpg" alt="Logo – Goldene Biene Kaffee" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-27.jpg" alt="Agit Kabayel in Deckung – TWLV" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-22.jpg" alt="Arbeiten am Stromkasten" loading="lazy"></div>
                 <div class="collage-item"><img src="images/collage/collage-23.jpg" alt="Frisches Fischbrötchen" loading="lazy"></div>
                 <!-- Set 2 (Duplikat für nahtlose Endlos-Schleife) -->
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-01.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-02.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-03.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-24.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-04.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-05.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-06.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-07.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-08.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-09.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-25.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-10.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-11.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-12.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-13.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-14.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-15.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-26.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-16.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-17.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-18.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-19.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-20.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-21.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-27.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-22.jpg" alt="" loading="lazy"></div>
                 <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-23.jpg" alt="" loading="lazy"></div>
+
             </div>
         </div>
     </section>
+
+
+
 
     <!-- ========== CASE STUDY: EMPLOYA ========== -->
     <section class="case-study" id="case-employa">
@@ -2532,76 +2614,17 @@
 
 
 
-    <!-- ========== COLLAGE ========== -->
-    <section class="collage-section" id="einblicke-2">
-        <div class="collage" aria-label="Bildergalerie unserer Projekte">
-            <div class="collage-track">
-                <!-- Set 1 -->
-                <div class="collage-item"><img src="images/collage/collage-01.jpg" alt="Elegant gedeckter Tisch" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-02.jpg" alt="Kranarbeiten auf der Baustelle" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-03.jpg" alt="Solaranlage aus der Drohnenperspektive" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-04.jpg" alt="Kind mit Huhn – B.U.N.T." loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-05.jpg" alt="Oldtimer" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-06.jpg" alt="Frischer Fisch bei Fisch Schloh" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-07.jpg" alt="Orango Saft-Automat" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-08.jpg" alt="Training im Fitnessstudio" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-09.jpg" alt="Fisch aus der Fritteuse" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-10.jpg" alt="Garten- & Landschaftsbau" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-11.jpg" alt="Kaffee-Content" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-12.jpg" alt="Teamgeist – Hände im Kreis" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-13.jpg" alt="Schloss in Štramberk" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-14.jpg" alt="Elektriker bei der Arbeit" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-15.jpg" alt="Fisch auf Eis" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-16.jpg" alt="Spanferkel über dem Feuer" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-17.jpg" alt="Solar-Team aus der Drohnenperspektive" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-18.jpg" alt="Fitness – Mitarbeiterin" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-19.jpg" alt="Gepflegter Garten" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-20.jpg" alt="Elektroarbeiten in Nahaufnahme" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-21.jpg" alt="Logo – Goldene Biene Kaffee" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-22.jpg" alt="Arbeiten am Stromkasten" loading="lazy"></div>
-                <div class="collage-item"><img src="images/collage/collage-23.jpg" alt="Frisches Fischbrötchen" loading="lazy"></div>
-                <!-- Set 2 (Duplikat für nahtlose Endlos-Schleife) -->
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-01.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-02.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-03.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-04.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-05.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-06.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-07.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-08.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-09.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-10.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-11.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-12.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-13.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-14.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-15.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-16.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-17.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-18.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-19.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-20.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-21.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-22.jpg" alt="" loading="lazy"></div>
-                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-23.jpg" alt="" loading="lazy"></div>
-            </div>
-        </div>
-    </section>
-
-
-
-
     <!-- ========== RESULTS ========== -->
     <section class="results" id="ergebnisse">
         <div class="container">
             <div class="reveal" style="text-align:center;">
-                <h2 class="section-title">Ergebnisse, die sprechen</h2>
+                <h2 class="section-title">Ergebnisse, <span style="white-space:nowrap">die sprechen</span></h2>
             </div>
             <div class="ba-compare reveal">
                 <figure class="ba-item">
                     <span class="ba-badge ba-badge--before">Vorher</span>
                     <div class="ba-frame">
-                        <img src="images/employa-insta-vorher.png" alt="EMPLOYA Instagram Professional-Dashboard – 6.751 Aufrufe in 30 Tagen (vorher)" loading="lazy">
+                        <img src="images/employa-insta-vorher-2.png" alt="EMPLOYA Instagram Professional-Dashboard – 6.751 Aufrufe in 30 Tagen (vorher)" loading="lazy">
                     </div>
                     <figcaption><span class="ba-num">6.751</span> Aufrufe · 30 Tage</figcaption>
                 </figure>
@@ -2611,9 +2634,9 @@
                 <figure class="ba-item">
                     <span class="ba-badge ba-badge--after">Nachher</span>
                     <div class="ba-frame">
-                        <img src="images/employa-insta-nachher.png" alt="EMPLOYA Instagram Professional-Dashboard – 1,3 Mio. Aufrufe in 30 Tagen (nachher)" loading="lazy">
+                        <img src="images/employa-insta-nachher-2.png" alt="EMPLOYA Instagram-Dashboard – 2,3 Mio. Aufrufe in 30 Tagen (nachher)" loading="lazy">
                     </div>
-                    <figcaption><span class="ba-num ba-num--hl">1,3 Mio.</span> Aufrufe · 30 Tage</figcaption>
+                    <figcaption><span class="ba-num ba-num--hl">2,3 Mio.</span> Aufrufe · 30 Tage</figcaption>
                 </figure>
             </div>
             <figure class="result-quote reveal">
@@ -2675,13 +2698,130 @@
         </div>
     </section>
 
+    <!-- ========== NEUESTE PRODUKTIONEN (AG1 × Hyrox, TWLV / Agit Kabayel) ========== -->
+    <section class="highlights" id="neueste-produktionen" aria-labelledby="hl-title">
+        <div class="container">
+            <div class="hl-head reveal">
+                <h2 class="hl-title" id="hl-title">Neueste Produktionen</h2>
+                <p class="hl-sub">Vom lokalen Betrieb bis zum <span class="grad">Box-Weltmeister.</span></p>
+            </div>
+            <div class="hl-grid reveal">
+                <article class="hl-tile">
+                    <div class="ref-media">
+                        <video preload="none" playsinline controls poster="videos/referenzen/twlv-teaser.jpg">
+                            <source src="videos/referenzen/twlv-teaser.mp4" type="video/mp4">
+                        </video>
+                        <span class="ref-time">0:16</span>
+                        <button class="ref-play" aria-label="Video abspielen: Markenfilm mit Agit Kabayel">
+                            <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+                        </button>
+                        <div class="hl-info">
+                            <div class="hl-tagline">Werbespot · TWLV</div>
+                            <h3>Markenfilm mit Agit Kabayel</h3>
+                            <p>WBC-Weltmeister im Schwergewicht und Mitgründer von TWLV: Boxen, Fokus, Wille im Schwarz-Weiß-Look.</p>
+                        </div>
+                    </div>
+                </article>
+                <article class="hl-tile">
+                    <div class="ref-media">
+                        <video preload="none" playsinline controls poster="videos/referenzen/ag1-hyrox-hype-edit-2.jpg">
+                            <source src="videos/referenzen/ag1-hyrox-hype-edit.mp4" type="video/mp4">
+                        </video>
+                        <span class="ref-time">0:23</span>
+                        <button class="ref-play" aria-label="Video abspielen: Race-Day Hype-Edit AG1 × Hyrox">
+                            <span class="ref-play-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></span>
+                        </button>
+                        <div class="hl-info">
+                            <div class="hl-tagline">Event &amp; Sport · AG1 × Hyrox</div>
+                            <h3>Race-Day Hype-Edit</h3>
+                            <p>Hyrox Hamburg in 23 Sekunden: schneller Schwarz-Weiß-Schnitt vom Wettkampf, nur das AG1-Grün bleibt in Farbe.</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <div class="hl-more reveal">
+                <a href="referenzen.html" class="hl-link">Alle Produktionen ansehen
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== COLLAGE 2 (gleiche Bilder, versetzt) ========== -->
+    <section class="collage-section" id="einblicke-2">
+        <div class="collage" aria-label="Bildergalerie unserer Projekte">
+            <div class="collage-track">
+                <!-- Set 1 -->
+                <div class="collage-item"><img src="images/collage/collage-01.jpg" alt="Elegant gedeckter Tisch" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-02.jpg" alt="Kranarbeiten auf der Baustelle" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-03.jpg" alt="Solaranlage aus der Drohnenperspektive" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-24.jpg" alt="Agit Kabayel mit Boxerin im Ring – TWLV" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-04.jpg" alt="Kind mit Huhn – B.U.N.T." loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-05.jpg" alt="Oldtimer" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-06.jpg" alt="Frischer Fisch bei Fisch Schloh" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-07.jpg" alt="Orango Saft-Automat" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-08.jpg" alt="Training im Fitnessstudio" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-09.jpg" alt="Fisch aus der Fritteuse" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-25.jpg" alt="Rote TWLV-Gummies in der Hand" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-10.jpg" alt="Garten- & Landschaftsbau" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-11.jpg" alt="Kaffee-Content" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-12.jpg" alt="Teamgeist – Hände im Kreis" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-13.jpg" alt="Schloss in Štramberk" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-14.jpg" alt="Elektriker bei der Arbeit" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-15.jpg" alt="Fisch auf Eis" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-26.jpg" alt="Agit Kabayel mit WBC-Gürtel – TWLV" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-16.jpg" alt="Spanferkel über dem Feuer" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-17.jpg" alt="Solar-Team aus der Drohnenperspektive" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-18.jpg" alt="Fitness – Mitarbeiterin" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-19.jpg" alt="Gepflegter Garten" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-20.jpg" alt="Elektroarbeiten in Nahaufnahme" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-21.jpg" alt="Logo – Goldene Biene Kaffee" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-27.jpg" alt="Agit Kabayel in Deckung – TWLV" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-22.jpg" alt="Arbeiten am Stromkasten" loading="lazy"></div>
+                <div class="collage-item"><img src="images/collage/collage-23.jpg" alt="Frisches Fischbrötchen" loading="lazy"></div>
+                <!-- Set 2 (Duplikat für nahtlose Endlos-Schleife) -->
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-01.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-02.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-03.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-24.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-04.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-05.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-06.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-07.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-08.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-09.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-25.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-10.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-11.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-12.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-13.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-14.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-15.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-26.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-16.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-17.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-18.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-19.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-20.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-21.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-27.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-22.jpg" alt="" loading="lazy"></div>
+                <div class="collage-item" aria-hidden="true"><img src="images/collage/collage-23.jpg" alt="" loading="lazy"></div>
+
+            </div>
+        </div>
+    </section>
+
+
+
+
     <!-- ========== LEISTUNGEN / REFERENZEN VOR DEM CTA ========== -->
     <section class="pre-cta">
         <div class="pre-cta-inner reveal">
             <a href="leistungen.html" class="pre-cta-card">
                 <span class="pre-cta-eyebrow">Leistungen</span>
                 <h3>Noch unsicher, was du brauchst?</h3>
-                <p>Von Reel über Imagefilm und Event-Content bis Recruiting-Video: Hier steht, was wir machen und wie wir arbeiten.</p>
+                <p>Von Creative Directing und Werbespots bis Reel und Recruiting-Video: Hier steht, was wir machen und wie wir arbeiten.</p>
                 <span class="pre-cta-link">Leistungen ansehen
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </span>
@@ -2689,7 +2829,7 @@
             <a href="referenzen.html" class="pre-cta-card">
                 <span class="pre-cta-eyebrow">Referenzen</span>
                 <h3>Lieber erst Ergebnisse sehen?</h3>
-                <p>15 Produktionen aus echten Kundenprojekten, die du dir direkt auf der Seite ansehen kannst.</p>
+                <p>Über 20 Produktionen aus echten Kundenprojekten, die du dir direkt auf der Seite ansehen kannst.</p>
                 <span class="pre-cta-link">Referenzen ansehen
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </span>
@@ -3042,6 +3182,48 @@
             });
         });
     </script>
+    <script>
+    // Neueste Produktionen: Poster mit Play-Knopf, Klick spielt mit Ton und Controls
+    (function(){
+        var videos = Array.prototype.slice.call(document.querySelectorAll('.hl-tile video'));
+        videos.forEach(function(v){
+            var media = v.closest('.ref-media');
+            var btn = media.querySelector('.ref-play');
+            v.removeAttribute('controls');
+            var resetTimer = null;
+            function show(){ v.controls = true; btn.classList.add('is-gone'); media.classList.add('is-playing'); }
+            // Zurück auf Poster, Play-Knopf und Text; load() holt das Poster zurück
+            function reset(){
+                clearTimeout(resetTimer); resetTimer = null;
+                v.controls = false; btn.classList.remove('is-gone'); media.classList.remove('is-playing');
+                v.load();
+            }
+            function imVollbild(){
+                return document.fullscreenElement === v || document.webkitFullscreenElement === v ||
+                       v.webkitDisplayingFullscreen || document.pictureInPictureElement === v;
+            }
+            // Pausiert: nach 5 s zurücksetzen (Ferris, 11.11.2026), nicht im Vollbild/PiP oder beim Spulen
+            function spaeterZuruecksetzen(){
+                clearTimeout(resetTimer);
+                resetTimer = setTimeout(function(){
+                    if (!v.paused || v.ended) return;
+                    if (imVollbild() || v.seeking) { spaeterZuruecksetzen(); return; }
+                    reset();
+                }, 5000);
+            }
+            btn.addEventListener('click', function(){ show(); var p = v.play(); if (p && p.catch) p.catch(function(){}); });
+            v.addEventListener('play', function(){
+                clearTimeout(resetTimer); resetTimer = null;
+                show();
+                videos.forEach(function(o){ if (o !== v && !o.paused) o.pause(); });
+            });
+            v.addEventListener('pause', function(){
+                if (!v.ended && media.classList.contains('is-playing')) spaeterZuruecksetzen();
+            });
+            v.addEventListener('ended', reset);
+        });
+    })();
+    </script>
     <!-- ========== COOKIE BANNER ========== -->
     <div id="cookieBanner" style="display:none; position:fixed; bottom:0; left:0; width:100%; background:#1A1A1A; border-top:1px solid #333; padding:16px 24px; z-index:10000; font-family:'DM Sans',sans-serif;">
         <div style="max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
@@ -3168,7 +3350,7 @@
                 requestAnimationFrame(function () {
                     requestAnimationFrame(function () {
                         panel.classList.remove('open');
-                        panel.style.maxHeight = '104px';
+                        panel.style.maxHeight = ''; // PC-Höhe kommt aus dem CSS (calc)
                         // Waehrend der Einklapp-Animation den Button an gleicher
                         // Viewport-Position halten (jeden Frame nachkorrigieren).
                         (function pin() {
