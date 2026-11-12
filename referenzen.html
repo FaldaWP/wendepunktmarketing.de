@@ -202,6 +202,10 @@
 
             .ref-hero { padding-top:112px; }
             .ref-grid { grid-template-columns:repeat(2,1fr); gap:14px; }
+            /* Handy (12.11., Ferris): keine zwei Querkarten hintereinander. Der Unternehmer-Vlog kommt nicht direkt nach Orango,
+               sondern erst nach 6 Hochkant-Videos (= hinter der Karte mit .ref-handy-vlog-danach). PC-Reihenfolge bleibt. */
+            .ref-card--vlog { order:1; }
+            .ref-handy-vlog-danach ~ .ref-card { order:2; }
             .ref-section { padding-top:36px; }
             .ref-archiv-head { gap:12px; margin-bottom:14px; }
             .ref-body { padding:14px 15px 18px; }
@@ -456,7 +460,7 @@
                     <div class="ref-client">Orango</div>
                 </div>
             </article>
-            <article class="ref-card ref-card--wide">
+            <article class="ref-card ref-card--wide ref-card--vlog">
                 <div class="ref-media" style="--bg:url('videos/referenzen/unternehmer-begleitung-vlog.jpg')">
                     <video preload="none" playsinline controls poster="videos/referenzen/unternehmer-begleitung-vlog.jpg">
                         <source src="videos/referenzen/unternehmer-begleitung-vlog.mp4" type="video/mp4">
@@ -558,7 +562,7 @@
                     <div class="ref-client">EMPLOYA</div>
                 </div>
             </article>
-            <article class="ref-card">
+            <article class="ref-card ref-handy-vlog-danach">
                 <div class="ref-media">
                     <video preload="none" playsinline controls poster="videos/referenzen/eastermarket-event.jpg">
                         <source src="videos/referenzen/eastermarket-event.mp4" type="video/mp4">
