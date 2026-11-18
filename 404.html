@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- GitHub Pages zeigt diese Seite unter jeder falschen Adresse, auch in Unterordnern: deshalb alle Pfade mit / am Anfang -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/favicon-192.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <title>Seite nicht gefunden | Wendepunkt Marketing</title>
+    <meta name="robots" content="noindex, follow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #FAFAF9;
+            --color-border: #E2E0DC;
+            --color-text: #1A1A1A;
+            --color-text-secondary: #555555;
+            --color-text-muted: #888888;
+            --color-accent: #F5A623;
+            --color-accent-hover: #FFB94D;
+            --font-display: 'Plus Jakarta Sans', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+        body { font-family:var(--font-body); background:var(--color-bg); color:var(--color-text); line-height:1.6; min-height:100vh; display:flex; flex-direction:column; }
+        a { color:var(--color-accent); text-decoration:none; }
+        .nav { position:fixed; top:0; left:0; width:100%; z-index:1000; padding:16px 0; background:rgba(250,250,249,0.9); backdrop-filter:blur(20px); border-bottom:1px solid var(--color-border); }
+        .nav-inner { max-width:1200px; margin:0 auto; padding:0 clamp(20px,4vw,48px); display:flex; align-items:center; justify-content:space-between; }
+        .nav-logo { display:flex; align-items:center; gap:12px; font-family:var(--font-display); font-weight:700; font-size:1.2rem; color:var(--color-text); }
+        .nav-logo img { height:36px; width:auto; }.nav-logo>div{transform:translateY(3px)}
+        .nav-logo span { color:var(--color-accent); }
+        .content { flex:1; width:100%; max-width:720px; margin:0 auto; padding:150px clamp(20px,4vw,48px) 80px; text-align:center; }
+        .code { font-family:var(--font-display); font-weight:800; font-size:clamp(4.5rem,16vw,7.5rem); line-height:1; letter-spacing:-0.04em; background:linear-gradient(135deg,#F5A623,#EB5E28); -webkit-background-clip:text; background-clip:text; color:transparent; }
+        h1 { font-family:var(--font-display); font-size:clamp(1.4rem,4.5vw,2rem); font-weight:800; letter-spacing:-0.02em; margin:18px 0 10px; }
+        .content p { color:var(--color-text-secondary); font-size:1rem; max-width:460px; margin:0 auto; }
+        .btn { display:inline-block; margin-top:30px; background:var(--color-text); color:#fff; font-weight:600; font-size:0.95rem; padding:14px 28px; border-radius:100px; transition:transform 0.2s; }
+        .btn:hover { transform:translateY(-2px); color:#fff; }
+        .links { display:flex; justify-content:center; flex-wrap:wrap; gap:10px 26px; margin-top:28px; }
+        .links a { color:var(--color-text-secondary); font-weight:500; font-size:0.95rem; }
+        .links a:hover { color:var(--color-text); }
+        .footer { padding:32px 0; border-top:1px solid var(--color-border); }
+        .footer-inner { max-width:1200px; margin:0 auto; padding:0 clamp(20px,4vw,48px); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px 20px; }
+        .footer-copy, .footer-links a { font-size:0.85rem; color:var(--color-text-muted); }
+        .footer-links { display:flex; gap:28px; flex-wrap:wrap; }
+        .footer-links a:hover { color:var(--color-text); }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">
+                <img src="/images/logo-nav.webp" alt="Wendepunkt Marketing Logo" width="194" height="144">
+                <div>Wendepunkt<span>.</span></div>
+            </a>
+        </div>
+    </nav>
+    <main class="content">
+        <div class="code">404</div>
+        <h1>Diese Seite gibt es nicht.</h1>
+        <p>Vielleicht hat sich die Adresse geändert. Hier geht es weiter:</p>
+        <a class="btn" href="/">Zur Startseite</a>
+        <div class="links">
+            <a href="/leistungen.html">Leistungen</a>
+            <a href="/referenzen.html">Referenzen</a>
+            <a href="/blog.html">Blog</a>
+            <a href="/#kontakt">Kontakt</a>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-copy">© 2026 Wendepunkt Marketing. Alle Rechte vorbehalten.</div>
+            <div class="footer-links">
+                <a href="/datenschutz.html">Datenschutzerklärung</a>
+                <a href="/impressum.html">Impressum</a>
+                <a href="/agb.html">AGB</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

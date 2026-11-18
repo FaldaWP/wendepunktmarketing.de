@@ -33,6 +33,7 @@
     <meta name="author" content="Wendepunkt Marketing">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://wendepunktmarketing.de/">
+    <link rel="preload" as="image" href="videos/hero-mobile-poster.webp" media="(max-width: 768px)" fetchpriority="high">
     
     <!-- Open Graph -->
     <meta property="og:title" content="Social Media Agentur Hamburg – Content & Video-Marketing | Wendepunkt Marketing">
@@ -40,6 +41,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://wendepunktmarketing.de/">
     <meta property="og:locale" content="de_DE">
+    <meta property="og:site_name" content="Wendepunkt Marketing">
     <meta property="og:image" content="https://wendepunktmarketing.de/images/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -54,33 +56,69 @@
 
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "ProfessionalService",
-        "name": "Wendepunkt Marketing",
-        "description": "Social Media Agentur aus Hamburg für Content-Produktion, Video-Marketing und Account Management – deutschlandweit.",
-        "url": "https://wendepunktmarketing.de",
-        "telephone": "+49-XXX-XXXXXXX",
-        "email": "kontakt@wendepunktmarketing.de",
-        "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Hamburg",
-            "addressCountry": "DE"
+{
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "@id": "https://wendepunktmarketing.de/#organisation",
+    "name": "Wendepunkt Marketing",
+    "description": "Social Media Agentur aus Hamburg für Content-Produktion, Video-Marketing und Account Management – deutschlandweit.",
+    "url": "https://wendepunktmarketing.de/",
+    "logo": "https://wendepunktmarketing.de/images/logo.png",
+    "image": "https://wendepunktmarketing.de/images/og-image.png",
+    "email": "kontakt@wendepunktmarketing.de",
+    "founder": {
+        "@type": "Person",
+        "name": "Ferris Al Damrawy"
+    },
+    "address": {
+        "@type": "PostalAddress",
+        "postalCode": "22393",
+        "addressLocality": "Hamburg",
+        "addressCountry": "DE"
+    },
+    "areaServed": [
+        {
+            "@type": "City",
+            "name": "Hamburg"
         },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "53.5511",
-            "longitude": "9.9937"
-        },
-        "areaServed": {
+        {
             "@type": "Country",
             "name": "Deutschland"
-        },
-        "serviceType": ["Social Media Marketing", "Content Produktion", "Video Marketing", "Account Management", "Instagram Marketing", "TikTok Marketing", "YouTube Marketing", "LinkedIn Marketing"],
-        "knowsLanguage": "de",
-        "priceRange": "$$",
-        "sameAs": []
+        }
+    ],
+    "serviceType": [
+        "Social Media Marketing",
+        "Content Produktion",
+        "Videoproduktion",
+        "Video Marketing",
+        "Creative Direction",
+        "Werbespots",
+        "Influencer-Kampagnen",
+        "Imagefilm",
+        "Recruiting-Videos",
+        "Account Management",
+        "Meta Ads",
+        "Instagram Marketing",
+        "TikTok Marketing",
+        "YouTube Marketing",
+        "LinkedIn Marketing"
+    ],
+    "knowsLanguage": "de",
+    "priceRange": "$$"
+}
+    </script>
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://wendepunktmarketing.de/#website",
+    "url": "https://wendepunktmarketing.de/",
+    "name": "Wendepunkt Marketing",
+    "inLanguage": "de-DE",
+    "publisher": {
+        "@id": "https://wendepunktmarketing.de/#organisation"
     }
+}
     </script>
 
     <!-- FAQ Schema for Google Rich Results -->
@@ -89,12 +127,12 @@
       "@context": "https://schema.org",
       "@type": "FAQPage",
       "mainEntity": [
-        { "@type": "Question", "name": "Was kostet eine Zusammenarbeit mit Wendepunkt Marketing?", "acceptedAnswer": { "@type": "Answer", "text": "Jedes Projekt ist individuell – deshalb erstellen wir nach einem kostenlosen Erstgespräch ein maßgeschneidertes Angebot, das genau zu Ihren Zielen und Ihrem Budget passt. Wir arbeiten sowohl mit Einzelprojekten als auch mit monatlichen Paketen." } },
+        { "@type": "Question", "name": "Was kostet eine Zusammenarbeit mit Wendepunkt Marketing?", "acceptedAnswer": { "@type": "Answer", "text": "Jedes Projekt ist individuell – deshalb erstellen wir nach einem kostenlosen Erstgespräch ein maßgeschneidertes Angebot, das genau zu Ihren Zielen und Ihrem Budget passt. Wir arbeiten sowohl mit Einzelprojekten als auch mit monatlichen Paketen. Eine erste Orientierung zu Preisen gibt unser Ratgeber „Was kostet Social Media Marketing?“" } },
         { "@type": "Question", "name": "Für welche Branchen arbeitet ihr?", "acceptedAnswer": { "@type": "Answer", "text": "Wir arbeiten branchenübergreifend – von Handwerk und Gastronomie über Fitness und E-Commerce bis hin zu Beratungsunternehmen. Entscheidend ist nicht die Branche, sondern die Bereitschaft, mit authentischem Content sichtbar zu werden." } },
         { "@type": "Question", "name": "Wie läuft ein typischer Drehtag ab?", "acceptedAnswer": { "@type": "Answer", "text": "Vor dem Drehtag besprechen wir den Ablauf, entwickeln passende Ideen und bereiten alles vor. Am Drehtag selbst kommen wir zu Ihnen, begleiten den Alltag und produzieren Content – effizient, strukturiert und ohne großen Aufwand für Sie. Ein Drehtag reicht in der Regel für 1–2 Monate Content, sodass Sie sich voll auf Ihr Kerngeschäft konzentrieren können." } },
         { "@type": "Question", "name": "Wie schnell sehe ich Ergebnisse?", "acceptedAnswer": { "@type": "Answer", "text": "Erste Ergebnisse in Form von Reichweite und Engagement sehen viele Kunden bereits in den ersten 2–4 Wochen. Nachhaltiges Wachstum und messbare Kundengewinnung bauen sich in der Regel über 2–3 Monate auf." } },
         { "@type": "Question", "name": "Muss ich selbst vor die Kamera?", "acceptedAnswer": { "@type": "Answer", "text": "Nicht zwingend – es gibt verschiedene Möglichkeiten. Persönlicher Content mit Ihnen vor der Kamera erzeugt natürlich besonders viel Vertrauen und Reichweite. Wenn Sie das möchten, sorgen wir dafür, dass Sie sich wohlfühlen und begleiten Sie Schritt für Schritt. Alternativ können wir auch professionelle Darsteller organisieren, die Ihr Unternehmen authentisch repräsentieren – oder wir setzen auf reine B-Roll und Voice-Over. Gemeinsam finden wir die Lösung, die am besten zu Ihnen passt." } },
-        { "@type": "Question", "name": "Kann ich die fertigen Videos auch selbst posten?", "acceptedAnswer": { "@type": "Answer", "text": "Absolut. Sie erhalten alle fertigen Videos in den passenden Formaten und können diese selbst posten. Alternativ übernehmen wir das komplette Posting und Account Management für Sie." } },
+        { "@type": "Question", "name": "Kann ich die fertigen Videos auch selbst posten?", "acceptedAnswer": { "@type": "Answer", "text": "Absolut. Sie erhalten alle fertigen Videos in den passenden Formaten und können diese selbst posten. Alternativ übernehmen wir das komplette Posting und Account Management für Sie. Wie oft sich Posten lohnt, steht in unserem Ratgeber „Wie oft auf Instagram posten?“" } },
         { "@type": "Question", "name": "Arbeitet ihr auch überregional?", "acceptedAnswer": { "@type": "Answer", "text": "Ja, wir arbeiten deutschlandweit. Für Drehtage kommen wir zu Ihnen vor Ort – Konzeption, Editing und Account Management laufen digital und ortsunabhängig." } }
       ]
     }
@@ -1882,6 +1920,7 @@
         .footer-links {
             display: flex;
             gap: 28px;
+            flex-wrap: wrap;
         }
         .footer-links a {
             font-size: 0.85rem;
@@ -1891,6 +1930,8 @@
         .footer-links a:hover {
             color: var(--color-text);
         }
+        .faq-answer-inner a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+        .faq-answer-inner a:hover { color: var(--color-accent); }
 
         /* ============================================
            FLOATING WHATSAPP BUTTON
@@ -2356,7 +2397,7 @@
     <nav class="nav" id="nav">
         <div class="container nav-inner">
             <a href="#hero" class="nav-logo">
-                <img src="images/logo.png" alt="Wendepunkt Marketing Logo">
+                <img src="images/logo-nav.webp" alt="Wendepunkt Marketing Logo" width="194" height="144">
                 <div class="nav-logo-text">Wendepunkt<span>.</span></div>
             </a>
             <ul class="nav-links" id="navLinks">
@@ -2378,7 +2419,7 @@
     <header class="hero has-video" id="hero">
         <video class="hero-video" autoplay muted loop playsinline preload="auto"
                data-desktop="videos/hero.mp4" data-mobile="videos/hero-mobile.mp4"
-               data-desktop-poster="videos/hero-poster.jpg" data-mobile-poster="videos/hero-mobile-poster.jpg"></video>
+               data-desktop-poster="videos/hero-poster.webp" data-mobile-poster="videos/hero-mobile-poster.webp"></video>
         <script>
         (function () {
             var v = document.currentScript.previousElementSibling;
@@ -2549,15 +2590,15 @@
 
             <div class="case-platforms reveal">
                 <figure class="case-platform tt">
-                    <span class="plat-clip"><img src="images/employa-tiktok.png" alt="EMPLOYA TikTok Views – bis zu 620K Aufrufe pro Video"></span>
+                    <span class="plat-clip"><img src="images/employa-tiktok.webp" alt="EMPLOYA TikTok Views – bis zu 620K Aufrufe pro Video"></span>
                     <figcaption>TikTok</figcaption>
                 </figure>
                 <figure class="case-platform ig">
-                    <span class="plat-clip"><img src="images/employa-instagram.png" alt="EMPLOYA Instagram Views – bis zu 1 Mio. Aufrufe pro Video"></span>
+                    <span class="plat-clip"><img src="images/employa-instagram.webp" alt="EMPLOYA Instagram Views – bis zu 1 Mio. Aufrufe pro Video"></span>
                     <figcaption>Instagram</figcaption>
                 </figure>
                 <figure class="case-platform yt">
-                    <span class="plat-clip"><img src="images/employa-youtube.png" alt="EMPLOYA YouTube Aufrufe – bis zu 364K pro Video"></span>
+                    <span class="plat-clip"><img src="images/employa-youtube.webp" alt="EMPLOYA YouTube Aufrufe – bis zu 364K pro Video"></span>
                     <figcaption>YouTube</figcaption>
                 </figure>
                 <button class="plat-arrow plat-arrow--prev" type="button" aria-label="Vorherige Plattform" onclick="slidePlatform(-1)">←</button>
@@ -2573,11 +2614,11 @@
 
                 <div class="case-system-media">
                     <figure>
-                        <div class="case-system-frame"><img src="images/case-ads.png" alt="Gezielte Meta-Anzeigen von EMPLOYA" loading="lazy"></div>
+                        <div class="case-system-frame"><img src="images/case-ads.webp" alt="Gezielte Meta-Anzeigen von EMPLOYA" loading="lazy"></div>
                         <figcaption>Gezielte Meta Ads</figcaption>
                     </figure>
                     <figure>
-                        <div class="case-system-frame"><img src="images/case-funnel.png" alt="Speziell angefertigte Bewerbungsseite von EMPLOYA" loading="lazy"></div>
+                        <div class="case-system-frame"><img src="images/case-funnel.webp" alt="Speziell angefertigte Bewerbungsseite von EMPLOYA" loading="lazy"></div>
                         <figcaption>Eigene Bewerbungsseite</figcaption>
                     </figure>
                 </div>
@@ -2588,13 +2629,13 @@
                     <div class="case-result-media">
                         <figure class="case-proof">
                             <div class="case-proof-frame">
-                                <img src="images/case-bewerbungen.png" alt="Laufend neue Bewerbungen über den Funnel" loading="lazy">
+                                <img src="images/case-bewerbungen.webp" alt="Laufend neue Bewerbungen über den Funnel" loading="lazy">
                             </div>
                             <figcaption>Neue Bewerbungen</figcaption>
                         </figure>
                         <figure class="case-proof">
                             <div class="case-proof-frame">
-                                <img class="proof-mid" src="images/case-nachrichten.png" alt="Nachrichten und Anfragen von Interessenten" loading="lazy">
+                                <img class="proof-mid" src="images/case-nachrichten.webp" alt="Nachrichten und Anfragen von Interessenten" loading="lazy">
                             </div>
                             <figcaption>Anfragen &amp; Nachrichten</figcaption>
                         </figure>
@@ -2624,7 +2665,7 @@
                 <figure class="ba-item">
                     <span class="ba-badge ba-badge--before">Vorher</span>
                     <div class="ba-frame">
-                        <img src="images/employa-insta-vorher-2.png" alt="EMPLOYA Instagram Professional-Dashboard – 6.751 Aufrufe in 30 Tagen (vorher)" loading="lazy">
+                        <img src="images/employa-insta-vorher-2.webp" alt="EMPLOYA Instagram Professional-Dashboard – 6.751 Aufrufe in 30 Tagen (vorher)" loading="lazy">
                     </div>
                     <figcaption><span class="ba-num">6.751</span> Aufrufe · 30 Tage</figcaption>
                 </figure>
@@ -2634,7 +2675,7 @@
                 <figure class="ba-item">
                     <span class="ba-badge ba-badge--after">Nachher</span>
                     <div class="ba-frame">
-                        <img src="images/employa-insta-nachher-2.png" alt="EMPLOYA Instagram-Dashboard – 2,3 Mio. Aufrufe in 30 Tagen (nachher)" loading="lazy">
+                        <img src="images/employa-insta-nachher-2.webp" alt="EMPLOYA Instagram-Dashboard – 2,3 Mio. Aufrufe in 30 Tagen (nachher)" loading="lazy">
                     </div>
                     <figcaption><span class="ba-num ba-num--hl">2,3 Mio.</span> Aufrufe · 30 Tage</figcaption>
                 </figure>
@@ -2708,7 +2749,7 @@
             <div class="hl-grid reveal">
                 <article class="hl-tile">
                     <div class="ref-media">
-                        <video preload="none" playsinline controls poster="videos/referenzen/twlv-teaser.jpg">
+                        <video preload="none" playsinline controls poster="videos/referenzen/twlv-teaser.webp">
                             <source src="videos/referenzen/twlv-teaser.mp4" type="video/mp4">
                         </video>
                         <span class="ref-time">0:16</span>
@@ -2724,7 +2765,7 @@
                 </article>
                 <article class="hl-tile">
                     <div class="ref-media">
-                        <video preload="none" playsinline controls poster="videos/referenzen/ag1-hyrox-hype-edit-2.jpg">
+                        <video preload="none" playsinline controls poster="videos/referenzen/ag1-hyrox-hype-edit-2.webp">
                             <source src="videos/referenzen/ag1-hyrox-hype-edit.mp4" type="video/mp4">
                         </video>
                         <span class="ref-time">0:23</span>
@@ -2862,7 +2903,7 @@
                         <div class="faq-icon"></div>
                     </button>
                     <div class="faq-answer">
-                        <div class="faq-answer-inner">Jedes Projekt ist individuell – deshalb erstellen wir nach einem kostenlosen Erstgespräch ein maßgeschneidertes Angebot, das genau zu Ihren Zielen und Ihrem Budget passt. Wir arbeiten sowohl mit Einzelprojekten als auch mit monatlichen Paketen.</div>
+                        <div class="faq-answer-inner">Jedes Projekt ist individuell – deshalb erstellen wir nach einem kostenlosen Erstgespräch ein maßgeschneidertes Angebot, das genau zu Ihren Zielen und Ihrem Budget passt. Wir arbeiten sowohl mit Einzelprojekten als auch mit monatlichen Paketen. Eine erste Orientierung zu Preisen gibt unser Ratgeber <a href="blog/was-kostet-social-media-marketing.html">Was kostet Social Media Marketing?</a></div>
                     </div>
                 </div>
                 <div class="faq-item reveal">
@@ -2907,7 +2948,7 @@
                         <div class="faq-icon"></div>
                     </button>
                     <div class="faq-answer">
-                        <div class="faq-answer-inner">Absolut. Sie erhalten alle fertigen Videos in den passenden Formaten und können diese selbst posten. Alternativ übernehmen wir das komplette Posting und Account Management für Sie.</div>
+                        <div class="faq-answer-inner">Absolut. Sie erhalten alle fertigen Videos in den passenden Formaten und können diese selbst posten. Alternativ übernehmen wir das komplette Posting und Account Management für Sie. Wie oft sich Posten lohnt, steht in unserem Ratgeber <a href="blog/wie-oft-auf-instagram-posten.html">Wie oft auf Instagram posten?</a></div>
                     </div>
                 </div>
                 <div class="faq-item reveal">
@@ -2970,7 +3011,7 @@
     <!-- ========== FOOTER ========== -->
     <footer class="footer">
         <div class="container footer-inner">
-            <div class="footer-copy">© 2026 Wendepunkt Marketing. Alle Rechte vorbehalten.</div>
+            <div class="footer-copy">© 2026 Wendepunkt Marketing. Alle Rechte vorbehalten.</div><div class="footer-links footer-nav"><a href="leistungen.html">Leistungen</a><a href="referenzen.html">Referenzen</a><a href="blog.html">Blog</a></div>
             <div class="footer-links">
                 <a href="datenschutz.html">Datenschutzerklärung</a>
                 <a href="impressum.html">Impressum</a>
